@@ -1,0 +1,85 @@
+.videoCard {
+    width: 295px;
+    margin-bottom: 40px;
+    position: relative;
+}
+.videoImg {
+    height: 186px;
+    margin-bottom: 0;
+}
+.videoData {
+    display: flex;
+    padding-top: 10px;
+}
+.channelDetails {
+    margin-left: 10px;
+}
+
+.channelDetails p{
+    margin-top: -18px;
+    font-size: 14px;
+    color: rgb(122,122,122);
+    font-weight: 550;
+    margin-bottom: 15px;
+}
+
+.channelDetails h5{
+    margin-top: 5px;
+    color: rgb(26,26,26);
+}
+
+.duration {
+    background-color: rgb(31,31,31);
+    width: 40px;
+    height: 18px;
+    text-align: center;
+    color: white;
+    border-radius: 3px;
+    position: absolute;
+    top: 162px;
+    right: auto;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.likesAdd {
+    position: absolute;
+    top: 30px;
+    background-color: black;
+    color: white!important;
+    right: auto;
+    font-size: 20px!important;
+    padding: 3px 3px;
+    opacity: 0.8;
+    align-items: center;
+    border-radius: 2px;
+    display: flex;
+}
+
+.videoIcon {
+    font-size: 20px!important;
+}
+
+.twitter {
+    width: 19px;
+    height: 19px;
+}
+
+.videoCard:hover .likesAdd {
+    display: flex;
+}
+
+.moreIcon {
+    color: rgb(131,131,131)!important
+}
+
+.moreIcon:hover {
+    color: rgb(83,83,83)!important;
+    cursor: pointer;
+}
+
+.c_name:hover{
+    color: rgb(59,59,59);
+    cursor: pointer;
+}
