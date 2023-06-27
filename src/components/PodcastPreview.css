@@ -36,8 +36,8 @@
     color: white;
     border-radius: 3px;
     position: absolute;
-    top: 162px;
-    right: auto;
+    top: 168px;
+    right: 110px;
     font-size: 12px;
     font-weight: 600;
     opacity: 0.9;
@@ -82,4 +82,9 @@
 .c_name:hover{
     color: rgb(59,59,59);
     cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+    display: inline-block;
 }
