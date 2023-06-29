@@ -1,5 +1,5 @@
 .videoCard {
-    width: 295px;
+    width: 250px;
     margin-bottom: 40px;
     position: relative;
 }
@@ -37,7 +37,7 @@
     border-radius: 3px;
     position: absolute;
     top: 168px;
-    right: 110px;
+    right: 65px;
     font-size: 12px;
     font-weight: 600;
     opacity: 0.9;
@@ -71,7 +71,9 @@
 }
 
 .moreIcon {
-    color: rgb(131,131,131)!important
+    color: rgb(131,131,131)!important;
+    margin-top: 0px;
+    margin-left: -15px;
 }
 
 .moreIcon:hover {
@@ -88,3 +90,16 @@ li {
     list-style-type: none;
     display: inline-block;
 }
+
+h5 {
+    text-align: left;
+    width: 186px;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.aired {
+    margin-top: -5px;
+    text-align: center;
+}
+

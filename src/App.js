@@ -1,4 +1,6 @@
 import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import PodcastDetail from './components/PodcastDetail';
 import PodcastPreview from './components/PodcastPreview'
 import EpisodeList from './components/EpisodeList'
 
@@ -6,7 +8,8 @@ const App = () => {
 	return (
 		<div>
 			<h1>Podcast Finder</h1>
-			<PodcastPreview/>
+			<PodcastDetail/>
+			{/* <PodcastPreview/> */}
 			<EpisodeList/>
 		</div>
 	)

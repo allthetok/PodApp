@@ -1,0 +1,111 @@
+.coverArt {
+    background: var(--mono-e);
+    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 12px;
+}
+
+.showCover {
+    width: 480px;
+    height: 480px;
+}
+
+.mediaTwitter {
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-image: url(../assets/twitter512.png);
+    background-color: white;
+    display: block;
+    border-radius: 0.4em;
+    padding: 0.15em;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    width: 2.6em;
+    height: 2.6em;
+    margin: 0.2em;
+    overflow: hidden;
+}
+
+.mediaFacebook {
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-image: url(../assets/facebook512.png);
+    background-color: white;
+    display: block;
+    border-radius: 0.4em;
+    padding: 0.15em;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    width: 2.6em;
+    height: 2.6em;
+    margin: 0.2em;
+    overflow: hidden;
+}
+
+.mediaInstagram {
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-image: url(../assets/instagram512.png);
+    background-color: white;
+    display: block;
+    border-radius: 0.4em;
+    padding: 0.15em;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    width: 2.6em;
+    height: 2.6em;
+    margin: 0.2em;
+    overflow: hidden;
+}
+
+.mediaContainer {
+    display: flex;
+    height: 45px;
+    padding-top: none;
+    padding-bottom: 100px;
+    margin-left: 198.41px;
+}
+
+.colorBar {
+    border: 2px #e1e6ef solid;
+    width: 100%;
+    height: 4px;
+    font-size: 1px;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.infoContainer {
+    background: var(--background-eve);
+    --background-eve: #0b1528;
+}
+
+.mainInfo {
+    padding: 1.5em;
+    padding-right: 0.75em;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.pageSection {
+    max-width: 82.5em;
+    margin: 0 auto;
+}
+h3 {
+    color: #e1e6ef;
+    font-size: 2em;
+    margin-bottom: 0.1em;
+    padding: 0 0.3em;
+    display: inline-block;
+    position: absolute;
+    left: 530px;
+}

@@ -22,11 +22,11 @@ const Episode = ({key, imageUrl, length, title, airDate}) => {
                     {formattedTime(length)}
                 </div>
                 <div className='videoData'>
-                <div className='channelDetails'>
-                <h5>{title}</h5>
-                <p>Aired {airDate.substring(0,10)}</p>
-                </div>
-                <MoreVert className='moreIcon'/>
+                    <div className='moreDetails'>
+                        <h5>{title}</h5>
+                    <p className='aired'>Aired {airDate.substring(0,10)}</p>
+                    </div>
+                    <MoreVert className='moreIcon'/>
                 </div>
             </div>
         </li>
