@@ -1,15 +1,16 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PodcastDetail from './components/PodcastDetail';
-import PodcastPreview from './components/PodcastPreview'
-import EpisodeList from './components/EpisodeList'
+import SearchPod from './components/SearchPod';
+import EpisodeList from './components/EpisodeList';
+import Filter from './components/Filter';
 
 const App = () => {
 	return (
 		<div>
-			<h1>Podcast Finder</h1>
+			<SearchPod/>
 			<PodcastDetail/>
-			{/* <PodcastPreview/> */}
+			<Filter/>
 			<EpisodeList/>
 		</div>
 	)

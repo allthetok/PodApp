@@ -6,6 +6,7 @@
 .videoImg {
     height: 186px;
     margin-bottom: 0;
+    cursor: pointer; 
 }
 .videoData {
     display: flex;
@@ -91,15 +92,27 @@ li {
     display: inline-block;
 }
 
-h5 {
+.title {
     text-align: left;
     width: 186px;
-    font-size: 16px;
     margin-right: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    overflow: hidden;
+    max-height: 2.2rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 .aired {
     margin-top: -5px;
-    text-align: center;
+    text-align: left;
 }
 
+.moreDetails {
+    color: #f1f1f1;
+    font-size: 16px;
+    line-height: 2.2rem;
+}

@@ -1,7 +1,6 @@
 import React from 'react'
 import './PodcastDetail.css'
 import filter from '../mockdata/searchpod'
-import {MoreVert, Padding, PlaylistAdd} from '@mui/icons-material'
 
 const PodcastDetail = () => {
 
@@ -16,17 +15,12 @@ const PodcastDetail = () => {
     const formattedDateShort = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', month: 'long'})
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
 
-
-
-
 	return (
         <div className='infoContainer'>
             <div className='coverArt'>
                 <img className='showCover' src={filter.data.podcasts.data[0].imageUrl}></img>
                 <h3>
                     {filter.data.podcasts.data[0].title}
-                    <div className='colorBar'>
-                    </div>
                 </h3>
                 <table className='podInfoOuter'>
                     <tbody>
@@ -115,8 +109,6 @@ const PodcastDetail = () => {
                 <a className='mediaTwitter' title='Twitter' target='_blank' href={`https://twitter.com/${filter.data.podcasts.data[0].socialLinks.twitter}`}> </a>
                 <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${filter.data.podcasts.data[0].socialLinks.facebook}`}> </a>
                 <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${filter.data.podcasts.data[0].socialLinks.instagram}`}> </a>
-            </div>
-            <div className='colorBar'>
             </div>
         </div>
 	)

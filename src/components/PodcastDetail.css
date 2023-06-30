@@ -87,6 +87,7 @@
 .infoContainer {
     background: var(--background-eve);
     --background-eve: #0b1528;
+    font-family: 'Roboto', sans-serif;
 }
 
 .mainInfo {
