@@ -6,8 +6,8 @@
 }
 
 .showCover {
-    width: 480px;
-    height: 480px;
+    width: 400px;
+    height: 400px;
 }
 
 .mediaTwitter {
@@ -72,7 +72,7 @@
     height: 45px;
     padding-top: none;
     padding-bottom: 100px;
-    margin-left: 198.41px;
+    margin-left: 148.41px;
 }
 
 .colorBar {
@@ -107,5 +107,90 @@ h3 {
     padding: 0 0.3em;
     display: inline-block;
     position: absolute;
-    left: 530px;
+    left: 450px;
 }
+
+.podInfoOuter {
+    width: 100%;
+    border-collapse: collapse;
+    display: inline-block;
+    position: absolute;
+    left: 450px;
+    padding-top: 50px;
+}
+
+.podInfo {
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+
+.verticalAlignTop {
+    vertical-align: top;
+}
+
+td {
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.infoHeader {
+    width: 105px;
+    color: #9da3af;
+    font-weight: normal;
+    font-size: 0.9em;
+    text-align: left;
+    padding: 5px;
+    padding-right: 10px;
+    border: none;
+}
+
+.creator {
+    color: #84C5FB;
+}
+
+.regular {
+    color: #e1e6ef;
+}
+
+.p4 {
+    padding: 4px;
+}
+
+.avgRating {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.maxRating {
+    font-size: 0.9em;
+    color: #9da3af;
+}
+
+.numRatings {
+    font-size: 0.95em;
+    color: #B4B9C5;
+}
+
+.desc {
+    float: left;
+    font-size: 0.9em;
+    color: #9da3af;
+    line-height: 1.4;
+}
+
+ .mediaSpotify {
+    background-repeat: no-repeat;
+    border: none;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-image: url(../assets/Spotify_Logo_CMYK_Green.png);
+    background-color: white;
+    display: block;
+    border-radius: 0.4em;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    width: 10em;
+    height: 3em;
+    overflow: hidden;
+} 
