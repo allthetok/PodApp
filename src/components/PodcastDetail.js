@@ -1,8 +1,65 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './PodcastDetail.css'
-import filter from '../mockdata/searchpod'
 
 const PodcastDetail = () => {
+    const [dataFetch, setDataFetch] = useState('')
+
+    const data = JSON.stringify({
+        query: `query {
+            podcasts(searchTerm: "Joe Rogan", first: 1) {
+                paginatorInfo {
+                    currentPage,
+                    hasMorePages,
+                    lastPage,
+                },
+                data {
+                    id,
+                    title,
+                    description,
+                    webUrl,
+                    language,
+                    numberOfEpisodes,
+                    avgEpisodeLength,
+                    latestEpisodeDate,
+                    ratingCount,
+                    ratingAverage,
+                    author {
+                        name
+                    },
+                    startDate,
+                    reviewCount,
+                    imageUrl,
+                    socialLinks {
+                        twitter,
+                        facebook,
+                        instagram
+                    },
+                }
+            }
+        }`,
+        variables: {}
+      });
+
+      const config = {
+        method: 'post',
+        url: 'https://api.podchaser.com/graphql',
+        headers: { 
+          'Authorization': `Bearer ${process.env.REACT_APP_DEVELOPMENT_TOKEN}`, 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+    
+    useEffect(() => {
+        axios(config)
+        .then(response => {
+            setDataFetch(response.data.data.podcasts.data[0])
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }, [])
 
     const formattedTime = (seconds) => {
         const hours = Math.floor(seconds/3600)
@@ -18,9 +75,9 @@ const PodcastDetail = () => {
 	return (
         <div className='infoContainer'>
             <div className='coverArt'>
-                <img className='showCover' src={filter.data.podcasts.data[0].imageUrl}></img>
+                <img className='showCover' alt='Cover Art' src={dataFetch.imageUrl}></img>
                 <h3>
-                    {filter.data.podcasts.data[0].title}
+                    {dataFetch.title}
                 </h3>
                 <table className='podInfoOuter'>
                     <tbody>
@@ -31,7 +88,7 @@ const PodcastDetail = () => {
                                         <tr>
                                             <th className='infoHeader'>Creator</th>
                                             <td colSpan={2} className='creator'>
-                                                {filter.data.podcasts.data[0].author.name}
+                                                 {dataFetch === '' ? '' : dataFetch.author.name}
                                             </td>
                                         </tr>
                                         <tr>
@@ -43,20 +100,20 @@ const PodcastDetail = () => {
                                         <tr>
                                             <th className='infoHeader'>Released</th>
                                             <td colSpan={2} className='regular'>
-                                                {formattedDateShort(filter.data.podcasts.data[0].startDate)}
+                                                {formattedDateShort(dataFetch.startDate)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th className='infoHeader'>Latest Ep</th>
                                             <td colSpan={2} className='regular'>
-                                                {formattedDateLong(filter.data.podcasts.data[0].latestEpisodeDate)}
+                                                {formattedDateLong(dataFetch.latestEpisodeDate)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th className='infoHeader p4'>Rating</th>
                                             <td colSpan={2}>
                                                 <span className='avgRating regular'>
-                                                    {filter.data.podcasts.data[0].ratingAverage}&nbsp;
+                                                    {dataFetch.ratingAverage}&nbsp;
                                                 </span>
                                                 <span className='maxRating regular'>
                                                     /&nbsp; 
@@ -67,7 +124,7 @@ const PodcastDetail = () => {
                                                 <span className='numRatings'>
                                                     from&nbsp;
                                                     <b>
-                                                        <span>{filter.data.podcasts.data[0].ratingCount}&nbsp;</span>
+                                                        <span>{dataFetch.ratingCount}&nbsp;</span>
                                                     </b>
                                                     ratings
                                                 </span>
@@ -76,25 +133,25 @@ const PodcastDetail = () => {
                                         <tr>
                                             <th className='infoHeader'>Episodes #</th>
                                             <td colSpan={2} className='regular'>
-                                                {filter.data.podcasts.data[0].numberOfEpisodes}
+                                                {dataFetch.numberOfEpisodes}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th className='infoHeader'>Avg Length</th>
                                             <td colSpan={2} className='regular'>
-                                                {formattedTime(filter.data.podcasts.data[0].avgEpisodeLength)}
+                                                {formattedTime(dataFetch.avgEpisodeLength)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th className='infoHeader'>Description</th>
                                             <td colSpan={2} className='desc'>
-                                                {filter.data.podcasts.data[0].description}
+                                                {dataFetch.description}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th className='infoHeader'>Launch</th>
                                             <td colSpan={2}>
-                                                <a className='mediaSpotify' title='Spotify' target='_blank' href={filter.data.podcasts.data[0].webUrl}></a>
+                                                <a className='mediaSpotify' title='Spotify' target='_blank' href={dataFetch.webUrl}></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -106,9 +163,9 @@ const PodcastDetail = () => {
                 
             </div>
             <div className='mediaContainer'>
-                <a className='mediaTwitter' title='Twitter' target='_blank' href={`https://twitter.com/${filter.data.podcasts.data[0].socialLinks.twitter}`}> </a>
-                <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${filter.data.podcasts.data[0].socialLinks.facebook}`}> </a>
-                <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${filter.data.podcasts.data[0].socialLinks.instagram}`}> </a>
+                <a className='mediaTwitter' title='Twitter' target='_blank' href={`https://twitter.com/${dataFetch === '' ? '' : dataFetch.socialLinks.twitter}`}> </a>
+                <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
+                <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
             </div>
         </div>
 	)

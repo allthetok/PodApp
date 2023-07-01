@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import './SearchPod.css';
 
 const SearchPod = () => {
+  const textInput = useRef()
+
+  const handleSubmit = () => {
+    const finalInput = textInput.current.value
+    console.log(finalInput)
+  }
+
   return (
     <div className='searchWrap'>
-        <form action='' className='searchBar'>
-            <input type='search' name='search' pattern='.*\S.*' required />
+        <form className='searchBar' onSubmit={handleSubmit}>
+            <input type='search' name='search' required placeholder='Search a Podcast' ref={textInput}/>
                 <button className='searchBtn' type='submit'>
                     <span>Search</span>
                 </button>
