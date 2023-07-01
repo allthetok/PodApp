@@ -1,24 +1,48 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext, createContext } from 'react'
 import './SearchPod.css';
+import PodcastDetail from './PodcastDetail';
+import Filter from './Filter';
+import EpisodeList from './EpisodeList';
+
+export const SearchContext = createContext(null)
 
 const SearchPod = () => {
-  const textInput = useRef()
+  const [searchIn, setSearchIn] = useState('')
+  const [finalSearch, setFinalSearch] = useState('')
 
-  const handleSubmit = () => {
-    const finalInput = textInput.current.value
-    console.log(finalInput)
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   setSearchIn(e.target.value)
+  //   console.log(searchIn)
+  // }
+
+  const handleClick = (e) => {
+    e.preventDefault()
+    setFinalSearch(searchIn)
+  }
+
+  const handleChange = (e) => {
+    setSearchIn(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
   }
 
   return (
-    <div className='searchWrap'>
-        <form className='searchBar' onSubmit={handleSubmit}>
-            <input type='search' name='search' required placeholder='Search a Podcast' ref={textInput}/>
-                <button className='searchBtn' type='submit'>
-                    <span>Search</span>
-                </button>
-        </form>
-    </div>
-
+    <SearchContext.Provider value={finalSearch}>
+      <div className='searchWrap'>
+          <form className='searchBar' onSubmit={handleSubmit}>
+              <input type='search' name='search' required placeholder='Search...' value={searchIn} onChange={handleChange}/>
+                  <button className='searchBtn' type='submit' onClick={handleClick}>
+                      <span>Search</span>
+                  </button>
+          </form>
+      </div>
+      <PodcastDetail/>
+			<Filter/>
+			<EpisodeList/>
+    </SearchContext.Provider>
   )
 }
 

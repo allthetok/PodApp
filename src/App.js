@@ -6,12 +6,10 @@ import EpisodeList from './components/EpisodeList';
 import Filter from './components/Filter';
 
 const App = () => {
+
 	return (
 		<div>
-			<SearchPod/>
-			<PodcastDetail/>
-			<Filter/>
-			<EpisodeList/>
+				<SearchPod/>
 		</div>
 	)
 }
