@@ -7,8 +7,9 @@
     padding: 10px 6.8%;
     display: inline-block;
     margin-right: 10px;
-}
+} */
 
+/*
 form {
     margin: auto;
     width: 50%;
@@ -30,9 +31,10 @@ input[type=submit] {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     display: inline-block;
-} */
+}
+*/
 
-.searchWrap {
+ .searchWrap {
     border: 0;
     box-sizing: border-box;
     margin: 0;
@@ -40,23 +42,28 @@ input[type=submit] {
 }
 :root {
     font-size: calc(16px + (24-16)*(100vw - 320px)/(1920-320));
+	background: var(--background-eve);
+    --background-eve: #0b1528;
+    font-family: 'Roboto', sans-serif;
 }
-body, button, input {
+body {
+	background: var(--background-eve);
+    --background-eve: #0b1528;
+    font-family: 'Roboto', sans-serif;
+	height: 100vh;
+}
+button, input {
     font-size: 1em;
     line-height: 1.5em;
 }
-
-body, input {
-    color: #171717;
+input {
+	color: #171717;
 }
 
-body, .searchBar {
+.searchBar {
 	display: flex;
 }
-body {
-	background: #f1f1f1;
-	height: 100vh;
-}
+
 .searchBar input,
 .searchBtn, 
 .searchBtn:before, 
@@ -172,11 +179,8 @@ body {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-	body, input {
+	input {
 		color: #f1f1f1;
-	}
-	body {
-		background: #171717;
 	}
 	.searchBar input {
 		box-shadow: 0 0 0 0.4em #f1f1f1 inset;

@@ -3,13 +3,9 @@ import { Button, Autocomplete, TextField } from '@mui/material'
 import './Filter.css';
 
 const Filter = () => {
-    const [options, setOptions] = useState('25')
+    const [options, setOptions] = useState('5')
     const [sortOptions, setSortOptions] = useState('Released')
-    const numOptions = ['10', '25', '50', '100']
-
-    const handleButtonChange = (sortOption) => {
-        setSortOptions(sortOption)
-    }
+    const numOptions = ['5', '10', '25']
 
   return (
     <div className='filterWrap'>

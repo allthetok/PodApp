@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { SearchContext } from './SearchPod'
+import EpisodeList from './EpisodeList'
 import './PodcastDetail.css'
 
 const PodcastDetail = () => {
@@ -57,7 +58,6 @@ const PodcastDetail = () => {
         axios(config)
         .then(response => {
             setDataFetch(response.data.data.podcasts.data[0])
-            console.log(response.data.data.podcasts.data[0])
         })
         .catch((err) => {
             console.log(err)
@@ -77,7 +77,6 @@ const PodcastDetail = () => {
 
 	return (
         <div>
-            
             <div className='infoContainer'>
                 <div className='coverArt'>
                     <img className='showCover' alt='Cover Art' src={dataFetch.imageUrl}></img>
@@ -174,6 +173,11 @@ const PodcastDetail = () => {
                 </div>
 
             </div>
+            {dataFetch !== '' ?
+            <EpisodeList podchaserId={dataFetch.id}/>
+            : <></>
+            }
+
         </div>
 	)
 }
