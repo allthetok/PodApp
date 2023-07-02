@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { SearchContext } from './SearchPod'
 import EpisodeList from './EpisodeList'
+import Filter from './Filter'
 import './PodcastDetail.css'
 
 const PodcastDetail = () => {
@@ -174,7 +175,8 @@ const PodcastDetail = () => {
 
             </div>
             {dataFetch !== '' ?
-            <EpisodeList podchaserId={dataFetch.id}/>
+            <Filter podchaserId={dataFetch.id} />
+            // <EpisodeList podchaserId={dataFetch.id}/>
             : <></>
             }
 

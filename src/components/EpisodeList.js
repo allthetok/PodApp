@@ -4,7 +4,7 @@ import Episode from './Episode'
 import Filter from './Filter'
 import './EpisodeList.css';
 
-const EpisodeList = ({ podchaserId }) => {
+const EpisodeList = ({ podchaserId, options, sortOptions }) => {
 
   const [episodeDataFetch, setEpisodeDataFetch] = useState('')
 
@@ -29,8 +29,8 @@ const EpisodeList = ({ podchaserId }) => {
                   instagram
               },
               episodes(sort: {
-                  sortBy: AIR_DATE
-              }, first: 5) {
+                  sortBy: ${sortOptions}
+              }, first: ${parseInt(options)}) {
                   paginatorInfo {
                       count,
                       currentPage,
@@ -87,11 +87,10 @@ const EpisodeList = ({ podchaserId }) => {
       }
       setEpisodeDataFetch(responseObj.data.podcast.episodes.data)
     })
-  }, [podchaserId])
+  }, [podchaserId, sortOptions, options])
 
   return (
     <>
-    <Filter/>
     <div className='episodeContainer'>
     {episodeDataFetch === '' ? 
     <div></div> :
