@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { SearchContext } from './SearchPod'
-import EpisodeList from './EpisodeList'
 import Filter from './Filter'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import { Button } from '@mui/material'
 import './PodcastDetail.css'
 
 const PodcastDetail = () => {
@@ -71,6 +72,28 @@ const PodcastDetail = () => {
         const hoursDisplay = hours > 0 ? `${hours}h` : ''
         const minsDisplay = mins > 0 ? `${mins}m` : ''
         return `${hoursDisplay}:${minsDisplay}`
+    }
+
+    const handleClick = () => {
+        const likeConfig = {
+            method: 'post',
+            url: 'http://localhost:3001/api/likes',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'id': dataFetch.id,
+                'title': dataFetch.title,
+                'liked': true
+            }
+        }
+        axios(likeConfig)
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     const formattedDateShort = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', month: 'long'})
@@ -172,11 +195,15 @@ const PodcastDetail = () => {
                     <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
                     <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
+                <div className='likeContainer'>
+                    <Button onClick={handleClick}variant='contained' startIcon={<FavoriteIcon/>}>
+                        Like
+                    </Button>
+                </div>
 
             </div>
             {dataFetch !== '' ?
             <Filter podchaserId={dataFetch.id} />
-            // <EpisodeList podchaserId={dataFetch.id}/>
             : <></>
             }
 
