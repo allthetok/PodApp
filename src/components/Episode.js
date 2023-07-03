@@ -9,9 +9,6 @@ const Episode = ({key, imageUrl, url, length, title, airDate}) => {
         const mins = Math.floor(seconds % 3600 / 60)
         const hoursDisplay = hours > 0 ? `${hours}h` : ''
         const minsDisplay = mins > 0 ? `${mins}m` : ''
-        console.log(seconds)
-        console.log(hoursDisplay)
-        console.log(minsDisplay)
         if (seconds < 60) {
             return `${seconds}s`
         }
