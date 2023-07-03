@@ -9,19 +9,35 @@ const Episode = ({key, imageUrl, url, length, title, airDate}) => {
         const mins = Math.floor(seconds % 3600 / 60)
         const hoursDisplay = hours > 0 ? `${hours}h` : ''
         const minsDisplay = mins > 0 ? `${mins}m` : ''
-        return `${hoursDisplay}:${minsDisplay}`
+        console.log(seconds)
+        console.log(hoursDisplay)
+        console.log(minsDisplay)
+        if (seconds < 60) {
+            return `${seconds}s`
+        }
+        else if (seconds > 60) {
+            if (hoursDisplay === '') {
+                return minsDisplay
+            }
+            if (minsDisplay === '') {
+                return hoursDisplay
+            }
+        }
+    return `${hoursDisplay}:${minsDisplay}`
+        
     }
 
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
-
-
 
 	return (
         <li key={key}>
             <div className='videoCard'>
                 <div className='likesAdd'><PlaylistAdd className='videoIcon'/></div>
                 <a title='Play' target='_blank' href={url}>
-                <img className='videoImg' src={imageUrl}/>
+                {imageUrl !== '' 
+                ? <img className='videoImg' src={imageUrl}/>
+                : <img className='videoImg' alt='No thumbnail found'/>
+                }
 
                 </a>
                 <div className='duration'>

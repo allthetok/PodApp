@@ -5,6 +5,9 @@
 }
 .videoImg {
     height: 186px;
+    max-height: 186px;
+    max-width: 186px;
+    width: 186px;
     margin-bottom: 0;
     cursor: pointer; 
 }
@@ -33,12 +36,11 @@
     background-color: rgb(31,31,31);
     width: 40px;
     height: 18px;
-    text-align: center;
     color: white;
     border-radius: 3px;
-    position: absolute;
+    /* position: relative;
     top: 168px;
-    right: 65px;
+    right: 65px; */
     font-size: 12px;
     font-weight: 600;
     opacity: 0.9;

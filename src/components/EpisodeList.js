@@ -30,7 +30,7 @@ const EpisodeList = ({ podchaserId, options, sortOptions }) => {
               },
               episodes(sort: {
                   sortBy: ${sortOptions}
-              }, first: ${parseInt(options)}) {
+              }, first: 20) {
                   paginatorInfo {
                       count,
                       currentPage,
@@ -85,9 +85,10 @@ const EpisodeList = ({ podchaserId, options, sortOptions }) => {
           }
         })
       }
+      console.log(responseObj)
       setEpisodeDataFetch(responseObj.data.podcast.episodes.data)
     })
-  }, [podchaserId, sortOptions, options])
+  }, [podchaserId, sortOptions])
 
   return (
     <>
@@ -95,7 +96,7 @@ const EpisodeList = ({ podchaserId, options, sortOptions }) => {
     {episodeDataFetch === '' ? 
     <div></div> :
         <ul className='episodeList regular'>
-            {episodeDataFetch.map((episode) => 
+            {episodeDataFetch.slice(0,parseInt(options)).map((episode) => 
                 <Episode key={episode.id} imageUrl={episode.imageUrl} url={episode.url} length={episode.length} title={episode.title} airDate={episode.airDate}/>
             )}
         </ul>}

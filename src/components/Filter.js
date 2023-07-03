@@ -4,14 +4,13 @@ import './Filter.css';
 import EpisodeList from './EpisodeList';
 
 const Filter = ({ podchaserId }) => {
-    const [options, setOptions] = useState('5')
+    const [options, setOptions] = useState('10')
     const [sortOptions, setSortOptions] = useState('AIR_DATE')
-    const numOptions = ['5', '10', '25']
+    const numOptions = ['5', '10', '20']
 
     const onTextChange = (event, values) => {
       event.preventDefault()
       setOptions(values)
-      console.log(options)
     }
 
   return (
