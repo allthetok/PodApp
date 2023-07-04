@@ -38,7 +38,6 @@ app.get('/api/users', async (request, response) => {
 })
 
 app.post('/api/user', async(request, response) => {
-    const obj = request.body
     const struser = request.body.struser
     const strpass = request.body.strpass
     const values = [struser, strpass]
