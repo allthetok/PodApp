@@ -40,37 +40,39 @@ app.get('/api/users', async (request, response) => {
 app.post('/api/user', async (request, response) => {
     const struser = request.body.struser
     const strpass = request.body.strpass
+    const newUser = request.body.newUser
     const values = [struser, strpass]
+    let queryResults, queryText
 
-    if (!struser) {
+    if (!struser || !strpass) {
         return response.status(400).json({
-            error: 'Username missing'
+            error: 'Username or password missing'
         })
     }
-    if (!strpass) {
+    if (typeof(newUser) === 'undefined') {
         return response.status(400).json({
-            error: 'Password missing'
+            error: 'Did not specify if signin or signup'
         })
     }
-    //await client.query('UPDATE tblUser SET dtmlastlogin = NOW() WHERE struser = $1 AND strpass = $2;', values)
-    const queryText = 'SELECT * from tblUser WHERE struser = $1 AND strpass = $2'
-    const queryResults = await client.query(queryText, values)
-    console.log(struser, strpass)
 
+    if (!newUser) {
+        await client.query('UPDATE tblUser SET dtmlastlogin = NOW() WHERE struser = $1 AND strpass = $2;', values)
+        queryText = 'SELECT * from tblUser WHERE struser = $1 AND strpass = $2'
+        queryResults = await client.query(queryText, values)
+    }
+    else {
+        queryText = 'INSERT INTO tblUser(struser, strpass, dtmcreated, dtmlastlogin) VALUES($1, $2, NOW(), NOW()) RETURNING *'
+        queryResults = await client.query(queryText, values)
+    }
+
+    console.log(`${newUser ? 'Signed up' : 'Logged In'} user: ${struser}, pass ${strpass}`)
+    
     if (queryResults.rows[0]) {
         return response.status(200).json(
             {
                 "lnguserid": queryResults.rows[0].lnguserid
             })
     }
-})
-
-app.post('/api/user', async(request, response) => {
-    const struser = request.body.struser
-    const strpass = request.body.strpass
-    const values = [struser, strpass]
-    const queryResults = await client.query('INSERT INTO tblUser(struser, strpass, dtmcreated, dtmlastlogin) VALUES($1, $2, NOW(), NOW()) RETURNING *', values)
-    response.json(queryResults.rows[0])
 })
 
 const PORT = process.env.PORT || 3002

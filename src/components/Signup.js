@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
@@ -28,7 +27,7 @@ const Copyright = ( props ) => {
 
 const defaultTheme = createTheme()
 
-const Login = () => {
+const Signup = () => {
     const [userId, setUserId] = useState(null)
 
     const navigate = useNavigate()
@@ -46,7 +45,7 @@ const Login = () => {
             data: {
                 'struser': user,
                 'strpass': pass,
-                'newUser': false
+                'newUser': true,
             }
         }
 
@@ -84,7 +83,7 @@ const Login = () => {
                             <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component='h1' variant='h5'>
-                            Sign in
+                            Sign Up
                         </Typography>
                         <Box component='form' 
                         onSubmit={handleSubmit} 
@@ -115,20 +114,8 @@ const Login = () => {
                                 fullWidth
                                 variant='contained'
                                 sx={{ mt: 3, mb: 2}}>
-                                    Sign In
+                                    Sign Up
                             </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="/signup" variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
                         </Box>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -137,4 +124,4 @@ const Login = () => {
     )
 } 
 
-export default Login
+export default Signup
