@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -30,7 +31,9 @@ const defaultTheme = createTheme()
 const Login = () => {
     const [userId, setUserId] = useState(null)
 
-    const getUserId = (dataTarget) => {
+    const navigate = useNavigate()
+
+    const getUserId = async (dataTarget) => {
         const user = dataTarget.get('user')
         const pass = dataTarget.get('password')
 
@@ -46,8 +49,11 @@ const Login = () => {
             }
         }
 
-        axios(userConfig).then(response => {
+        await axios(userConfig).then(response => {
             setUserId(response.data.lnguserid)
+            if (response.data.lnguserid) {
+                navigate('/home')
+            }
         }).catch(err => {
             console.log(err)
         })
@@ -58,6 +64,7 @@ const Login = () => {
         const data = new FormData(e.currentTarget)
         getUserId(data)
     }
+
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -76,7 +83,9 @@ const Login = () => {
                         <Typography component='h1' variant='h5'>
                             Sign in
                         </Typography>
-                        <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1}}>
+                        <Box component='form' 
+                        onSubmit={handleSubmit} 
+                        noValidate sx={{ mt: 1}}>
                             <TextField 
                                 margin='normal'
                                 required
