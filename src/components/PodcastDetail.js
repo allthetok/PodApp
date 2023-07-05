@@ -77,7 +77,7 @@ const PodcastDetail = () => {
     const handleClick = () => {
         const likeConfig = {
             method: 'post',
-            url: 'http://localhost:3001/api/likes',
+            url: 'http://localhost:3002/api/likes',
             headers: {
                 'Content-Type': 'application/json'
             },

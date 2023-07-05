@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
+import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -27,13 +28,35 @@ const Copyright = ( props ) => {
 const defaultTheme = createTheme()
 
 const Login = () => {
+    const [userId, setUserId] = useState(null)
+
+    const getUserId = (dataTarget) => {
+        const user = dataTarget.get('user')
+        const pass = dataTarget.get('password')
+
+        const userConfig = {
+            method: 'post',
+            url: 'http://localhost:3002/api/user',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'struser': user,
+                'strpass': pass,
+            }
+        }
+
+        axios(userConfig).then(response => {
+            setUserId(response.data.lnguserid)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        const data = new FormDataEvent(event.currentTarget)
-        console.log({
-            username: data.get('user'),
-            password: data.get('password')
-        })
+        const data = new FormData(e.currentTarget)
+        getUserId(data)
     }
 
     return (
