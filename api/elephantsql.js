@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const pg = require('pg')
+const bcrypt = require('bcrypt')
 
 const corsOptions ={
     origin:'http://localhost:3001', 
@@ -41,7 +42,7 @@ app.post('/api/user', async (request, response) => {
     const struser = request.body.struser
     const strpass = request.body.strpass
     const newUser = request.body.newUser
-    const values = [struser, strpass]
+    let passHash, values
     let queryResults, queryText
 
     if (!struser || !strpass) {
@@ -56,16 +57,21 @@ app.post('/api/user', async (request, response) => {
     }
 
     if (!newUser) {
+        queryResults = await client.query('SELECT strpass FROM tblUser WHERE struser = $1', [struser])
+        await bcrypt.compare(strpass, queryResults.rows[0].strpass)
+        values = [struser, queryResults.rows[0].strpass]
         await client.query('UPDATE tblUser SET dtmlastlogin = NOW() WHERE struser = $1 AND strpass = $2;', values)
         queryText = 'SELECT * from tblUser WHERE struser = $1 AND strpass = $2'
         queryResults = await client.query(queryText, values)
     }
     else {
+        const hash = await bcrypt.hash(strpass, 10)
+        values = [struser, hash]
         queryText = 'INSERT INTO tblUser(struser, strpass, dtmcreated, dtmlastlogin) VALUES($1, $2, NOW(), NOW()) RETURNING *'
         queryResults = await client.query(queryText, values)
     }
 
-    console.log(`${newUser ? 'Signed up' : 'Logged In'} user: ${struser}, pass ${strpass}`)
+    console.log(`${newUser ? 'Signed up' : 'Logged In'} user: ${struser}.`)
     
     if (queryResults.rows[0]) {
         return response.status(200).json(
