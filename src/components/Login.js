@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+//import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
@@ -28,8 +29,8 @@ const Copyright = ( props ) => {
 
 const defaultTheme = createTheme()
 
-const Login = () => {
-    const [userId, setUserId] = useState(null)
+const Login = ({ handleIdChange, userId}) => {
+    //const [userId, setUserId] = useState(null)
 
     const navigate = useNavigate()
 
@@ -51,7 +52,7 @@ const Login = () => {
         }
 
         await axios(userConfig).then(response => {
-            setUserId(response.data.lnguserid)
+            handleIdChange(response.data.lnguserid)
         }).catch(err => {
             console.log(err)
         })

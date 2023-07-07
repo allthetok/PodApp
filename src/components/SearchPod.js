@@ -4,9 +4,9 @@ import PodcastDetail from './PodcastDetail';
 
 export const SearchContext = createContext(null)
 
-const SearchPod = () => {
+const SearchPod = ({ userId }) => {
   const [finalSearch, setFinalSearch] = useState('')
-
+  console.log(userId)
   const textInput = useRef()
 
   const handleSubmit = (e) => {
@@ -25,7 +25,7 @@ const SearchPod = () => {
           </form>
       </div>
       {finalSearch !== '' ?
-             <PodcastDetail />
+             <PodcastDetail userId={userId} />
       : <></>
     }
     </SearchContext.Provider>

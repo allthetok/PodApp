@@ -75,6 +75,52 @@ app.post('/api/user', async (request, response) => {
     }
 })
 
+app.post('/api/likes', async (request, response) => {
+    const queryResults = await client.query('CREATE TABLE tblLikes(lngLikeId serial PRIMARY KEY, strpodchaserId VARCHAR (50) NOT NULL, strtitle VARCHAR (50) NOT NULL, strname VARCHAR (50) NOT NULL, strweburl VARCHAR (50) NOT NULL, strimageurl VARCHAR (50) NOT NULL, dtmLiked TIMESTAMP NOT NULL, strlatestEpisodeDate VARCHAR (50), lngUserId serial NOT NULL,FOREIGN KEY (lngUserId) REFERENCES tblUser(lngUserId));')
+    if (queryResults) {
+        console.log(queryResults)
+        return response.status(200).json(queryResults)
+    }
+})
+
+app.get('/api/likes', async (request, response) => {
+    const queryText = 'SELECT * from tblLikes'
+    const queryResults = await client.query(queryText)
+    console.log(queryResults.rows)
+    response.json(queryResults.rows)
+})
+
+app.post('/api/like', async (request, response) => {
+    const body = request.body
+    const strpodchaserid = body.strpodchaserid
+    const strtitle = body.strtitle
+    const strname = body.strname
+    const strweburl = body.strweburl
+    const strimageurl = body.strimageurl
+    const strlatestepisodedate = body.strlatestepisodedate
+    const lnguserid = body.lnguserid
+    const values = [strpodchaserid, strtitle, strname, strweburl, strimageurl, strlatestepisodedate, lnguserid]
+    const queryText = 'INSERT INTO tblLikes(strpodchaserId, strtitle, strname, strweburl, strimageurl, dtmLiked, strlatestEpisodeDate, lngUserId) VALUES($1, $2, $3, $4, $5, NOW(), $6, $7) RETURNING *'
+
+
+    if (!strpodchaserid || !strtitle || !strname || !strweburl || !strimageurl || !strlatestepisodedate || !lnguserid) {
+        return response.status(400).json({
+            error: 'PodchaserId, Title, Author Name, Web Url, Image Url, Latest Episode Date or UserId missing'
+        })
+    }
+    queryResults = await client.query(queryText, values)
+
+    console.log(`${strtitle} liked by ${lnguserid}`)
+
+    if (queryResults.rows[0]) {
+        return response.status(200).json({
+            "strtitle": queryResults.rows[0].strtitle,
+            "strpodchaserid": queryResults.rows[0].strpodchaserid,
+            "lnguserid": queryResults.rows[0].lnguserid
+        })
+    }
+})
+
 const PORT = process.env.PORT || 3002
 
 app.listen(PORT, () => {

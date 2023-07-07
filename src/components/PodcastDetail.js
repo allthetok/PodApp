@@ -6,8 +6,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Button } from '@mui/material'
 import './PodcastDetail.css'
 
-const PodcastDetail = () => {
+const PodcastDetail = ({ userId }) => {
     const [dataFetch, setDataFetch] = useState('')
+    const [like, setLike] = useState(false)
     const finalSearch = useContext(SearchContext) 
 
     const data = JSON.stringify({
@@ -74,26 +75,34 @@ const PodcastDetail = () => {
         return `${hoursDisplay}:${minsDisplay}`
     }
 
-    const handleClick = () => {
+    const likePod = async (dataFetch) => {
         const likeConfig = {
             method: 'post',
-            url: 'http://localhost:3002/api/likes',
+            url: 'http://localhost:3002/api/like',
             headers: {
                 'Content-Type': 'application/json'
             },
             data: {
-                'id': dataFetch.id,
-                'title': dataFetch.title,
-                'liked': true
+                'strpodchaserid': dataFetch.id,
+                'strtitle': dataFetch.title,
+                'strname': dataFetch.author.name,
+                'strweburl': dataFetch.webUrl,
+                'strimageurl': dataFetch.imageUrl,
+                'strlatestepisodedate': dataFetch.latestEpisodeDate,
+                'lnguserid': userId
             }
         }
-        axios(likeConfig)
+        await axios(likeConfig)
         .then(response => {
             console.log(response.data)
+            setLike(!like)
         })
         .catch((err) => {
             console.log(err)
         })
+    }
+    const handleClick = () => {
+        likePod(dataFetch)
     }
 
     const formattedDateShort = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', month: 'long'})
@@ -195,12 +204,14 @@ const PodcastDetail = () => {
                     <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
                     <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
-                <div className='likeContainer'>
-                    <Button onClick={handleClick}variant='contained' startIcon={<FavoriteIcon/>}>
+                {!like ? 
+                    <div className='likeContainer'>
+                        <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}>
                         Like
-                    </Button>
-                </div>
-
+                        </Button>
+                    </div>
+                    : <></>
+                }
             </div>
             {dataFetch !== '' ?
             <Filter podchaserId={dataFetch.id} />
