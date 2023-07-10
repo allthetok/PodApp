@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Episode from './Episode'
+import Episode from './Episode.js'
 import './EpisodeList.css';
 
 const EpisodeList = ({ podchaserId, options, sortOptions }) => {
