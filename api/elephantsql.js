@@ -42,8 +42,7 @@ app.post('/api/user', async (request, response) => {
     const struser = request.body.struser
     const strpass = request.body.strpass
     const newUser = request.body.newUser
-    let passHash, values
-    let queryResults, queryText
+    let values, queryResults, queryText
 
     if (!struser || !strpass) {
         return response.status(400).json({
@@ -81,20 +80,13 @@ app.post('/api/user', async (request, response) => {
     }
 })
 
-app.post('/api/likes', async (request, response) => {
-    const queryResults = await client.query('CREATE TABLE tblLikes(lngLikeId serial PRIMARY KEY, strpodchaserId VARCHAR (50) NOT NULL, strtitle VARCHAR (50) NOT NULL, strname VARCHAR (50) NOT NULL, strweburl VARCHAR (50) NOT NULL, strimageurl VARCHAR (50) NOT NULL, dtmLiked TIMESTAMP NOT NULL, strlatestEpisodeDate VARCHAR (50), lngUserId serial NOT NULL,FOREIGN KEY (lngUserId) REFERENCES tblUser(lngUserId));')
-    if (queryResults) {
-        console.log(queryResults)
-        return response.status(200).json(queryResults)
-    }
-})
-
-app.get('/api/likes', async (request, response) => {
-    const queryText = 'SELECT * from tblLikes'
-    const queryResults = await client.query(queryText)
-    console.log(queryResults.rows)
-    response.json(queryResults.rows)
-})
+// app.post('/api/likes', async (request, response) => {
+//     const queryResults = await client.query('CREATE TABLE tblLikes(lngLikeId serial PRIMARY KEY, strpodchaserId VARCHAR (50) NOT NULL, strtitle VARCHAR (50) NOT NULL, strname VARCHAR (50) NOT NULL, strweburl VARCHAR (50) NOT NULL, strimageurl VARCHAR (50) NOT NULL, dtmLiked TIMESTAMP NOT NULL, strlatestEpisodeDate VARCHAR (50), lngUserId serial NOT NULL,FOREIGN KEY (lngUserId) REFERENCES tblUser(lngUserId));')
+//     if (queryResults) {
+//         console.log(queryResults)
+//         return response.status(200).json(queryResults)
+//     }
+// })
 
 app.post('/api/like', async (request, response) => {
     const body = request.body
@@ -107,7 +99,7 @@ app.post('/api/like', async (request, response) => {
     const lnguserid = body.lnguserid
     const values = [strpodchaserid, strtitle, strname, strweburl, strimageurl, strlatestepisodedate, lnguserid]
     const queryText = 'INSERT INTO tblLikes(strpodchaserId, strtitle, strname, strweburl, strimageurl, dtmLiked, strlatestEpisodeDate, lngUserId) VALUES($1, $2, $3, $4, $5, NOW(), $6, $7) RETURNING *'
-
+    let queryResults
 
     if (!strpodchaserid || !strtitle || !strname || !strweburl || !strimageurl || !strlatestepisodedate || !lnguserid) {
         return response.status(400).json({
@@ -125,6 +117,34 @@ app.post('/api/like', async (request, response) => {
             "lnguserid": queryResults.rows[0].lnguserid
         })
     }
+})
+
+app.get('/api/likes', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    const values = [lnguserid]
+    let queryText, queryResults
+
+    if (!lnguserid) {
+        return response.status(400).json({
+            error: 'No user id specified'
+        })
+    }
+
+    queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblLikes WHERE lnguserid = $1)'
+    queryResults = await client.query(queryText, values)
+
+    if (!queryResults.rows[0]) {
+        return response.status(400).json({
+            error: `User with id ${lnguserid} has not liked any podcasts`
+        })
+    }
+
+    queryText = 'SELECT * from tblLikes where lnguserid = $1 ORDER BY dtmLiked DESC'
+    queryResults = await client.query(queryText, values)
+
+    queryResults = await client.query(queryText, values)
+    return response.status(200).json(queryResults.rows)
 })
 
 const PORT = process.env.PORT || 3002
