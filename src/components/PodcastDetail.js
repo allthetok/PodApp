@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-import { SearchContext } from './SearchPod'
+//import { SearchContext } from './SearchPod'
 import Filter from './Filter'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Button } from '@mui/material'
 import './PodcastDetail.css'
 
-const PodcastDetail = ({ userId }) => {
+const PodcastDetail = ({ userId, finalSearch }) => {
     const [dataFetch, setDataFetch] = useState('')
     const [like, setLike] = useState(false)
-    const finalSearch = useContext(SearchContext) 
+    
+    //const finalSearch = useContext(SearchContext) 
 
     const data = JSON.stringify({
         query: `query {
@@ -65,6 +66,7 @@ const PodcastDetail = ({ userId }) => {
         .catch((err) => {
             console.log(err)
         })
+
     }, [finalSearch])
 
     const formattedTime = (seconds) => {
@@ -73,6 +75,29 @@ const PodcastDetail = ({ userId }) => {
         const hoursDisplay = hours > 0 ? `${hours}h` : ''
         const minsDisplay = mins > 0 ? `${mins}m` : ''
         return `${hoursDisplay}:${minsDisplay}`
+    }
+    const getLikedPod = async (dataFetch) => {
+        if (dataFetch !== '') {
+            const likeBtnConfig = {
+                method: 'get',
+                url: 'http://localhost:3002/api/like',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'lnguserid': userId,
+                    'strpodchaserid': dataFetch.id
+                }
+            }
+            await axios(likeBtnConfig)
+            .then(response => {
+                console.log(response.data)
+                setLike(!response.data.blnLiked)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
     }
 
     const likePod = async (dataFetch) => {

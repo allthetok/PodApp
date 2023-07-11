@@ -11,6 +11,7 @@ const SearchPod = ({ userId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(textInput)
     setFinalSearch(textInput.current.value)
   }
 
