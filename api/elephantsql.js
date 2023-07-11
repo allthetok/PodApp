@@ -119,6 +119,35 @@ app.post('/api/like', async (request, response) => {
     }
 })
 
+app.get('/api/like', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    const strpodchaserid = body.strpodchaserid
+    const values = [lnguserid, strpodchaserid]
+    let queryText, queryResults
+
+    if (!lnguserid || !strpodchaserid) {
+        return response.status(400).json({
+            error: 'No user id or PodchaserId specified'
+        })
+    }
+
+    queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblLikes WHERE lnguserid = $1 AND strpodchaserid = $2)'
+    queryResults = await client.query(queryText, values)
+
+    if (!queryResults.rows[0]) {
+        return response.status(200).json({
+            blnLiked: false
+        })
+    }
+    else {
+        return response.status(200).json({
+            blnLiked: true
+        })
+    }
+
+})
+
 app.get('/api/likes', async (request, response) => {
     const body = request.body
     const lnguserid = body.lnguserid
