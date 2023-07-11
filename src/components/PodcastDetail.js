@@ -103,7 +103,7 @@ const PodcastDetail = ({ userId, finalSearch }) => {
     const likePod = async (dataFetch) => {
         const likeConfig = {
             method: 'post',
-            url: 'http://localhost:3002/api/like',
+            url: 'http://localhost:3002/api/likePod',
             headers: {
                 'Content-Type': 'application/json'
             },

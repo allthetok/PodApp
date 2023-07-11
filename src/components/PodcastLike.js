@@ -2,14 +2,14 @@ import React from 'react'
 import './PodcastPreview.css'
 import {MoreVert, Clear} from '@mui/icons-material'
 
-const PodcastLike = ({strpodchaserid, strname, strweburl, strimageurl, strlatestepisodedate, userId}) => {
+const PodcastLike = ({strpodchaserid, strtitle, strweburl, strimageurl, strlatestepisodedate, userId}) => {
 
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
     
 	return (
         <li key={strpodchaserid}>
-            <div className='videoCard'>
-                <div className='likesAdd'><Clear className='videoIcon'/></div>
+            <div className='videoCard ptop'>
+                <div className='likesDelete'><Clear className='likesDelete'/></div>
                 <a title='Play' target='_blank' href={strweburl}>
                 {strimageurl !== '' 
                 ? <img className='videoImg' src={strimageurl}/>
@@ -18,7 +18,7 @@ const PodcastLike = ({strpodchaserid, strname, strweburl, strimageurl, strlatest
                 </a>
                 <div className='videoData'>
                     <div className='moreDetails'>
-                        <h5 className='title'>{strname}</h5>
+                        <h5 className='title'>{strtitle}</h5>
                         <p className='aired'>Latest {formattedDateLong(strlatestepisodedate)}</p>
                     </div>
                     <MoreVert className='moreIcon'/>

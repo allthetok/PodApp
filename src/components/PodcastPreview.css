@@ -60,6 +60,24 @@
     display: flex;
 }
 
+.ptop {
+    top: 10px;
+}
+
+.likesDelete {
+    position: absolute;
+    top: 0px;
+    right: 32px;
+    background-color: black;
+    color: white!important;
+    font-size: 20px!important;
+    padding: 3px 3px;
+    opacity: 0.8;
+    align-items: center;
+    border-radius: 2px;
+    display: flex;
+}
+
 .videoIcon {
     font-size: 20px!important;
 }

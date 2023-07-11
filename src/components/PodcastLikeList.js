@@ -6,16 +6,16 @@ import './EpisodeList.css';
 const PodcastLikeList = ({ userId }) => {
     const [podLikeDataFetch, setPodLikeDataFetch] = useState(null)
 
-    const getUserLikes = async (inpUserId) => {
+    const getUserLikes = async () => {
         const userLikesConfig = {
-            method: 'get',
+            method: 'post',
             url: 'http://localhost:3002/api/likes',
             headers: {
                 'Content-Type': 'application/json'
             },
             data: {
-                'lnguserid': inpUserId
-            }
+                'lnguserid': userId
+            },
         }
 
         await axios(userLikesConfig).then(response => {
@@ -25,24 +25,21 @@ const PodcastLikeList = ({ userId }) => {
         })
     }
 
-    // useEffect(() => {
-    //     getUserLikes(userId)
-    //     console.log(podLikeDataFetch)
-    // }, [userId])
-
-    getUserLikes(userId)
+    useEffect(() => {
+        getUserLikes(userId)
+    }, [userId])
 
     return (
         <>
         <div className='episodeContainer'>
-        {podLikeDataFetch === null || userId === null
+        {podLikeDataFetch === null
         ? 
-            <div></div> 
+            <div>{userId}</div> 
         :
             <ul className='episodeList regular'>
                 {podLikeDataFetch.map((podlike) => 
                     <PodcastLike key={podlike.strpodchaserid} 
-                        strname={podlike.strname} 
+                        strtitle={podlike.strtitle} 
                         strweburl={podlike.strweburl} 
                         strimageurl={podlike.strimageurl} 
                         strlatestepisodedate={podlike.strlatestepisodedate} 
