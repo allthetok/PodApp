@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-//import { SearchContext } from './SearchPod'
 import Filter from './Filter'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Button } from '@mui/material'
@@ -8,9 +7,8 @@ import './PodcastDetail.css'
 
 const PodcastDetail = ({ userId, finalSearch }) => {
     const [dataFetch, setDataFetch] = useState('')
-    const [like, setLike] = useState(false)
+    const [like, setLike] = useState(true)
     
-    //const finalSearch = useContext(SearchContext) 
 
     const data = JSON.stringify({
         query: `query {
@@ -62,6 +60,7 @@ const PodcastDetail = ({ userId, finalSearch }) => {
         axios(config)
         .then(response => {
             setDataFetch(response.data.data.podcasts.data[0])
+            getLikedPod(response.data.data.podcasts.data[0].id)
         })
         .catch((err) => {
             console.log(err)
@@ -69,24 +68,17 @@ const PodcastDetail = ({ userId, finalSearch }) => {
 
     }, [finalSearch])
 
-    const formattedTime = (seconds) => {
-        const hours = Math.floor(seconds/3600)
-        const mins = Math.floor(seconds % 3600 / 60)
-        const hoursDisplay = hours > 0 ? `${hours}h` : ''
-        const minsDisplay = mins > 0 ? `${mins}m` : ''
-        return `${hoursDisplay}:${minsDisplay}`
-    }
-    const getLikedPod = async (dataFetch) => {
+    const getLikedPod = async (podchaserid) => {
         if (dataFetch !== '') {
             const likeBtnConfig = {
-                method: 'get',
+                method: 'post',
                 url: 'http://localhost:3002/api/like',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 data: {
                     'lnguserid': userId,
-                    'strpodchaserid': dataFetch.id
+                    'strpodchaserid': podchaserid
                 }
             }
             await axios(likeBtnConfig)
@@ -126,10 +118,19 @@ const PodcastDetail = ({ userId, finalSearch }) => {
             console.log(err)
         })
     }
+
     const handleClick = () => {
         likePod(dataFetch)
     }
 
+    const formattedTime = (seconds) => {
+        const hours = Math.floor(seconds/3600)
+        const mins = Math.floor(seconds % 3600 / 60)
+        const hoursDisplay = hours > 0 ? `${hours}h` : ''
+        const minsDisplay = mins > 0 ? `${mins}m` : ''
+        return `${hoursDisplay}:${minsDisplay}`
+    }
+    
     const formattedDateShort = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', month: 'long'})
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
 
@@ -229,7 +230,7 @@ const PodcastDetail = ({ userId, finalSearch }) => {
                     <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
                     <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
-                {!like ? 
+                {like ? 
                     <div className='likeContainer'>
                         <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}>
                         Like

@@ -119,7 +119,7 @@ app.post('/api/likePod', async (request, response) => {
     }
 })
 
-app.get('/api/like', async (request, response) => {
+app.post('/api/like', async (request, response) => {
     const body = request.body
     const lnguserid = body.lnguserid
     const strpodchaserid = body.strpodchaserid
