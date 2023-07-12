@@ -1,6 +1,7 @@
 import React, { useState, useRef, createContext } from 'react'
 import './SearchPod.css';
 import PodcastDetail from './PodcastDetail';
+import TstDetail from './TstDetail'
 
 export const SearchContext = createContext(null)
 
@@ -26,7 +27,8 @@ const SearchPod = ({ userId }) => {
           </form>
       </div>
       {finalSearch !== '' ?
-             <PodcastDetail userId={userId} />
+            //  <PodcastDetail userId={userId} />
+            <TstDetail userId={userId} />
       : <></>
     }
     </SearchContext.Provider>

@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import './SearchPod.css';
 import PodcastDetail from './PodcastDetail';
+import TstDetail from './TstDetail';
 
 const Navbar = ({ userId }) => {
     const [finalSearch, setFinalSearch] = useState('')
@@ -86,7 +87,8 @@ const Navbar = ({ userId }) => {
                 </AppBar>
             </Box>
             {formSubmitted ?
-                    <PodcastDetail userId={userId} finalSearch={finalSearch} />
+                    // <PodcastDetail userId={userId} finalSearch={finalSearch} />
+                    <TstDetail userId={userId} finalSearch={finalSearch} />
             : <></>
             }
         </div>

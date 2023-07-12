@@ -1,145 +1,53 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import Filter from './Filter'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Button } from '@mui/material'
 import useSearch from '../hooks/useSearch'
 import './PodcastDetail.css'
+import useLike from '../hooks/useLike'
 
-const PodcastDetail = ({ userId, finalSearch }) => {
-    const [dataFetch, setDataFetch] = useState('')
-    const [like, setLike] = useState(true)
+const TstDetail = ({ userId, finalSearch }) => {
     
-
-    const data = JSON.stringify({
-        query: `query {
-            podcasts(searchTerm: "${finalSearch}", first: 1) {
-                paginatorInfo {
-                    currentPage,
-                    hasMorePages,
-                    lastPage,
-                },
-                data {
-                    id,
-                    title,
-                    description,
-                    webUrl,
-                    language,
-                    numberOfEpisodes,
-                    avgEpisodeLength,
-                    latestEpisodeDate,
-                    ratingCount,
-                    ratingAverage,
-                    author {
-                        name
-                    },
-                    startDate,
-                    reviewCount,
-                    imageUrl,
-                    socialLinks {
-                        twitter,
-                        facebook,
-                        instagram
-                    },
-                }
-            }
-        }`,
-        variables: {}
-      });
-
-      const config = {
-        method: 'post',
-        url: 'https://api.podchaser.com/graphql',
-        headers: { 
-          'Authorization': `Bearer ${process.env.REACT_APP_DEVELOPMENT_TOKEN}`, 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
+    const [dataFetch, like] = useSearch(userId, finalSearch);
+    //[liked, handleLike] = useLike(dataFetch, userId, like);
+        //[liked, handleLike] = await useLike(dataFetch, userId, like)
     
-    useEffect(() => {
-        axios(config)
-        .then(response => {
-            setDataFetch(response.data.data.podcasts.data[0])
-            const likeBtnConfig = {
-                method: 'post',
-                url: 'http://localhost:3002/api/like',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    'lnguserid': userId,
-                    'strpodchaserid': response.data.data.podcasts.data[0].id
-                }
-            }
-            axios(likeBtnConfig)
-            .then(response => {
-                setLike(!response.data.blnLiked)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+    const [liked, handleLike] = useLike(dataFetch, userId, like)
+    // const [liked, setLiked] = useState(like)
 
-    }, [finalSearch])
+    // const likePod = async (dataFetch) => {
+    //     const likeConfig = {
+    //         method: 'post',
+    //         url: 'http://localhost:3002/api/likePod',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         data: {
+    //             'strpodchaserid': dataFetch.id,
+    //             'strtitle': dataFetch.title,
+    //             'strname': dataFetch.author.name,
+    //             'strweburl': dataFetch.webUrl,
+    //             'strimageurl': dataFetch.imageUrl,
+    //             'strlatestepisodedate': dataFetch.latestEpisodeDate,
+    //             'lnguserid': userId
+    //         }
+    //     }
+    //     await axios(likeConfig)
+    //     .then(response => {
+    //         console.log(response.data)
+    //         //setLike(!like)
+    //         setLiked(!liked)
+    //     })
+    //     .catch((err) => {
+    //         console.log(err)
+    //     })
+    // }
 
-    const getLikedPod = async (podchaserid) => {
-        if (dataFetch !== '') {
-            const likeBtnConfig = {
-                method: 'post',
-                url: 'http://localhost:3002/api/like',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    'lnguserid': userId,
-                    'strpodchaserid': podchaserid
-                }
-            }
-            await axios(likeBtnConfig)
-            .then(response => {
-                console.log(response.data)
-                setLike(!response.data.blnLiked)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        }
-    }
-
-    const likePod = async (dataFetch) => {
-        const likeConfig = {
-            method: 'post',
-            url: 'http://localhost:3002/api/likePod',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: {
-                'strpodchaserid': dataFetch.id,
-                'strtitle': dataFetch.title,
-                'strname': dataFetch.author.name,
-                'strweburl': dataFetch.webUrl,
-                'strimageurl': dataFetch.imageUrl,
-                'strlatestepisodedate': dataFetch.latestEpisodeDate,
-                'lnguserid': userId
-            }
-        }
-        await axios(likeConfig)
-        .then(response => {
-            console.log(response.data)
-            setLike(!like)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
-    const handleClick = () => {
-        likePod(dataFetch)
-    }
+    // const handleLike = () => {
+    //     likePod(dataFetch)
+    // }
+    
 
     const formattedTime = (seconds) => {
         const hours = Math.floor(seconds/3600)
@@ -248,9 +156,12 @@ const PodcastDetail = ({ userId, finalSearch }) => {
                     <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
                     <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
-                {like ? 
+                {
+                !liked 
+                ? 
                     <div className='likeContainer'>
-                        <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}>
+                        {/* <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}> */}
+                        <Button onClick={handleLike} variant='contained' startIcon={<FavoriteIcon/>}>
                         Like
                         </Button>
                     </div>
@@ -266,4 +177,4 @@ const PodcastDetail = ({ userId, finalSearch }) => {
 	)
 }
 
-export default PodcastDetail
+export default TstDetail
