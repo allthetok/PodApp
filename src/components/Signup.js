@@ -30,6 +30,7 @@ const defaultTheme = createTheme()
 
 const Signup = ({ handleIdChange, userId}) => {
     //const [userId, setUserId] = useState(null)
+    localStorage.removeItem('userid')
 
     const navigate = useNavigate()
 
@@ -63,10 +64,12 @@ const Signup = ({ handleIdChange, userId}) => {
         getUserId(data)
         console.log(userId)
     }
+    
 
     useEffect(() => {
         if (userId) {
             navigate('/home')
+            localStorage.setItem('userid', userId)
         }
     }, [userId])
 

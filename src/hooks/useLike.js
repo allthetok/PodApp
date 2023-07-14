@@ -4,6 +4,7 @@ import axios from 'axios'
 const useLike = (dataFetch, userId, like) => {
     const [dataf, setDataF] = useState(null)
     const [liked, setLiked] = useState(null)
+    const [style, setStyle] = useState({})
 
     useEffect(() => {
         if (dataFetch && like) {
@@ -33,6 +34,7 @@ const useLike = (dataFetch, userId, like) => {
             await axios(dataf)
             .then(response => {
                 setLiked(!liked)
+                setStyle({ display: 'none'})
             })
             .catch(err => {
                 console.log(err)

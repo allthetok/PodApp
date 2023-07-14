@@ -69,7 +69,7 @@ const useSearch = (userId, finalSearch) => {
             likeBtnConfig.data.strpodchaserid = response.data.data.podcasts.data[0].id
             axios(likeBtnConfig)
             .then(response => {
-                setLike(response.data.blnLiked)
+                setLike(!response.data.blnLiked)
                 console.log(like)
             })
             .catch(err => {
@@ -79,7 +79,7 @@ const useSearch = (userId, finalSearch) => {
         .catch(err => {
             console.log(err)
         })
-      }, [finalSearch, like])
+      }, [finalSearch])
 
       return [dataFetch, like]
 }

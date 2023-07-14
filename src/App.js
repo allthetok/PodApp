@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -8,16 +8,37 @@ import Navbar from './components/Navbar';
 
 
 const App = () => {
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState(() => {
+		const savedUserId = localStorage.getItem('userid')
+		const initialVal = JSON.parse(savedUserId)
+		return initialVal || null
+	})
 
 	const handleUserIdChange = (resUserId) => {
 		setUserId(resUserId)
+		localStorage.setItem('userid', resUserId)
 	}
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<Login handleIdChange={handleUserIdChange} userId={userId} />}/>
-				<Route path='/home' element={<Navbar userId={userId} />} />
+				<Route path='/' 
+				element={
+					userId ? (
+						<Navigate replace to={'/home'} />
+					)
+					: (
+						<Login handleIdChange={handleUserIdChange} userId={userId} />
+					)
+				}/>
+				<Route path='/home' 
+				element={
+					!userId ? (
+						<Navigate replace to={'/'} />
+					)
+					: (
+						<Navbar userId={userId} />
+					)
+				} />
 				<Route path='/signup' element={<Signup handleIdChange={handleUserIdChange} userId={userId} />} />
 				<Route path='/likes' element={<PodcastLikeList userId={userId} />} />
 				<Route path='/navbar' element={<Navbar userId={userId}/>} />

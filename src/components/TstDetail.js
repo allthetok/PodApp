@@ -13,40 +13,40 @@ const TstDetail = ({ userId, finalSearch }) => {
     //[liked, handleLike] = useLike(dataFetch, userId, like);
         //[liked, handleLike] = await useLike(dataFetch, userId, like)
     
-    const [liked, handleLike] = useLike(dataFetch, userId, like)
-    // const [liked, setLiked] = useState(like)
+    //const [liked, handleLike] = useLike(dataFetch, userId, like)
+    const [liked, setLiked] = useState(false)
 
-    // const likePod = async (dataFetch) => {
-    //     const likeConfig = {
-    //         method: 'post',
-    //         url: 'http://localhost:3002/api/likePod',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         data: {
-    //             'strpodchaserid': dataFetch.id,
-    //             'strtitle': dataFetch.title,
-    //             'strname': dataFetch.author.name,
-    //             'strweburl': dataFetch.webUrl,
-    //             'strimageurl': dataFetch.imageUrl,
-    //             'strlatestepisodedate': dataFetch.latestEpisodeDate,
-    //             'lnguserid': userId
-    //         }
-    //     }
-    //     await axios(likeConfig)
-    //     .then(response => {
-    //         console.log(response.data)
-    //         //setLike(!like)
-    //         setLiked(!liked)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err)
-    //     })
-    // }
+    const likePod = async (dataFetch) => {
+        const likeConfig = {
+            method: 'post',
+            url: 'http://localhost:3002/api/likePod',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'strpodchaserid': dataFetch.id,
+                'strtitle': dataFetch.title,
+                'strname': dataFetch.author.name,
+                'strweburl': dataFetch.webUrl,
+                'strimageurl': dataFetch.imageUrl,
+                'strlatestepisodedate': dataFetch.latestEpisodeDate,
+                'lnguserid': userId
+            }
+        }
+        await axios(likeConfig)
+        .then(response => {
+            console.log(response.data)
+            //setLike(!like)
+            setLiked(!liked)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
-    // const handleLike = () => {
-    //     likePod(dataFetch)
-    // }
+    const handleLike = () => {
+        likePod(dataFetch)
+    }
     
 
     const formattedTime = (seconds) => {
@@ -157,7 +157,7 @@ const TstDetail = ({ userId, finalSearch }) => {
                     <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
                 {
-                !liked 
+                liked 
                 ? 
                     <div className='likeContainer'>
                         {/* <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}> */}
