@@ -6,48 +6,11 @@ import { Button } from '@mui/material'
 import useSearch from '../hooks/useSearch'
 import './PodcastDetail.css'
 import useLike from '../hooks/useLike'
+import LikeBtn from './LikeBtn'
 
 const TstDetail = ({ userId, finalSearch }) => {
     
     const [dataFetch, like] = useSearch(userId, finalSearch);
-    //[liked, handleLike] = useLike(dataFetch, userId, like);
-        //[liked, handleLike] = await useLike(dataFetch, userId, like)
-    
-    //const [liked, handleLike] = useLike(dataFetch, userId, like)
-    const [liked, setLiked] = useState(false)
-
-    const likePod = async (dataFetch) => {
-        const likeConfig = {
-            method: 'post',
-            url: 'http://localhost:3002/api/likePod',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: {
-                'strpodchaserid': dataFetch.id,
-                'strtitle': dataFetch.title,
-                'strname': dataFetch.author.name,
-                'strweburl': dataFetch.webUrl,
-                'strimageurl': dataFetch.imageUrl,
-                'strlatestepisodedate': dataFetch.latestEpisodeDate,
-                'lnguserid': userId
-            }
-        }
-        await axios(likeConfig)
-        .then(response => {
-            console.log(response.data)
-            //setLike(!like)
-            setLiked(!liked)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
-    const handleLike = () => {
-        likePod(dataFetch)
-    }
-    
 
     const formattedTime = (seconds) => {
         const hours = Math.floor(seconds/3600)
@@ -61,7 +24,8 @@ const TstDetail = ({ userId, finalSearch }) => {
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
 
 	return (
-        <div>
+        <>
+            {dataFetch && like !== null ?
             <div className='infoContainer'>
                 <div className='coverArt'>
                     <img className='showCover' alt='Cover Art' src={dataFetch.imageUrl}></img>
@@ -77,7 +41,7 @@ const TstDetail = ({ userId, finalSearch }) => {
                                             <tr>
                                                 <th className='infoHeader'>Creator</th>
                                                 <td colSpan={2} className='creator'>
-                                                    {dataFetch === '' ? '' : dataFetch.author.name}
+                                                    {dataFetch.author.name}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -140,7 +104,7 @@ const TstDetail = ({ userId, finalSearch }) => {
                                             <tr>
                                                 <th className='infoHeader'>Launch</th>
                                                 <td colSpan={2}>
-                                                    <a className='mediaSpotify' title='Spotify' target='_blank' href={dataFetch.webUrl}></a>
+                                                    <a className='mediaSpotify' title='Spotify' target='_blank' rel='noopener noreferrer' href={dataFetch.webUrl}></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -152,28 +116,15 @@ const TstDetail = ({ userId, finalSearch }) => {
                     
                 </div>
                 <div className='mediaContainer'>
-                    <a className='mediaTwitter' title='Twitter' target='_blank' href={`https://twitter.com/${dataFetch === '' ? '' : dataFetch.socialLinks.twitter}`}> </a>
-                    <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
-                    <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
+                    <a className='mediaTwitter' title='Twitter' target ='_blank' rel='noopener noreferrer' href={`https://twitter.com/${dataFetch === '' ? '' : dataFetch.socialLinks.twitter}`}> </a>
+                    <a className='mediaFacebook' title='Facebook' target='_blank'rel='noopener noreferrer' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
+                    <a className='mediaInstagram' title='Instagram' target='_blank' rel='noopener noreferrer' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
-                {
-                liked 
-                ? 
-                    <div className='likeContainer'>
-                        {/* <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}> */}
-                        <Button onClick={handleLike} variant='contained' startIcon={<FavoriteIcon/>}>
-                        Like
-                        </Button>
-                    </div>
-                    : <></>
-                }
-            </div>
-            {dataFetch !== '' ?
+                <LikeBtn liked={like} dataFetch={dataFetch} userId={userId}/>
             <Filter podchaserId={dataFetch.id} />
-            : <></>
-            }
-
         </div>
+        : <></> }
+        </>
 	)
 }
 

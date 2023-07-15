@@ -30,9 +30,9 @@ const Episode = ({key, imageUrl, url, length, title, airDate}) => {
         <li key={key}>
             <div className='videoCard'>
                 <div className='likesAdd'><PlaylistAdd className='videoIcon'/></div>
-                <a title='Play' target='_blank' href={url}>
+                <a title='Play' target='_blank' rel='noopener noreferrer' href={url}>
                 {imageUrl !== '' 
-                ? <img className='videoImg' src={imageUrl}/>
+                ? <img className='videoImg' src={imageUrl} alt={title}/>
                 : <img className='videoImg' alt='No thumbnail found'/>
                 }
 

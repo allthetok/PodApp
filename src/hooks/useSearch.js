@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 
 const useSearch = (userId, finalSearch) => {
-    const [dataFetch, setDataFetch] = useState('')
-    const [like, setLike] = useState(true)
+    const [dataFetch, setDataFetch] = useState(null)
+    const [like, setLike] = useState(null)
+
 
     const finalSearchData = JSON.stringify({
         query: `query {
@@ -51,7 +52,7 @@ const useSearch = (userId, finalSearch) => {
         data : finalSearchData
       }
 
-      const likeBtnConfig = {
+      let likeBtnConfig = {
         method: 'post',
         url: 'http://localhost:3002/api/like',
         headers: {
@@ -62,24 +63,19 @@ const useSearch = (userId, finalSearch) => {
             'strpodchaserid': null
         }
       }
+
+    const getData = useCallback(async () => {
+        const dataResults = await axios(searchConfig)
+        setDataFetch(dataResults.data.data.podcasts.data[0])
+        likeBtnConfig.data.strpodchaserid = dataResults.data.data.podcasts.data[0].id
+        const likeResults = await axios(likeBtnConfig)
+        setLike(likeResults.data.blnLiked)
+        
+    }, [finalSearch])
+
       useEffect(() => {
-        axios(searchConfig)
-        .then(response => {
-            setDataFetch(response.data.data.podcasts.data[0])
-            likeBtnConfig.data.strpodchaserid = response.data.data.podcasts.data[0].id
-            axios(likeBtnConfig)
-            .then(response => {
-                setLike(!response.data.blnLiked)
-                console.log(like)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-      }, [finalSearch])
+        getData()
+      }, [getData])
 
       return [dataFetch, like]
 }

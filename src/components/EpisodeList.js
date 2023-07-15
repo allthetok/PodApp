@@ -84,7 +84,6 @@ const EpisodeList = ({ podchaserId, options, sortOptions }) => {
           }
         })
       }
-      console.log(responseObj)
       setEpisodeDataFetch(responseObj.data.podcast.episodes.data)
     })
   }, [podchaserId, sortOptions])

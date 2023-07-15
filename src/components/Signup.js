@@ -64,8 +64,6 @@ const Signup = ({ handleIdChange, userId}) => {
         getUserId(data)
         console.log(userId)
     }
-    
-
     useEffect(() => {
         if (userId) {
             navigate('/home')
