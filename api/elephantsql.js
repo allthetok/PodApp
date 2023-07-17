@@ -169,11 +169,44 @@ app.post('/api/likes', async (request, response) => {
         })
     }
 
-    queryText = 'SELECT * from tblLikes where lnguserid = $1 ORDER BY dtmLiked DESC'
-    queryResults = await client.query(queryText, values)
-
+    queryText = 'SELECT * from tblLikes WHERE lnguserid = $1 ORDER BY dtmLiked DESC'
     queryResults = await client.query(queryText, values)
     return response.status(200).json(queryResults.rows)
+})
+
+app.delete('/api/like', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    const strpodchaserid = body.strpodchaserid
+    const values = [lnguserid, strpodchaserid]
+    let queryText, queryResults
+
+    if (!lnguserid || !strpodchaserid) {
+        return response.status(400).json({
+            error: 'No user id or podchaser id specified'
+        })
+    }
+
+    queryText = 'DELETE FROM tblLikes WHERE lnguserid = $1 AND strpodchaserid = $2'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0) {
+        return response.status(404).json({
+            error: `User id of ${lnguserid} has not liked podcast with podchaser id ${strpodchaserid}`
+        })
+    }
+
+    // else if (queryResults.rowCount !== 0) {
+    //     return response.status(200).json({
+    //         "lnguserid": lnguserid,
+    //         "strpodchaserid": strpodchaserid,
+    //         "deleteSuccessful": true
+    //     })
+    // }
+    else if (queryResults.rowCount !== 0) {
+        return response.sendStatus(204)
+    }
+
 })
 
 const PORT = process.env.PORT || 3002
