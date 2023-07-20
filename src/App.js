@@ -10,6 +10,7 @@ import Home from './components/Home';
 const App = () => {
 	const [userId, setUserId] = useState(() => {
 		const savedUserId = localStorage.getItem('userid')
+		localStorage.removeItem('selectedLikePod')
 		const initialVal = JSON.parse(savedUserId)
 		return initialVal || null
 	})
