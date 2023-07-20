@@ -23,6 +23,7 @@ const Home = ({ userId }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(textInput)
+        localStorage.removeItem('selectedLikePod')
         setFinalSearch(textInput.current.value)
         setFormSubmitted(true)
     }
@@ -30,6 +31,7 @@ const Home = ({ userId }) => {
     const handleClick = (e) => {
         e.preventDefault()
         navigate('/likes')
+        localStorage.removeItem('selectedLikePod')
     }
     return (
         <>
