@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import PodcastLikeList from './components/PodcastLikeList';
-import Navbar from './components/Navbar';
+import Likes from './components/Likes';
+import Home from './components/Home';
 
 
 const App = () => {
@@ -36,12 +37,11 @@ const App = () => {
 						<Navigate replace to={'/'} />
 					)
 					: (
-						<Navbar userId={userId} />
+						<Home userId={userId} />
 					)
 				} />
 				<Route path='/signup' element={<Signup handleIdChange={handleUserIdChange} userId={userId} />} />
-				<Route path='/likes' element={<PodcastLikeList userId={userId} />} />
-				<Route path='/navbar' element={<Navbar userId={userId}/>} />
+				<Route path='/likes' element={<Likes userId={userId} />} />
 			</Routes>
 		</BrowserRouter>
 

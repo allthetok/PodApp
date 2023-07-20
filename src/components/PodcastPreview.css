@@ -68,15 +68,20 @@
     position: absolute;
     top: 0px;
     right: 32px;
+    left: 162px;
     background-color: black;
     color: white!important;
-    font-size: 20px!important;
-    padding: 3px 3px;
+    padding: 2px 2px; 
     opacity: 0.8;
     align-items: center;
-    border-radius: 2px;
     display: flex;
 }
+
+.likesDelete:hover {
+    color: rgb(83,83,83)!important;
+    cursor: pointer;
+}
+
 
 .videoIcon {
     font-size: 20px!important;
@@ -96,6 +101,7 @@
     margin-top: 0px;
     margin-left: -15px;
 }
+
 
 .moreIcon:hover {
     color: rgb(83,83,83)!important;

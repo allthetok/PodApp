@@ -6,7 +6,6 @@ import './PodcastDetail.css'
 
 const LikeBtn = ({liked, dataFetch, userId}) => {
     const [like, setLike] = useState(liked !== true ? 'show' : 'noshow')
-    let display = like
 
     const likePod = async (dataFetch) => {
         const likeConfig = {
@@ -28,7 +27,6 @@ const LikeBtn = ({liked, dataFetch, userId}) => {
         const newLikeResults = await axios(likeConfig)
         if (newLikeResults.status === 200) {
             setLike('noshow')
-            display = 'noshow'
         }
     }
 
@@ -42,7 +40,6 @@ const LikeBtn = ({liked, dataFetch, userId}) => {
             setLike('noshow')
         }
         else if (liked === false) {
-            //display = 'show'
             setLike('show')
         }
     }, [dataFetch, liked])

@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'
+//import React, { useState, useRef } from 'react';
+import React from 'react';
+//import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,27 +10,26 @@ import MenuIcon from '@mui/icons-material/Menu';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import './SearchPod.css';
-import PodcastDetail from './PodcastDetail';
-import TstDetail from './TstDetail';
+//import PodcastDetail from './PodcastDetail';
 
-const Navbar = ({ userId }) => {
-    const [finalSearch, setFinalSearch] = useState('')
-    const [formSubmitted, setFormSubmitted] = useState(false)
+const Navbar = ({ handleSubmit, handleClick, textInput }) => {
+    // const [finalSearch, setFinalSearch] = useState('')
+    // const [formSubmitted, setFormSubmitted] = useState(false)
 
-    const textInput = useRef()
-    const navigate = useNavigate()
+    // const textInput = useRef()
+    // const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(textInput)
-        setFinalSearch(textInput.current.value)
-        setFormSubmitted(true)
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault()
+    //     console.log(textInput)
+    //     setFinalSearch(textInput.current.value)
+    //     setFormSubmitted(true)
+    // }
 
-    const handleClick = (e) => {
-        e.preventDefault()
-        navigate('/likes')
-    }
+    // const handleClick = (e) => {
+    //     e.preventDefault()
+    //     navigate('/likes')
+    // }
 
     return (
         <div>
@@ -86,11 +86,11 @@ const Navbar = ({ userId }) => {
                     </Toolbar>
                 </AppBar>
             </Box>
-            {formSubmitted ?
+            {/* {formSubmitted ?
                     // <PodcastDetail userId={userId} finalSearch={finalSearch} />
                     <TstDetail userId={userId} finalSearch={finalSearch} />
             : <></>
-            }
+            } */}
         </div>
     );
 }

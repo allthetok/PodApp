@@ -1,16 +1,145 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import Filter from './Filter'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Button } from '@mui/material'
 import useSearch from '../hooks/useSearch'
 import './PodcastDetail.css'
-import useLike from '../hooks/useLike'
-import LikeBtn from './LikeBtn'
 
-const TstDetail = ({ userId, finalSearch }) => {
+const PodcastDetail = ({ userId, finalSearch }) => {
+    const [dataFetch, setDataFetch] = useState('')
+    const [like, setLike] = useState(true)
     
-    const [dataFetch, like] = useSearch(userId, finalSearch);
+
+    const data = JSON.stringify({
+        query: `query {
+            podcasts(searchTerm: "${finalSearch}", first: 1) {
+                paginatorInfo {
+                    currentPage,
+                    hasMorePages,
+                    lastPage,
+                },
+                data {
+                    id,
+                    title,
+                    description,
+                    webUrl,
+                    language,
+                    numberOfEpisodes,
+                    avgEpisodeLength,
+                    latestEpisodeDate,
+                    ratingCount,
+                    ratingAverage,
+                    author {
+                        name
+                    },
+                    startDate,
+                    reviewCount,
+                    imageUrl,
+                    socialLinks {
+                        twitter,
+                        facebook,
+                        instagram
+                    },
+                }
+            }
+        }`,
+        variables: {}
+      });
+
+      const config = {
+        method: 'post',
+        url: 'https://api.podchaser.com/graphql',
+        headers: { 
+          'Authorization': `Bearer ${process.env.REACT_APP_DEVELOPMENT_TOKEN}`, 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+    
+    useEffect(() => {
+        axios(config)
+        .then(response => {
+            setDataFetch(response.data.data.podcasts.data[0])
+            const likeBtnConfig = {
+                method: 'post',
+                url: 'http://localhost:3002/api/like',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'lnguserid': userId,
+                    'strpodchaserid': response.data.data.podcasts.data[0].id
+                }
+            }
+            axios(likeBtnConfig)
+            .then(response => {
+                setLike(!response.data.blnLiked)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+    }, [finalSearch])
+
+    const getLikedPod = async (podchaserid) => {
+        if (dataFetch !== '') {
+            const likeBtnConfig = {
+                method: 'post',
+                url: 'http://localhost:3002/api/like',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'lnguserid': userId,
+                    'strpodchaserid': podchaserid
+                }
+            }
+            await axios(likeBtnConfig)
+            .then(response => {
+                console.log(response.data)
+                setLike(!response.data.blnLiked)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }
+
+    const likePod = async (dataFetch) => {
+        const likeConfig = {
+            method: 'post',
+            url: 'http://localhost:3002/api/likePod',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'strpodchaserid': dataFetch.id,
+                'strtitle': dataFetch.title,
+                'strname': dataFetch.author.name,
+                'strweburl': dataFetch.webUrl,
+                'strimageurl': dataFetch.imageUrl,
+                'strlatestepisodedate': dataFetch.latestEpisodeDate,
+                'lnguserid': userId
+            }
+        }
+        await axios(likeConfig)
+        .then(response => {
+            console.log(response.data)
+            setLike(!like)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const handleClick = () => {
+        likePod(dataFetch)
+    }
 
     const formattedTime = (seconds) => {
         const hours = Math.floor(seconds/3600)
@@ -24,8 +153,7 @@ const TstDetail = ({ userId, finalSearch }) => {
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
 
 	return (
-        <>
-            {dataFetch && like !== null ?
+        <div>
             <div className='infoContainer'>
                 <div className='coverArt'>
                     <img className='showCover' alt='Cover Art' src={dataFetch.imageUrl}></img>
@@ -41,7 +169,7 @@ const TstDetail = ({ userId, finalSearch }) => {
                                             <tr>
                                                 <th className='infoHeader'>Creator</th>
                                                 <td colSpan={2} className='creator'>
-                                                    {dataFetch.author.name}
+                                                    {dataFetch === '' ? '' : dataFetch.author.name}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -104,7 +232,7 @@ const TstDetail = ({ userId, finalSearch }) => {
                                             <tr>
                                                 <th className='infoHeader'>Launch</th>
                                                 <td colSpan={2}>
-                                                    <a className='mediaSpotify' title='Spotify' target='_blank' rel='noopener noreferrer' href={dataFetch.webUrl}></a>
+                                                    <a className='mediaSpotify' title='Spotify' target='_blank' href={dataFetch.webUrl}></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -116,16 +244,26 @@ const TstDetail = ({ userId, finalSearch }) => {
                     
                 </div>
                 <div className='mediaContainer'>
-                    <a className='mediaTwitter' title='Twitter' target ='_blank' rel='noopener noreferrer' href={`https://twitter.com/${dataFetch === '' ? '' : dataFetch.socialLinks.twitter}`}> </a>
-                    <a className='mediaFacebook' title='Facebook' target='_blank'rel='noopener noreferrer' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
-                    <a className='mediaInstagram' title='Instagram' target='_blank' rel='noopener noreferrer' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
+                    <a className='mediaTwitter' title='Twitter' target='_blank' href={`https://twitter.com/${dataFetch === '' ? '' : dataFetch.socialLinks.twitter}`}> </a>
+                    <a className='mediaFacebook' title='Facebook' target='_blank' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
+                    <a className='mediaInstagram' title='Instagram' target='_blank' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
-                <LikeBtn liked={like} dataFetch={dataFetch} userId={userId}/>
+                {like ? 
+                    <div className='likeContainer'>
+                        <Button onClick={handleClick} variant='contained' startIcon={<FavoriteIcon/>}>
+                        Like
+                        </Button>
+                    </div>
+                    : <></>
+                }
+            </div>
+            {dataFetch !== '' ?
             <Filter podchaserId={dataFetch.id} />
+            : <></>
+            }
+
         </div>
-        : <></> }
-        </>
 	)
 }
 
-export default TstDetail
+export default PodcastDetail
