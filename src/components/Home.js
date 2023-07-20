@@ -4,8 +4,18 @@ import Navbar from './Navbar'
 import PodcastDetail from './PodcastDetail'
 
 const Home = ({ userId }) => {
-    const [finalSearch, setFinalSearch] = useState('')
-    const [formSubmitted, setFormSubmitted] = useState(false)
+    const [finalSearch, setFinalSearch] = useState(() => {
+		const selectedLikePod = localStorage.getItem('selectedLikePod')
+		return selectedLikePod || ''
+	})
+
+    //const [finalSearch, setFinalSearch] = useState('')
+    //const [formSubmitted, setFormSubmitted] = useState(false)
+    const [formSubmitted, setFormSubmitted] = useState(() => {
+        const selectedLikePod = localStorage.getItem('selectedLikePod')
+        return selectedLikePod ? true : false
+    })
+
 
     const textInput = useRef()
     const navigate = useNavigate()
