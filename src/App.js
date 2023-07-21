@@ -19,6 +19,14 @@ const App = () => {
 		setUserId(resUserId)
 		localStorage.setItem('userid', resUserId)
 	}
+
+	const handleUserLogout = (e) => {
+		e.preventDefault()
+		console.log('clicked')
+		localStorage.removeItem('userid')
+		setUserId(null)
+	}
+
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -37,7 +45,7 @@ const App = () => {
 						<Navigate replace to={'/'} />
 					)
 					: (
-						<Home userId={userId} />
+						<Home userId={userId} handleUserLogout={handleUserLogout}/>
 					)
 				} />
 				<Route path='/signup' element={<Signup handleIdChange={handleUserIdChange} userId={userId} />} />

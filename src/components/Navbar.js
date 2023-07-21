@@ -9,10 +9,12 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import LogoutIcon from '@mui/icons-material/Logout';
 import './SearchPod.css';
+import LogoutDialog from './LogoutDialog'
 //import PodcastDetail from './PodcastDetail';
 
-const Navbar = ({ handleSubmit, handleClick, textInput }) => {
+const Navbar = ({ handleSubmit, handleClick, textInput, handleUserLogout }) => {
     // const [finalSearch, setFinalSearch] = useState('')
     // const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -73,7 +75,19 @@ const Navbar = ({ handleSubmit, handleClick, textInput }) => {
                         <FavoriteIcon />
                         </IconButton>
                     </Box>
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <LogoutDialog handleUserLogout={handleUserLogout}/>
+                    {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <IconButton
+                        size="large"
+                        edge="end"
+                        aria-label="account of current user"
+                        color="inherit"
+                        onClick={handleUserLogout}
+                        >
+                        <LogoutIcon />
+                        </IconButton>
+                    </Box> */}
+                    {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                         size="large"
                         aria-label="show more"
@@ -82,7 +96,7 @@ const Navbar = ({ handleSubmit, handleClick, textInput }) => {
                         >
                         <MoreIcon />
                         </IconButton>
-                    </Box>
+                    </Box> */}
                     </Toolbar>
                 </AppBar>
             </Box>

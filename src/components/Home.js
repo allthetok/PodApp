@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import PodcastDetail from './PodcastDetail'
 
-const Home = ({ userId }) => {
+const Home = ({ userId, handleUserLogout }) => {
     const [finalSearch, setFinalSearch] = useState(() => {
 		const selectedLikePod = localStorage.getItem('selectedLikePod')
 		return selectedLikePod || ''
@@ -35,7 +35,7 @@ const Home = ({ userId }) => {
     }
     return (
         <>
-            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleClick={handleClick}/>
+            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleClick={handleClick} handleUserLogout={handleUserLogout}/>
             {formSubmitted 
                 ? <PodcastDetail userId={userId} finalSearch={finalSearch} />
                 : <></>
