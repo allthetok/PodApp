@@ -16,14 +16,13 @@ const Home = ({ userId, handleUserLogout }) => {
         return selectedLikePod ? true : false
     })
 
-
     const textInput = useRef()
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(textInput)
         localStorage.removeItem('selectedLikePod')
+        console.log(textInput)
         setFinalSearch(textInput.current.value)
         setFormSubmitted(true)
     }

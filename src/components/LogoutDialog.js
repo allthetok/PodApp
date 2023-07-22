@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '@mui/material/Button'
 import { Box } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import LogoutIcon from '@mui/icons-material/Logout'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
 import DoneIcon from '@mui/icons-material/Done'
 import CancelIcon from '@mui/icons-material/Cancel';
 import DialogTitle from '@mui/material/DialogTitle'
@@ -29,12 +27,6 @@ const LogoutDialog = ({ handleUserLogout }) => {
         navigate('/')
         setOpen(false)
     }
-
-    // const handleCloseLogout = (e) => {
-    //     e.preventDefault()
-    //     handleUserLogout
-    //     setOpen(false)
-    // }
 
     return (
         <div>
