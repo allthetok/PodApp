@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import PodcastLikeList from './PodcastLikeList'
 
-const Likes = ({ userId }) => {
+const Likes = ({ userId, handleUserLogout }) => {
     const [finalSearch, setFinalSearch] = useState('')
     const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -23,7 +23,7 @@ const Likes = ({ userId }) => {
     }
     return (
         <>
-            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleClick={handleClick}/>
+            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleClick={handleClick} handleUserLogout={handleUserLogout}/>
             <PodcastLikeList userId={userId}/>
         </>
     )

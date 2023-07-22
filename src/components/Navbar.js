@@ -76,35 +76,10 @@ const Navbar = ({ handleSubmit, handleClick, textInput, handleUserLogout }) => {
                         </IconButton>
                     </Box>
                     <LogoutDialog handleUserLogout={handleUserLogout}/>
-                    {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
-                        size="large"
-                        edge="end"
-                        aria-label="account of current user"
-                        color="inherit"
-                        onClick={handleUserLogout}
-                        >
-                        <LogoutIcon />
-                        </IconButton>
-                    </Box> */}
-                    {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                        size="large"
-                        aria-label="show more"
-                        aria-haspopup="true"
-                        color="inherit"
-                        >
-                        <MoreIcon />
-                        </IconButton>
-                    </Box> */}
+                    
                     </Toolbar>
                 </AppBar>
             </Box>
-            {/* {formSubmitted ?
-                    // <PodcastDetail userId={userId} finalSearch={finalSearch} />
-                    <TstDetail userId={userId} finalSearch={finalSearch} />
-            : <></>
-            } */}
         </div>
     );
 }

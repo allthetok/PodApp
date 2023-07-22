@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -15,14 +15,13 @@ const App = () => {
 		return initialVal || null
 	})
 
+
 	const handleUserIdChange = (resUserId) => {
 		setUserId(resUserId)
 		localStorage.setItem('userid', resUserId)
 	}
 
 	const handleUserLogout = (e) => {
-		e.preventDefault()
-		console.log('clicked')
 		localStorage.removeItem('userid')
 		setUserId(null)
 	}
@@ -49,7 +48,16 @@ const App = () => {
 					)
 				} />
 				<Route path='/signup' element={<Signup handleIdChange={handleUserIdChange} userId={userId} />} />
-				<Route path='/likes' element={<Likes userId={userId} />} />
+				<Route path='/likes' 
+					element={
+						!userId ? (
+							<Navigate replace to={'/home'} />
+						)
+						: (
+							<Likes userId={userId} handleUserLogout={handleUserLogout}/>
+						)
+						
+					} />
 			</Routes>
 		</BrowserRouter>
 

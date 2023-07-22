@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import { Box } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
@@ -13,11 +14,19 @@ import DialogTitle from '@mui/material/DialogTitle'
 const LogoutDialog = ({ handleUserLogout }) => {
     const [open, setOpen] = useState(false)
 
+    const navigate = useNavigate()
+
     const handleClickOpen = () => {
         setOpen(true)
     }
 
     const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handleCloseLogout = (e) => {
+        handleUserLogout(e)
+        navigate('/')
         setOpen(false)
     }
 
@@ -56,8 +65,6 @@ const LogoutDialog = ({ handleUserLogout }) => {
                                 edge="end"
                                 aria-label="account of current user"
                                 color="error"
-                                
-                                sx={ {}}
                                 onClick={handleClose}>
                                     <CancelIcon sx={ {fontSize: '2.5rem'}}/>
                                 </IconButton>
@@ -67,7 +74,7 @@ const LogoutDialog = ({ handleUserLogout }) => {
                                 aria-label="account of current user"
                                 color="success"
                                 autoFocus
-                                onClick={handleUserLogout}>
+                                onClick={handleCloseLogout}>
                                     <DoneIcon sx={ {fontSize: '2.5rem'}}/>
                                 </IconButton>
                             </DialogActions>
