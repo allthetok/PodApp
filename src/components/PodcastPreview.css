@@ -48,10 +48,12 @@
 
 .likesAdd {
     position: absolute;
-    top: 30px;
     background-color: black;
     color: white!important;
     right: auto;
+    left: 156px;
+    height: 30px;
+    width: 30px;
     font-size: 20px!important;
     padding: 3px 3px;
     opacity: 0.8;

@@ -119,6 +119,40 @@ app.post('/api/likePod', async (request, response) => {
     }
 })
 
+app.post('/api/likeEp', async (request, response) => {
+    const body = request.body
+    const strpodchaserid = body.strpodchaserid
+    const strepisodeid = body.strepisodeid
+    const strtitle = body.strtitle
+    const strweburl = body.strweburl
+    const strimageurl = body.strimageurl
+    const intlength = body.intlength
+    const strairdate = body.strairdate
+    const lnguserid = body.lnguserid
+    const values = [strpodchaserid, strepisodeid, strtitle, strweburl, strimageurl, intlength, strairdate, lnguserid]
+    const queryText = 'INSERT INTO tblLikesEpisode(strpodchaserid, strepisodeid, strtitle, strweburl, strimageurl, intlength, strairdate, dtmLiked, lnguserid) VALUES($1, $2, $3, $4, $5, $6, $7, NOW(), $8) RETURNING *'
+    let queryResults
+
+    if (!strpodchaserid || !strepisodeid || !strtitle || !strweburl || !strairdate || !lnguserid) {
+        return response.status(400).json({
+            error: 'PodchaserId, Episode Id, Title, Web Url, Air Date or UserId missing'
+        })
+    }
+
+    queryResults = await client.query(queryText, values)
+
+    console.log(`${strepisodeid} liked by ${lnguserid}`)
+
+    if (queryResults.rows[0]) {
+        return response.status(200).json({
+            "strtitle": queryResults.rows[0].strtitle,
+            "strpodchaserid": queryResults.rows[0].strpodchaserid,
+            "strepisodeid": queryResults.rows[0].strepisodeid,
+            "lnguserid": queryResults.rows[0].lnguserid
+        })
+    }
+})
+
 app.post('/api/like', async (request, response) => {
     const body = request.body
     const lnguserid = body.lnguserid

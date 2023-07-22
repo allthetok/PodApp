@@ -1,8 +1,11 @@
 import React from 'react'
+import axios from 'axios'
 import './PodcastPreview.css'
-import {MoreVert, PlaylistAdd} from '@mui/icons-material'
+import {MoreVert, Favorite} from '@mui/icons-material'
+import { IconButton } from '@mui/material'
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Episode = ({key, imageUrl, url, length, title, airDate}) => {
+const Episode = ({podchaserId, key, episodeId, imageUrl, url, length, title, airDate, userId}) => {
 
     const formattedTime = (seconds) => {
         const hours = Math.floor(seconds/3600)
@@ -26,10 +29,55 @@ const Episode = ({key, imageUrl, url, length, title, airDate}) => {
 
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
 
+    const likeEp = async (podchaserId, episodeId, imageUrl, url, length, title, airDate, userId) => {
+        const likeConfig = {
+            method: 'post',
+            url: 'http://localhost:3002/api/likeEp',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'strpodchaserid': podchaserId,
+                'strepisodeid': episodeId,
+                'strtitle': title,
+                'strweburl': url,
+                'strimageurl': imageUrl,
+                'intlength': length,
+                'strairdate': airDate,
+                'lnguserid': userId
+            }
+        }
+        const newLikeResults = await axios(likeConfig)
+        if (newLikeResults.status === 400) {
+            axios.console.error()
+        }
+        else {
+            console.log(newLikeResults)
+        }
+    }
+
+    const handleLike = (e) => {
+        e.preventDefault()
+        likeEp(podchaserId, episodeId, imageUrl, url, length, title, airDate, userId)
+    }
+
 	return (
         <li key={key}>
             <div className='videoCard'>
-                <div className='likesAdd'><PlaylistAdd className='videoIcon'/></div>
+                {/* <div className='likesAdd'><Favorite className='videoIcon' onClick={handleLikeEp}/></div> */}
+                <div className='likesAdd'>
+                <IconButton
+                            size="medium"
+                            edge="end"
+                            aria-label="account of current user"
+                            color="inherit"
+                            sx={{padding: 0}}
+                            onClick={handleLike}
+                            >
+                            <FavoriteIcon />
+                            </IconButton>
+                            </div>
+
                 <a title='Play' target='_blank' rel='noopener noreferrer' href={url}>
                 {imageUrl !== '' 
                 ? <img className='videoImg' src={imageUrl} alt={title}/>
