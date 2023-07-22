@@ -118,7 +118,7 @@ const PodcastDetail = ({ userId, finalSearch }) => {
                     <a className='mediaInstagram' title='Instagram' target='_blank' rel='noopener noreferrer' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
                 </div>
                 <LikeBtn liked={like} dataFetch={dataFetch} userId={userId}/>
-            <Filter podchaserId={dataFetch.id} userId={userId} />
+            <Filter podchaserId={dataFetch.id} podTitle={dataFetch.title} userId={userId} />
         </div>
         : <></> }
         </>

@@ -5,7 +5,7 @@ import {MoreVert, Favorite} from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Episode = ({podchaserId, key, episodeId, imageUrl, url, length, title, airDate, userId}) => {
+const Episode = ({podchaserId, podTitle, key, episodeId, imageUrl, url, length, title, airDate, userId}) => {
 
     const formattedTime = (seconds) => {
         const hours = Math.floor(seconds/3600)
@@ -29,7 +29,7 @@ const Episode = ({podchaserId, key, episodeId, imageUrl, url, length, title, air
 
     const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric'})
 
-    const likeEp = async (podchaserId, episodeId, imageUrl, url, length, title, airDate, userId) => {
+    const likeEp = async (podchaserId, podTitle, episodeId, imageUrl, url, length, title, airDate, userId) => {
         const likeConfig = {
             method: 'post',
             url: 'http://localhost:3002/api/likeEp',
@@ -39,6 +39,7 @@ const Episode = ({podchaserId, key, episodeId, imageUrl, url, length, title, air
             data: {
                 'strpodchaserid': podchaserId,
                 'strepisodeid': episodeId,
+                'strpodTitle': podTitle,
                 'strtitle': title,
                 'strweburl': url,
                 'strimageurl': imageUrl,
@@ -58,7 +59,7 @@ const Episode = ({podchaserId, key, episodeId, imageUrl, url, length, title, air
 
     const handleLike = (e) => {
         e.preventDefault()
-        likeEp(podchaserId, episodeId, imageUrl, url, length, title, airDate, userId)
+        likeEp(podchaserId, episodeId, podTitle, imageUrl, url, length, title, airDate, userId)
     }
 
 	return (

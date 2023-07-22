@@ -3,7 +3,7 @@ import { Button, Autocomplete, TextField } from '@mui/material'
 import './Filter.css';
 import EpisodeList from './EpisodeList';
 
-const Filter = ({ podchaserId, userId }) => {
+const Filter = ({ podchaserId, userId, podTitle }) => {
     const [options, setOptions] = useState('10')
     const [sortOptions, setSortOptions] = useState('AIR_DATE')
     const numOptions = ['5', '10', '20']
@@ -23,7 +23,7 @@ const Filter = ({ podchaserId, userId }) => {
         // onChange={(value) => setOptions(value)}
         />
     </div>
-    <EpisodeList podchaserId={podchaserId} options={options} sortOptions={sortOptions} userId={userId}/>
+    <EpisodeList podchaserId={podchaserId} podTitle={podTitle} options={options} sortOptions={sortOptions} userId={userId}/>
     </>
   )
 }

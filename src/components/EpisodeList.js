@@ -3,7 +3,7 @@ import axios from 'axios'
 import Episode from './Episode.js'
 import './EpisodeList.css';
 
-const EpisodeList = ({ podchaserId, options, sortOptions, userId }) => {
+const EpisodeList = ({ podchaserId, podTitle, options, sortOptions, userId }) => {
 
   const [episodeDataFetch, setEpisodeDataFetch] = useState('')
 
@@ -96,7 +96,7 @@ const EpisodeList = ({ podchaserId, options, sortOptions, userId }) => {
     <div></div> :
         <ul className='episodeList regular'>
             {episodeDataFetch.slice(0,parseInt(options)).map((episode) => 
-                <Episode podchaserId={podchaserId} episodeId={episode.id} key={episode.id} imageUrl={episode.imageUrl} url={episode.url} length={episode.length} title={episode.title} airDate={episode.airDate} userId={userId}/>
+                <Episode podchaserId={podchaserId} podTitle={podTitle} episodeId={episode.id} key={episode.id} imageUrl={episode.imageUrl} url={episode.url} length={episode.length} title={episode.title} airDate={episode.airDate} userId={userId}/>
             )}
         </ul>}
     </div>

@@ -123,19 +123,20 @@ app.post('/api/likeEp', async (request, response) => {
     const body = request.body
     const strpodchaserid = body.strpodchaserid
     const strepisodeid = body.strepisodeid
+    const strpodtitle = body.strpodTitle
     const strtitle = body.strtitle
     const strweburl = body.strweburl
     const strimageurl = body.strimageurl
     const intlength = body.intlength
     const strairdate = body.strairdate
     const lnguserid = body.lnguserid
-    const values = [strpodchaserid, strepisodeid, strtitle, strweburl, strimageurl, intlength, strairdate, lnguserid]
-    const queryText = 'INSERT INTO tblLikesEpisode(strpodchaserid, strepisodeid, strtitle, strweburl, strimageurl, intlength, strairdate, dtmLiked, lnguserid) VALUES($1, $2, $3, $4, $5, $6, $7, NOW(), $8) RETURNING *'
+    const values = [strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, lnguserid]
+    const queryText = 'INSERT INTO tblLikesEpisode(strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, dtmLiked, lnguserid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9) RETURNING *'
     let queryResults
 
-    if (!strpodchaserid || !strepisodeid || !strtitle || !strweburl || !strairdate || !lnguserid) {
+    if (!strpodchaserid || !strepisodeid || !strpodtitle || !strtitle || !strweburl || !strairdate || !lnguserid) {
         return response.status(400).json({
-            error: 'PodchaserId, Episode Id, Title, Web Url, Air Date or UserId missing'
+            error: 'PodchaserId, Episode Id, Podcast Title, Title, Web Url, Air Date or UserId missing'
         })
     }
 
@@ -185,6 +186,7 @@ app.post('/api/like', async (request, response) => {
 app.post('/api/likes', async (request, response) => {
     const body = request.body
     const lnguserid = body.lnguserid
+    const strspecified = body.strspecified
     const values = [lnguserid]
     let queryText, queryResults
 
@@ -194,51 +196,91 @@ app.post('/api/likes', async (request, response) => {
         })
     }
 
-    queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblLikes WHERE lnguserid = $1)'
-    queryResults = await client.query(queryText, values)
-
-    if (!queryResults.rows[0]) {
+    if (!strspecified) {
         return response.status(400).json({
-            error: `User with id ${lnguserid} has not liked any podcasts`
+            error: 'No specified search PODCAST/EPISODE'
         })
     }
 
-    queryText = 'SELECT * from tblLikes WHERE lnguserid = $1 ORDER BY dtmLiked DESC'
-    queryResults = await client.query(queryText, values)
-    return response.status(200).json(queryResults.rows)
+    if (strspecified === 'PODCAST') {
+        queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblLikes WHERE lnguserid = $1)'
+        queryResults = await client.query(queryText, values)
+
+        if (!queryResults.rows[0]) {
+            return response.status(400).json({
+                error: `User with id ${lnguserid} has not liked any podcasts`
+            })
+        }
+
+        queryText = 'SELECT * from tblLikes WHERE lnguserid = $1 ORDER BY dtmLiked DESC'
+        queryResults = await client.query(queryText, values)
+        return response.status(200).json(queryResults.rows)
+    }
+    if(strspecified === 'EPISODE') {
+        queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblLikesEpisode WHERE lnguserid = $1)'
+        queryResults = await client.query(queryText, values)
+
+        if (!queryResults.rows[0]) {
+            return response.status(400).json({
+                error: `User with id ${lnguserid} has not liked any episodes`
+            })
+        }
+
+        queryText = 'SELECT * from tblLikesEpisode WHERE lnguserid = $1 ORDER BY dtmLiked DESC'
+        queryResults = await client.query(queryText, values)
+        return response.status(200).json(queryResults.rows)
+    }
+
 })
 
 app.delete('/api/like', async (request, response) => {
     const body = request.body
     const lnguserid = body.lnguserid
     const strpodchaserid = body.strpodchaserid
-    const values = [lnguserid, strpodchaserid]
+    const strepisodeid = body.strepisodeid
+    let values
     let queryText, queryResults
 
-    if (!lnguserid || !strpodchaserid) {
+    if (!lnguserid ) {
         return response.status(400).json({
-            error: 'No user id or podchaser id specified'
+            error: 'No user id specified'
         })
     }
 
-    queryText = 'DELETE FROM tblLikes WHERE lnguserid = $1 AND strpodchaserid = $2'
-    queryResults = await client.query(queryText, values)
-
-    if (queryResults.rowCount === 0) {
-        return response.status(404).json({
-            error: `User id of ${lnguserid} has not liked podcast with podchaser id ${strpodchaserid}`
+    if (!strpodchaserid && !strepisodeid) {
+        return response.status(400).json({
+            error: 'Podchaser and Episode ID both not specified' 
         })
     }
 
-    // else if (queryResults.rowCount !== 0) {
-    //     return response.status(200).json({
-    //         "lnguserid": lnguserid,
-    //         "strpodchaserid": strpodchaserid,
-    //         "deleteSuccessful": true
-    //     })
-    // }
-    else if (queryResults.rowCount !== 0) {
-        return response.sendStatus(204)
+    if (strpodchaserid) {
+        values = [lnguserid, strpodchaserid]
+        queryText = 'DELETE FROM tblLikes WHERE lnguserid = $1 AND strpodchaserid = $2'
+        queryResults = await client.query(queryText, values)
+
+        if (queryResults.rowCount === 0) {
+            return response.status(404).json({
+                error: `User id of ${lnguserid} has not liked podcast with podchaser id ${strpodchaserid}`
+            })
+        }
+
+        else if (queryResults.rowCount !== 0) {
+            return response.sendStatus(204)
+        }
+    }
+    if (strepisodeid) {
+        values = [lnguserid, strepisodeid]
+        queryText = 'DELETE FROM tblLikesEpisode WHERE lnguserid = $1 AND strepisodeid = $2'
+        queryResults = await client.query(queryText, values)
+
+        if (queryResults.rowCount === 0) {
+            return response.status(404).json({
+                error: `User id of ${lnguserid} has not liked episode with episode id ${strepisodeid}`
+            })
+        }
+        else if (queryResults.rowCount !== 0) {
+            return response.sendStatus(204)
+        }
     }
 
 })

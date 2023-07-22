@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import PodcastLike from './PodcastLike.js'
+import EpisodeLike from './EpisodeLike';
 import './EpisodeList.css';
 
-const PodcastLikeList = ({ userId, sortOptions }) => {
-    const [podLikeDataFetch, setPodLikeDataFetch] = useState(null)
+const EpisodeLikeList = ({ userId, sortOptions }) => {
+    const [epLikeDataFetch, setEpLikeDataFetch] = useState(null)
 
     const getUserLikes = async () => {
         const userLikesConfig = {
@@ -21,13 +21,14 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
 
         await axios(userLikesConfig)
         .then(response => {
-            setPodLikeDataFetch(uniqueFilter(response.data))
+            setEpLikeDataFetch(uniqueFilter(response.data))
+            console.log(uniqueFilter(response.data))
         }).catch(err => {
             console.log(err)
         })
     }
 
-    const deleteUserLike = async (userId, strpodchaserid) => {
+    const deleteUserLike = async (userId, strepisodeid) => {
         const likeDeleteConfig = {
             method: 'delete',
             url: 'http://localhost:3002/api/like',
@@ -36,7 +37,7 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
             },
             data: {
                 'lnguserid': userId,
-                'strpodchaserid': strpodchaserid
+                'strepisodeid': strepisodeid
             },
         }
 
@@ -51,7 +52,7 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
     }, [userId])
 
     const uniqueFilter = (data) => {
-        const map = new Map(data.map(pos => [pos.strpodchaserid, pos]))
+        const map = new Map(data.map(pos => [pos.strtitle, pos]))
         const uniques = [...map.values()]
         return uniques
     }
@@ -59,18 +60,21 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
     return (
         <>
         <div className='episodeContainer'>
-        {podLikeDataFetch === null
+        {epLikeDataFetch === null
         ? 
             <div>{userId}</div> 
         :
             <ul className='episodeList regular'>
-                {podLikeDataFetch.map((podlike) => 
-                    <PodcastLike key={podlike.lnglikeid}
-                        strpodchaserid={podlike.strpodchaserid} 
-                        strtitle={podlike.strtitle} 
-                        strweburl={podlike.strweburl} 
-                        strimageurl={podlike.strimageurl} 
-                        strlatestepisodedate={podlike.strlatestepisodedate} 
+                {epLikeDataFetch.map((eplike) => 
+                    <EpisodeLike key={eplike.lnglikeid}
+                        strpodchaserid={eplike.strpodchaserid}
+                        strepisodeid={eplike.strepisodeid}
+                        strpodtitle={eplike.strpodtitle}
+                        strtitle={eplike.strtitle} 
+                        strweburl={eplike.strweburl} 
+                        strimageurl={eplike.strimageurl}
+                        intlength={eplike.intlength}
+                        strairdate={eplike.strairdate}
                         userId={userId}
                         handleDelete={deleteUserLike}
                     />
@@ -82,4 +86,4 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
     )
 }
 
-export default PodcastLikeList
+export default EpisodeLikeList
