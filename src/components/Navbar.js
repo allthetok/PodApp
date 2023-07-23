@@ -1,5 +1,6 @@
 //import React, { useState, useRef } from 'react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,36 +9,30 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import HomeIcon from '@mui/icons-material/Home';
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import './SearchPod.css';
 import LogoutDialog from './LogoutDialog'
-import { useNavigate } from 'react-router-dom';
-//import PodcastDetail from './PodcastDetail';
 
-const Navbar = ({ handleSubmit, handleClick, textInput, handleUserLogout }) => {
-    // const [finalSearch, setFinalSearch] = useState('')
-    // const [formSubmitted, setFormSubmitted] = useState(false)
 
-    // const textInput = useRef()
-    // const navigate = useNavigate()
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     console.log(textInput)
-    //     setFinalSearch(textInput.current.value)
-    //     setFormSubmitted(true)
-    // }
-
-    // const handleClick = (e) => {
-    //     e.preventDefault()
-    //     navigate('/likes')
-    // }
+const Navbar = ({ handleSubmit, textInput, handleUserLogout }) => {
 
     const navigate = useNavigate()
 
     const handleHomeClick = (e) => {
         e.preventDefault()
-        console.log('clicked')
         navigate('/')
+    }
+
+    const handleLikeClick = (e) => {
+        e.preventDefault()
+        navigate('/likes')
+        localStorage.removeItem('selectedLikePod')
+    }
+
+    const handleDiscoverClick = (e) => {
+        e.preventDefault()
+        navigate('/discover')
+        localStorage.removeItem('selectedLikePod')
     }
 
     return (
@@ -79,7 +74,18 @@ const Navbar = ({ handleSubmit, handleClick, textInput, handleUserLogout }) => {
                             edge="end"
                             aria-label="account of current user"
                             color="inherit"
-                            onClick={handleClick}
+                            onClick={handleDiscoverClick}
+                            >
+                            <SignalCellularAltIcon />
+                            </IconButton>
+                        </Box>
+                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                            <IconButton
+                            size="large"
+                            edge="end"
+                            aria-label="account of current user"
+                            color="inherit"
+                            onClick={handleLikeClick}
                             >
                             <FavoriteIcon />
                             </IconButton>

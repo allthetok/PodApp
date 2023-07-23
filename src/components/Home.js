@@ -17,7 +17,6 @@ const Home = ({ userId, handleUserLogout }) => {
     })
 
     const textInput = useRef()
-    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -27,14 +26,10 @@ const Home = ({ userId, handleUserLogout }) => {
         setFormSubmitted(true)
     }
 
-    const handleClick = (e) => {
-        e.preventDefault()
-        navigate('/likes')
-        localStorage.removeItem('selectedLikePod')
-    }
+    
     return (
         <>
-            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleClick={handleClick} handleUserLogout={handleUserLogout}/>
+            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleUserLogout={handleUserLogout}/>
             {formSubmitted 
                 ? <PodcastDetail userId={userId} finalSearch={finalSearch} />
                 : <></>

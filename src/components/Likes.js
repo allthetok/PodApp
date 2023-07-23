@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button, Autocomplete, TextField } from '@mui/material'
+import { Button} from '@mui/material'
 import Navbar from './Navbar'
 import PodcastLikeList from './PodcastLikeList'
 import EpisodeLikeList from './EpisodeLikeList'
@@ -13,7 +12,6 @@ const Likes = ({ userId, handleUserLogout }) => {
     const [sortOptions, setSortOptions] = useState('PODCAST')
 
     const textInput = useRef()
-    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -22,14 +20,9 @@ const Likes = ({ userId, handleUserLogout }) => {
         setFormSubmitted(true)
     }
 
-    const handleClick = (e) => {
-        e.preventDefault()
-        navigate('/likes')
-    }
-
     return (
         <>
-            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleClick={handleClick} handleUserLogout={handleUserLogout}/>
+            <Navbar handleSubmit={handleSubmit} textInput={textInput} handleUserLogout={handleUserLogout}/>
             <div className='filterWrap'>
                 <Button onClick={() => setSortOptions('PODCAST')} variant={sortOptions === 'PODCAST' ? 'contained' : 'outlined'}>Podcasts</Button>
                 <Button onClick={() => setSortOptions('EPISODE')} variant={sortOptions === 'EPISODE' ? 'contained' : 'outlined'}>Episodes</Button>
