@@ -19,6 +19,7 @@ const PodcastDiscoverList = ({ options, sortOptions, userId }) => {
                 url,
                 imageUrl,
                 latestEpisodeDate,
+                author {name}
             }
         }
     }`,
@@ -61,7 +62,7 @@ const PodcastDiscoverList = ({ options, sortOptions, userId }) => {
     <div></div> :
         <ul className='episodeList regular'>
             {podDataFetch.slice(0,parseInt(options)).map((podcast) => 
-                <PodcastDiscover strpodchaserid={podcast.podchaserId} strtitle={podcast.title} strweburl={podcast.url} strimageurl={podcast.imageUrl} strlatestepisodedate={podcast.latestEpisodeDate} userId={userId}/>
+                <PodcastDiscover strpodchaserid={podcast.id} strtitle={podcast.title} strweburl={podcast.url} strimageurl={podcast.imageUrl} strlatestepisodedate={podcast.latestEpisodeDate} strname={podcast.author.name} userId={userId}/>
             )}
         </ul>}
     </div>
