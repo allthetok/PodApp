@@ -57,7 +57,7 @@ const Navbar = ({ handleSubmit, textInput, handleUserLogout }) => {
                             component="div"
                             sx={{ display: { xs: 'none', sm: 'block' } }}
                         >
-                            PodFinder
+                            <a className='homeText' onClick={handleHomeClick}>PodFinder</a>
                         </Typography>
                         <div className='searchWrap'>
                             <form className='searchBar' onSubmit={handleSubmit}>

@@ -70,7 +70,7 @@ const Signup = ({ handleIdChange, userId}) => {
     useEffect(() => {
         if (userId) {
             navigate('/home')
-            localStorage.setItem('userid', userId)
+            //localStorage.setItem('userid', userId)
         }
     }, [userId])
 

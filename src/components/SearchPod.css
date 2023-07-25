@@ -83,6 +83,16 @@ input {
 .searchBtn {
 	cursor: pointer;
 }
+
+.homeText:hover {
+    color: rgb(83,83,83)!important;
+    cursor: pointer;
+}
+
+.homeText {
+	color: inherit;
+	text-decoration: none;
+}
 .searchBar,
 .searchBar input:focus,
 .searchBar input:valid  {
