@@ -1,5 +1,4 @@
-//import React, {useState, useEffect} from 'react'
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
@@ -18,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 const Copyright = ( props ) => {
     return <Typography variant='body2' color='text.secondary' align='center' {...props}>
         {'Copyright © '}
-        <Link color='inherit' href='https://mui.com'>
+        <Link color='inherit' href='https://github.com/allthetok'>
             Allen Tok
         </Link>{' '}
         {new Date().getFullYear()}
@@ -30,6 +29,8 @@ const defaultTheme = createTheme()
 
 const Signup = ({ handleIdChange, userId}) => {
     //const [userId, setUserId] = useState(null)
+    const [checked, setChecked] = useState(false)
+
     localStorage.removeItem('userid')
 
     const navigate = useNavigate()
@@ -37,6 +38,7 @@ const Signup = ({ handleIdChange, userId}) => {
     const getUserId = async (dataTarget) => {
         const user = dataTarget.get('user')
         const pass = dataTarget.get('password')
+        const email = dataTarget.get('email')
 
         const userConfig = {
             method: 'post',
@@ -47,12 +49,13 @@ const Signup = ({ handleIdChange, userId}) => {
             data: {
                 'struser': user,
                 'strpass': pass,
+                'stremail': email,
                 'newUser': true,
             }
         }
 
         await axios(userConfig).then(response => {
-            handleIdChange(response.data.lnguserid)
+            handleIdChange(response.data.lnguserid, checked)
         }).catch(err => {
             console.log(err)
         })
@@ -95,6 +98,15 @@ const Signup = ({ handleIdChange, userId}) => {
                                 margin='normal'
                                 required
                                 fullWidth
+                                id='email'
+                                label='Email'
+                                name='email'
+                                autoComplete='email'
+                                autoFocus/>
+                            <TextField 
+                                margin='normal'
+                                required
+                                fullWidth
                                 id='user'
                                 label='Username'
                                 name='user'
@@ -110,7 +122,7 @@ const Signup = ({ handleIdChange, userId}) => {
                                 id='password'
                                 autoComplete='current-password'/>
                             <FormControlLabel
-                                control={<Checkbox value='remember' color='primary' />}
+                                control={<Checkbox onClick={() => setChecked(!checked)} value='remember' color='primary' />}
                                 label='Remember me'/>
                             <Button
                                 type='submit'

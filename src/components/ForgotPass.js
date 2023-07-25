@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+//import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
@@ -28,11 +29,10 @@ const Copyright = ( props ) => {
 
 const defaultTheme = createTheme()
 
-const Login = ({ handleIdChange, userId}) => {
+const ForgotPass = ({ handleIdChange, userId}) => {
     //const [userId, setUserId] = useState(null)
 
     const navigate = useNavigate()
-    const [checked, setChecked] = useState(false)
 
     const getUserId = async (dataTarget) => {
         const user = dataTarget.get('user')
@@ -52,7 +52,7 @@ const Login = ({ handleIdChange, userId}) => {
         }
 
         await axios(userConfig).then(response => {
-            handleIdChange(response.data.lnguserid, checked)
+            handleIdChange(response.data.lnguserid)
         }).catch(err => {
             console.log(err)
         })
@@ -94,22 +94,22 @@ const Login = ({ handleIdChange, userId}) => {
                                 margin='normal'
                                 required
                                 fullWidth
-                                id='user'
-                                label='Username/Email'
-                                name='user'
-                                autoComplete='user'
+                                id='email'
+                                label='Email'
+                                name='email'
+                                autoComplete='email'
                                 autoFocus/>
                             <TextField
                                 margin='normal'
                                 required
                                 fullWidth
-                                name='password'
-                                label='Password'
-                                type='password'
-                                id='password'
-                                autoComplete='current-password'/>
+                                id='user'
+                                label='Username'
+                                name='user'
+                                autoComplete='user'
+                                autoFocus/>
                             <FormControlLabel
-                                control={<Checkbox onClick={() => setChecked(!checked)} value='remember' color='primary' />}
+                                control={<Checkbox value='remember' color='primary' />}
                                 label='Remember me'/>
                             <Button
                                 type='submit'
@@ -119,11 +119,6 @@ const Login = ({ handleIdChange, userId}) => {
                                     Sign In
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
                                 <Grid item>
                                     <Link onClick={() => navigate('/signup')}href="/signup" variant="body2">
                                         {"Don't have an account? Sign Up"}
@@ -138,4 +133,4 @@ const Login = ({ handleIdChange, userId}) => {
     )
 } 
 
-export default Login
+export default ForgotPass

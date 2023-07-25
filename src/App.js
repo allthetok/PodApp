@@ -17,9 +17,11 @@ const App = () => {
 	})
 
 
-	const handleUserIdChange = (resUserId) => {
+	const handleUserIdChange = (resUserId, remember) => {
 		setUserId(resUserId)
-		localStorage.setItem('userid', resUserId)
+		if (remember === true) {
+			localStorage.setItem('userid', resUserId)
+		}
 	}
 
 	const handleUserLogout = (e) => {
