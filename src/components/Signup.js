@@ -111,7 +111,7 @@ const Signup = ({ handleIdChange, userId}) => {
                                 label='Username'
                                 name='user'
                                 autoComplete='user'
-                                autoFocus/>
+                                />
                             <TextField
                                 margin='normal'
                                 required

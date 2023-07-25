@@ -6,6 +6,7 @@ import Signup from './components/Signup';
 import Likes from './components/Likes';
 import Home from './components/Home';
 import Discover from './components/Discover';
+import ForgotPass from './components/ForgotPass';
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
 					)
 				} />
 				<Route path='/signup' element={<Signup handleIdChange={handleUserIdChange} userId={userId} />} />
+				<Route path='/forgot' element={<ForgotPass handleIdChange={handleUserIdChange} userId={userId} />} />
 				<Route path='/likes' 
 					element={
 						!userId ? (

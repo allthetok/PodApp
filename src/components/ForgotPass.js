@@ -99,7 +99,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 name='email'
                                 autoComplete='email'
                                 autoFocus/>
-                            <TextField
+                            <TextField 
                                 margin='normal'
                                 required
                                 fullWidth
@@ -107,16 +107,13 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 label='Username'
                                 name='user'
                                 autoComplete='user'
-                                autoFocus/>
-                            <FormControlLabel
-                                control={<Checkbox value='remember' color='primary' />}
-                                label='Remember me'/>
+                                />
                             <Button
                                 type='submit'
                                 fullWidth
                                 variant='contained'
                                 sx={{ mt: 3, mb: 2}}>
-                                    Sign In
+                                    Send Verification Code
                             </Button>
                             <Grid container>
                                 <Grid item>

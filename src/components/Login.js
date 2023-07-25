@@ -120,12 +120,12 @@ const Login = ({ handleIdChange, userId}) => {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link onClick={() => navigate('/forgot')} href="/forgot" variant="body2">
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link onClick={() => navigate('/signup')}href="/signup" variant="body2">
+                                    <Link onClick={() => navigate('/signup')} href="/signup" variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>
