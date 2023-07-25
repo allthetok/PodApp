@@ -1,5 +1,4 @@
-//import React, {useState, useEffect} from 'react'
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
@@ -32,6 +31,10 @@ const defaultTheme = createTheme()
 const ForgotPass = ({ handleIdChange, userId}) => {
     //const [userId, setUserId] = useState(null)
 
+    const [verificationCode, setVerificationCode] = useState(null)
+    const [pass1, setPass1] = useState('')
+    const [pass2, setPass2] = useState('')
+
     const navigate = useNavigate()
 
     const getUserId = async (dataTarget) => {
@@ -58,10 +61,62 @@ const ForgotPass = ({ handleIdChange, userId}) => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const sendUserVerificationCode = async (dataTarget) => {
+        const email = dataTarget.get('email')
+        const user = dataTarget.get('user')
+        let blnExists = false
+
+        const verifyUserConfig = {
+            method: 'post',
+            url: 'http://localhost:3002/api/verifyUser',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'struser': user,
+                'stremail': email
+            }
+        }
+
+        const sendEmailConfig = {
+            method: 'post',
+            url: 'http://localhost:3003/api/verification',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'stremail': email
+            }
+        }
+
+        await axios(verifyUserConfig).then(response => {
+            blnExists = response.data.blnExists
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+        if (blnExists === true) {
+            await axios(sendEmailConfig).then(response => {
+                setVerificationCode(response.data.verificationCode)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+    }
+
+    const handleSendSubmit = (e) => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
-        getUserId(data)
+        sendUserVerificationCode(data)
+    }
+
+    const handlePassSubmit = (e) => {
+        e.preventDefault()
+        const data = new FormData(e.currentTarget)
+        
     }
 
     useEffect(() => {
@@ -74,6 +129,60 @@ const ForgotPass = ({ handleIdChange, userId}) => {
         <ThemeProvider theme={defaultTheme}>
             <Container component='main' maxWidth='xs'>
                 <CssBaseline />
+                {verificationCode !== null ? 
+                    <Box 
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>
+                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <LockOutlinedIcon/>
+                        </Avatar>
+                        <Typography component='h1' variant='h5'>
+                            Update password
+                        </Typography>
+                        <Box component='form' 
+                        onSubmit={handlePassSubmit} 
+                        noValidate sx={{ mt: 1}}>
+                            <TextField 
+                                margin='normal'
+                                required
+                                fullWidth
+                                id='pass'
+                                onChange={(e) => setPass1(e.target.value)}
+                                value={pass1}
+                                label='Password'
+                                name='pass'
+                                autoFocus/>
+                            <TextField 
+                                margin='normal'
+                                required
+                                fullWidth
+                                onChange={(e) => setPass2(e.target.value)}
+                                value={pass2}
+                                id='pass2'
+                                label='Verify Password'
+                                name='pass2'
+                                />
+                            <Button
+                                type='submit'
+                                fullWidth
+                                variant='contained'
+                                sx={{ mt: 3, mb: 2}}>
+                                    Save New Password
+                            </Button>
+                            <Grid container>
+                                <Grid item>
+                                    <Link onClick={() => navigate('/signup')}href="/signup" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                </Box>
+                :
                 <Box 
                     sx={{
                         marginTop: 8,
@@ -88,7 +197,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                             Sign in
                         </Typography>
                         <Box component='form' 
-                        onSubmit={handleSubmit} 
+                        onSubmit={handleSendSubmit} 
                         noValidate sx={{ mt: 1}}>
                             <TextField 
                                 margin='normal'
@@ -124,6 +233,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                             </Grid>
                         </Box>
                 </Box>
+                }
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>

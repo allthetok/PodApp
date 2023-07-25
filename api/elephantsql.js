@@ -299,6 +299,38 @@ app.delete('/api/like', async (request, response) => {
 
 })
 
+app.post('/api/verifyUser', async (request, response) => {
+    const body = request.body
+    const struser = body.struser
+    const stremail = body.stremail
+    let values
+    let queryText, queryResults
+
+    if (!struser || !stremail) {
+        return response.status(400).json({
+            error: `User or Email missing`
+        })
+    }
+
+    values = [struser, stremail]
+    queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblUser WHERE struser = $1 AND stremail = $2)'
+
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0) {
+        return response.status(400).json({
+            error: `User ${struser} with email ${stremail} does not exist`
+        })
+    }
+    else if (queryResults.rowCount !== 0) {
+        return response.status(200).json({
+            'blnExists': true
+        })
+    }
+
+
+})
+
 const PORT = process.env.PORT || 3002
 
 app.listen(PORT, () => {

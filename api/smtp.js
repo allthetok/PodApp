@@ -50,7 +50,7 @@ transporter.verify((error, success) => {
 const generateVerificationCode = () => Math.floor(1000000*Math.random())
 
 
-app.post('/verification', async (request, response) => {
+app.post('/api/verification', async (request, response) => {
     const stremail = request.body.stremail
     const verificationCodeGenerated = generateVerificationCode()
     const mail = {
