@@ -323,12 +323,40 @@ app.post('/api/verifyUser', async (request, response) => {
         })
     }
     else if (queryResults.rowCount !== 0) {
+        queryText = 'SELECT * FROM tbluser WHERE struser = $1 AND stremail = $2'
+        queryResults = await client.query(queryText, values)
         return response.status(200).json({
-            'blnExists': true
+            'blnExists': true,
+            'lnguserid': queryResults.rows[0].lnguserid
+        })
+    }
+})
+
+app.patch('/api/user', async (request, response) => {
+    const lnguserid = request.body.lnguserid
+    const strpass = request.body.strpass
+    let values, queryResults, queryText
+
+    if (!lnguserid || !strpass) {
+        return response.status(400).json({
+            error: 'Username or password missing'
         })
     }
 
+    const hash = await bcrypt.hash(strpass, 10)
+    values = [lnguserid, hash]
+    queryText = 'UPDATE tblUser SET strpass = $2, dtmlastlogin = NOW() WHERE lnguserid = $1;'
+    queryResults = await client.query(queryText, values)
 
+    queryText = 'SELECT * from tblUser WHERE lnguserid = $1 AND strpass = $2'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rows[0]) {
+        return response.status(200).json(
+            {
+                "lnguserid": queryResults.rows[0].lnguserid
+            })
+    }
 })
 
 const PORT = process.env.PORT || 3002
