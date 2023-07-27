@@ -32,34 +32,38 @@ const ForgotPass = ({ handleIdChange, userId}) => {
     //const [userId, setUserId] = useState(null)
 
     const [verificationCode, setVerificationCode] = useState(null)
+    const [verificationEnter, setVerificationEnter] = useState('')
     const [pass1, setPass1] = useState('')
     const [pass2, setPass2] = useState('')
+    const [id, setId] = useState(null)
+    const [blnMatch, setBlnMatch] = useState(false)
+    
 
     const navigate = useNavigate()
 
-    const getUserId = async (dataTarget) => {
-        const user = dataTarget.get('user')
-        const pass = dataTarget.get('password')
+    // const getUserId = async (dataTarget) => {
+    //     const user = dataTarget.get('user')
+    //     const pass = dataTarget.get('password')
 
-        const userConfig = {
-            method: 'post',
-            url: 'http://localhost:3002/api/user',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: {
-                'struser': user,
-                'strpass': pass,
-                'newUser': false
-            }
-        }
+    //     const userConfig = {
+    //         method: 'post',
+    //         url: 'http://localhost:3002/api/user',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         data: {
+    //             'struser': user,
+    //             'strpass': pass,
+    //             'newUser': false
+    //         }
+    //     }
 
-        await axios(userConfig).then(response => {
-            handleIdChange(response.data.lnguserid)
-        }).catch(err => {
-            console.log(err)
-        })
-    }
+    //     await axios(userConfig).then(response => {
+    //         handleIdChange(response.data.lnguserid)
+    //     }).catch(err => {
+    //         console.log(err)
+    //     })
+    // }
 
     const sendUserVerificationCode = async (dataTarget) => {
         const email = dataTarget.get('email')
@@ -91,6 +95,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
 
         await axios(verifyUserConfig).then(response => {
             blnExists = response.data.blnExists
+            setId(response.data.lnguserid)
         })
         .catch(err => {
             console.log(err)
@@ -107,16 +112,46 @@ const ForgotPass = ({ handleIdChange, userId}) => {
 
     }
 
+    const updatePassword = async (pass1, pass2, id) => {
+        const updatePassConfig = {
+            method: 'patch',
+            url: 'http://localhost:3002/api/user',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'lnguserid': id,
+                'strpass': pass1
+            }
+        }
+
+        if (pass1 === pass2) {
+            await axios(updatePassConfig).then(response => {
+                handleIdChange(response.data.lnguserid, false)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+    }
+
     const handleSendSubmit = (e) => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
         sendUserVerificationCode(data)
     }
 
+    const handleVerificationSubmit = (e) => {
+        e.preventDefault()
+        if (parseInt(verificationEnter) === verificationCode) {
+            setBlnMatch(true)
+            setVerificationCode(null)
+        }
+    }
+
     const handlePassSubmit = (e) => {
         e.preventDefault()
-        const data = new FormData(e.currentTarget)
-        
+        updatePassword(pass1, pass2, id)
     }
 
     useEffect(() => {
@@ -129,14 +164,61 @@ const ForgotPass = ({ handleIdChange, userId}) => {
         <ThemeProvider theme={defaultTheme}>
             <Container component='main' maxWidth='xs'>
                 <CssBaseline />
-                {verificationCode !== null ? 
+                {
+                    id !== null && verificationCode !== null ?
                     <Box 
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'
-                    }}>
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                        }}>
+                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <LockOutlinedIcon/>
+                        </Avatar>
+                        <Typography component='h1' variant='h5'>
+                            Enter Verification Code sent to your Email.
+                        </Typography>
+                        <Box component='form' 
+                        onSubmit={handleVerificationSubmit} 
+                        noValidate sx={{ mt: 1}}>
+                            <TextField 
+                                margin='normal'
+                                required
+                                fullWidth
+                                id='verificationcode'
+                                onChange={(e) => setVerificationEnter(e.target.value)}
+                                value={verificationEnter}
+                                label='Verification Code'
+                                name='verificationcode'
+                                autoFocus/>
+                            <Button
+                                type='submit'
+                                fullWidth
+                                variant='contained'
+                                sx={{ mt: 3, mb: 2}}>
+                                    Enter Verification Code
+                            </Button>
+                            <Grid container>
+                                <Grid item>
+                                    <Link onClick={() => navigate('/signup')}href="/signup" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Box>
+                :
+                <></>
+                }
+                {blnMatch !== false ? 
+                    <Box 
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                        }}>
                         <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
                             <LockOutlinedIcon/>
                         </Avatar>
@@ -151,6 +233,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 required
                                 fullWidth
                                 id='pass'
+                                type='password'
                                 onChange={(e) => setPass1(e.target.value)}
                                 value={pass1}
                                 label='Password'
@@ -163,6 +246,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 onChange={(e) => setPass2(e.target.value)}
                                 value={pass2}
                                 id='pass2'
+                                type='password'
                                 label='Verify Password'
                                 name='pass2'
                                 />
@@ -181,9 +265,13 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 </Grid>
                             </Grid>
                         </Box>
-                </Box>
+                    </Box>
                 :
-                <Box 
+                <></>
+                }
+                {
+                    id === null && verificationCode === null ?
+                    <Box 
                     sx={{
                         marginTop: 8,
                         display: 'flex',
@@ -194,7 +282,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                             <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component='h1' variant='h5'>
-                            Sign in
+                            Enter Account Details
                         </Typography>
                         <Box component='form' 
                         onSubmit={handleSendSubmit} 
@@ -233,7 +321,10 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                             </Grid>
                         </Box>
                 </Box>
+                :
+                <></>
                 }
+                
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
