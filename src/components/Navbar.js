@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import HomeIcon from '@mui/icons-material/Home';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import PersonIcon from '@mui/icons-material/Person';
 import './SearchPod.css';
 import LogoutDialog from './LogoutDialog'
 
@@ -33,6 +34,11 @@ const Navbar = ({ handleSubmit, textInput, handleUserLogout }) => {
         e.preventDefault()
         navigate('/discover')
         localStorage.removeItem('selectedLikePod')
+    }
+
+    const handleProfileClick = (e) => {
+        e.preventDefault()
+        navigate('/profile')
     }
 
     return (
@@ -88,6 +94,17 @@ const Navbar = ({ handleSubmit, textInput, handleUserLogout }) => {
                             onClick={handleLikeClick}
                             >
                             <FavoriteIcon />
+                            </IconButton>
+                        </Box>
+                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                            <IconButton
+                            size="large"
+                            edge="end"
+                            aria-label="account of current user"
+                            color="inherit"
+                            onClick={handleProfileClick}
+                            >
+                            <PersonIcon />
                             </IconButton>
                         </Box>
                         <LogoutDialog handleUserLogout={handleUserLogout}/>

@@ -37,6 +37,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
     const [pass2, setPass2] = useState('')
     const [id, setId] = useState(null)
     const [blnMatch, setBlnMatch] = useState(false)
+    const [checked, setChecked] = useState(false)
     
 
     const navigate = useNavigate()
@@ -115,7 +116,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
     const updatePassword = async (pass1, pass2, id) => {
         const updatePassConfig = {
             method: 'patch',
-            url: 'http://localhost:3002/api/user',
+            url: 'http://localhost:3002/api/userPass',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -127,7 +128,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
 
         if (pass1 === pass2) {
             await axios(updatePassConfig).then(response => {
-                handleIdChange(response.data.lnguserid, false)
+                handleIdChange(response.data.lnguserid, checked)
             })
             .catch(err => {
                 console.log(err)
@@ -250,6 +251,9 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 label='Verify Password'
                                 name='pass2'
                                 />
+                            <FormControlLabel
+                                control={<Checkbox onClick={() => setChecked(!checked)} value='remember' color='primary' />}
+                                label='Keep me logged in'/>
                             <Button
                                 type='submit'
                                 fullWidth

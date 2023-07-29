@@ -7,6 +7,7 @@ import Likes from './components/Likes';
 import Home from './components/Home';
 import Discover from './components/Discover';
 import ForgotPass from './components/ForgotPass';
+import User from './components/User';
 
 
 const App = () => {
@@ -72,6 +73,15 @@ const App = () => {
 							<Discover userId={userId} handleUserLogout={handleUserLogout}/>
 						)
 					} />
+				<Route path='/profile'
+					element={
+						!userId ? (
+							<Navigate replace to={'/home'} />
+						)
+						: (
+							<User userId={userId} handleUserLogout={handleUserLogout}/>
+						)
+				} />
 			</Routes>
 		</BrowserRouter>
 
