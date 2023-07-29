@@ -332,9 +332,10 @@ app.post('/api/verifyUser', async (request, response) => {
     }
 })
 
-app.patch('/api/user', async (request, response) => {
-    const lnguserid = request.body.lnguserid
-    const strpass = request.body.strpass
+app.patch('/api/userPass', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    const strpass = body.strpass
     let values, queryResults, queryText
 
     if (!lnguserid || !strpass) {
@@ -351,10 +352,98 @@ app.patch('/api/user', async (request, response) => {
     queryText = 'SELECT * from tblUser WHERE lnguserid = $1 AND strpass = $2'
     queryResults = await client.query(queryText, values)
 
+    if (queryResults.rowCount === 0) {
+        return response.status(400).json({
+            error: `User ${lnguserid} does not exist`
+        })
+    }
+
     if (queryResults.rows[0]) {
         return response.status(200).json(
             {
-                "lnguserid": queryResults.rows[0].lnguserid
+                "lnguserid": queryResults.rows[0].lnguserid,
+                "blnSuccess": true
+            })
+    }
+})
+
+app.patch('/api/username', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    const struser = body.struser
+    let values, queryResults, queryText
+
+    if (!lnguserid || !struser) {
+        return response.status(400).json({
+            error: 'Userid or username missing'
+        })
+    }
+    values = [lnguserid, struser]
+
+    queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblUser WHERE lnguserid = $1)'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0) {
+        return response.status(400).json({
+            error: `User ${lnguserid} does not exist`        
+        })
+    }
+    queryText = 'UPDATE tblUser SET struser = $2, dtmlastlogin = NOW() WHERE lnguserid = $1;'
+    queryResults = await client.query(queryText, values)
+
+    queryText = 'SELECT * from tblUser WHERE struser = $2 AND lnguserid = $2'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0 ) {
+        return response.status(400).json({
+            error: `User ${lnguserid} does not exist`
+        })
+    }
+
+    if (queryResults.rows[0]) {
+        return response.status(200).json(
+            {
+                "blnSuccess": true
+            })
+    }
+})
+
+app.patch('/api/userEmail', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    const stremail = body.stremail
+
+    if (!lnguserid || !stremail) {
+        return response.status(400).json({
+            error: 'Userid or email missing'
+        })
+    }
+    values = [lnguserid, stremail]
+
+    queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblUser WHERE lnguserid = $1)'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0) {
+        return response.status(400).json({
+            error: `User ${lnguserid} does not exist`        
+        })
+    }
+    queryText = 'UPDATE tblUser SET stremail = $2, dtmlastlogin = NOW() WHERE lnguserid = $1;'
+    queryResults = await client.query(queryText, values)
+
+    queryText = 'SELECT * from tblUser WHERE stremail = $2 AND lnguserid = $2'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0 ) {
+        return response.status(400).json({
+            error: `User ${lnguserid} does not exist`
+        })
+    }
+
+    if (queryResults.rows[0]) {
+        return response.status(200).json(
+            {
+                "blnSuccess": true            
             })
     }
 })
