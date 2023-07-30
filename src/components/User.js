@@ -84,6 +84,93 @@ const User = ({ userId, handleUserLogout }) => {
     //     setFormSubmitted(true)
     // }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (Options === 'USEREMAIL') {
+            const userUsernameConfig = {
+                method: 'patch',
+                url: 'http://localhost:3002/api/username',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'lnguserid': userId,
+                    'struser': username
+                }
+            }
+            const userEmailConfig = {
+                method: 'patch',
+                url: 'http://localhost:3002/api/userEmail',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'lnguserid': userId,
+                    'stremail': email
+                }
+            }
+            if (editUser === false && editEmail === true) {
+                console.log(userUsernameConfig)
+                await axios(userUsernameConfig).then(response => {
+                    if (response.status === 200) {
+                        setEditUser(response.data.blnSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+            else if (editUser === true && editEmail === false) {
+                await axios(userEmailConfig).then(response => {
+                    if (response.status === 200) {
+                        setEditEmail(response.data.blnSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+            else {
+                await axios(userUsernameConfig).then(response => {
+                    if (response.status === 200)
+                        setEditUser(response.data.blnSuccess)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                await axios(userEmailConfig).then(response => {
+                    if (response.status === 200) {
+                        setEditEmail(response.data.blnSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+        else {
+            const userPassConfig = {
+                method: 'patch',
+                url: 'http://localhost:3002/api/userPass',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'lnguserid': userId,
+                    'strpass': pass1
+                }
+            }
+            await axios(userPassConfig).then(response => {
+                if (response.status === 200) {
+                    setEditPass(response.data.blnSuccess)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+    }
+
     useEffect(() => {
         getUsernameEmail(userId)
     }, [userId])
@@ -114,7 +201,7 @@ return (
                                 Update account details
                             </Typography>
                             <Box component='form' 
-                            onSubmit 
+                            onSubmit={handleSubmit}
                             sx={{ mt: 1 }}
                             noValidate>
                             <div className='textWrap'>
@@ -166,6 +253,7 @@ return (
                             <div className='textWrap'>
                                 <Button
                                     type='submit'
+                                    disabled={Options === 'USEREMAIL' ? editUser && editEmail : editPass}
                                     fullWidth
                                     variant='contained'
                                     sx={{ mt: 3, mb: 2, width: '75%'}}>
@@ -196,7 +284,7 @@ return (
                                 Update password
                             </Typography>
                             <Box component='form' 
-                            onSubmit 
+                            onSubmit={handleSubmit}
                             sx={{ mt: 1 }}
                             noValidate>
                             <div className='textWrap'>
@@ -209,6 +297,7 @@ return (
                                     onChange={(e) => setPass1(e.target.value)}
                                     name='pass'
                                     type='password'
+                                    error={pass1 !== pass2}
                                     autoComplete='pass'
                                     sx={{bgcolor: 'white', width: '75%'}}
                                     autoFocus/>
@@ -233,6 +322,7 @@ return (
                                     onChange={(e) => setPass2(e.target.value)}
                                     name='pass'
                                     type='password'
+                                    error={pass1 !== pass2}
                                     autoComplete='pass'
                                     sx={{bgcolor: 'white', width: '75%'}}
                                     autoFocus/>
@@ -242,6 +332,7 @@ return (
                                     type='submit'
                                     fullWidth
                                     variant='contained'
+                                    disabled={Options === 'USEREMAIL' ? editUser && editEmail : editPass}
                                     sx={{ mt: 3, mb: 2, width: '75%'}}>
                                         Save Changes
                                 </Button>

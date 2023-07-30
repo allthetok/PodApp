@@ -378,7 +378,7 @@ app.patch('/api/username', async (request, response) => {
             error: 'Userid or username missing'
         })
     }
-    values = [lnguserid, struser]
+    values = [lnguserid]
 
     queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblUser WHERE lnguserid = $1)'
     queryResults = await client.query(queryText, values)
@@ -388,10 +388,11 @@ app.patch('/api/username', async (request, response) => {
             error: `User ${lnguserid} does not exist`        
         })
     }
-    queryText = 'UPDATE tblUser SET struser = $2, dtmlastlogin = NOW() WHERE lnguserid = $1;'
+    values = [struser, lnguserid]
+    queryText = 'UPDATE tblUser SET struser = $1, dtmlastlogin = NOW() WHERE lnguserid = $2;'
     queryResults = await client.query(queryText, values)
 
-    queryText = 'SELECT * from tblUser WHERE struser = $2 AND lnguserid = $2'
+    queryText = 'SELECT * from tblUser WHERE struser = $1 AND lnguserid = $2'
     queryResults = await client.query(queryText, values)
 
     if (queryResults.rowCount === 0 ) {
@@ -403,6 +404,7 @@ app.patch('/api/username', async (request, response) => {
     if (queryResults.rows[0]) {
         return response.status(200).json(
             {
+                "lnguserid": queryResults.rows[0].lnguserid,
                 "blnSuccess": true
             })
     }
@@ -420,7 +422,7 @@ app.patch('/api/userEmail', async (request, response) => {
             error: 'Userid or email missing'
         })
     }
-    values = [lnguserid, stremail]
+    values = [lnguserid]
 
     queryText = 'SELECT 1 WHERE EXISTS (SELECT * FROM tblUser WHERE lnguserid = $1)'
     queryResults = await client.query(queryText, values)
@@ -430,10 +432,12 @@ app.patch('/api/userEmail', async (request, response) => {
             error: `User ${lnguserid} does not exist`        
         })
     }
-    queryText = 'UPDATE tblUser SET stremail = $2, dtmlastlogin = NOW() WHERE lnguserid = $1;'
+
+    values = [stremail, lnguserid]
+    queryText = 'UPDATE tblUser SET stremail = $1, dtmlastlogin = NOW() WHERE lnguserid = $2;'
     queryResults = await client.query(queryText, values)
 
-    queryText = 'SELECT * from tblUser WHERE stremail = $2 AND lnguserid = $2'
+    queryText = 'SELECT * from tblUser WHERE stremail = $1 AND lnguserid = $2'
     queryResults = await client.query(queryText, values)
 
     if (queryResults.rowCount === 0 ) {
@@ -445,6 +449,7 @@ app.patch('/api/userEmail', async (request, response) => {
     if (queryResults.rows[0]) {
         return response.status(200).json(
             {
+                "lnguserid": queryResults.rows[0].lnguserid,
                 "blnSuccess": true            
             })
     }
