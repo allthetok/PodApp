@@ -17,6 +17,7 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import CreateIcon from '@mui/icons-material/Create';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import VerificationDialog from './VerificationDialog'
 import './User.css';
 
 const User = ({ userId, handleUserLogout }) => {
@@ -47,8 +48,6 @@ const User = ({ userId, handleUserLogout }) => {
     //     return userDetails
     // }
 
-    const [finalSearch, setFinalSearch] = useState('')
-    const [formSubmitted, setFormSubmitted] = useState(false)
     const [editUser, setEditUser] = useState(true)
     const [editEmail, setEditEmail] = useState(true)
     const [editPass, setEditPass] = useState(true)
@@ -57,6 +56,45 @@ const User = ({ userId, handleUserLogout }) => {
     const [email, setEmail] = useState('')
     const [pass1, setPass1] = useState('')
     const [pass2, setPass2] = useState('')
+    const [open, setOpen] = useState(false)
+    const [verificationEnter, setVerificationEnter] = useState('')
+    const [verificationCode, setVerificationCode] = useState(null)
+
+    const handleClickOpen = () => {
+        setOpen(true)
+        sendUserVerificationCode(email)
+    }
+
+    const handleClose = () => {
+        // if (match === false) {
+        //    await getUsernameEmail(userId)
+        // }
+        setOpen(false)
+    }
+
+    const handleChange = (e) => {
+        setVerificationEnter(e.target.value)
+    }
+
+    const sendUserVerificationCode = async (stremail) => {
+        const sendEmailConfig = {
+            method: 'post',
+            url: 'http://localhost:3003/api/verification',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'stremail': stremail
+            }
+        }
+        await axios(sendEmailConfig).then(response => {
+            setVerificationCode(response.data.verificationCode)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
 
     const getUsernameEmail = async (userId) => {   
         const userConfig = {
@@ -70,6 +108,7 @@ const User = ({ userId, handleUserLogout }) => {
             }
         }
         await axios(userConfig).then(response => {
+            console.log('fired')
             setUsername(response.data.struser)
             setEmail(response.data.stremail)
         }).catch(err => {
@@ -82,6 +121,92 @@ const User = ({ userId, handleUserLogout }) => {
     //     console.log(textInput)
     //     setFinalSearch(textInput.current.value)
     //     setFormSubmitted(true)
+    // }
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault()
+    //     if (Options === 'USEREMAIL') {
+    //         const userUsernameConfig = {
+    //             method: 'patch',
+    //             url: 'http://localhost:3002/api/username',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             data: {
+    //                 'lnguserid': userId,
+    //                 'struser': username
+    //             }
+    //         }
+    //         const userEmailConfig = {
+    //             method: 'patch',
+    //             url: 'http://localhost:3002/api/userEmail',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             data: {
+    //                 'lnguserid': userId,
+    //                 'stremail': email
+    //             }
+    //         }
+    //         if (editUser === false && editEmail === true) {
+    //             await axios(userUsernameConfig).then(response => {
+    //                 if (response.status === 200) {
+    //                     setEditUser(response.data.blnSuccess)
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //             })
+    //         }
+    //         else if (editUser === true && editEmail === false) {
+    //             await axios(userEmailConfig).then(response => {
+    //                 if (response.status === 200) {
+    //                     setEditEmail(response.data.blnSuccess)
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //             })
+    //         }
+    //         else {
+    //             await axios(userUsernameConfig).then(response => {
+    //                 if (response.status === 200)
+    //                     setEditUser(response.data.blnSuccess)
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //             })
+    //             await axios(userEmailConfig).then(response => {
+    //                 if (response.status === 200) {
+    //                     setEditEmail(response.data.blnSuccess)
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //             })
+    //         }
+    //     }
+    //     else {
+    //         const userPassConfig = {
+    //             method: 'patch',
+    //             url: 'http://localhost:3002/api/userPass',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             data: {
+    //                 'lnguserid': userId,
+    //                 'strpass': pass1
+    //             }
+    //         }
+    //         await axios(userPassConfig).then(response => {
+    //             if (response.status === 200) {
+    //                 setEditPass(response.data.blnSuccess)
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    //     }
     // }
 
     const handleSubmit = async (e) => {
@@ -98,32 +223,10 @@ const User = ({ userId, handleUserLogout }) => {
                     'struser': username
                 }
             }
-            const userEmailConfig = {
-                method: 'patch',
-                url: 'http://localhost:3002/api/userEmail',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    'lnguserid': userId,
-                    'stremail': email
-                }
-            }
             if (editUser === false && editEmail === true) {
-                console.log(userUsernameConfig)
                 await axios(userUsernameConfig).then(response => {
                     if (response.status === 200) {
                         setEditUser(response.data.blnSuccess)
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            }
-            else if (editUser === true && editEmail === false) {
-                await axios(userEmailConfig).then(response => {
-                    if (response.status === 200) {
-                        setEditEmail(response.data.blnSuccess)
                     }
                 })
                 .catch(err => {
@@ -131,21 +234,7 @@ const User = ({ userId, handleUserLogout }) => {
                 })
             }
             else {
-                await axios(userUsernameConfig).then(response => {
-                    if (response.status === 200)
-                        setEditUser(response.data.blnSuccess)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-                await axios(userEmailConfig).then(response => {
-                    if (response.status === 200) {
-                        setEditEmail(response.data.blnSuccess)
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+                handleClickOpen()
             }
         }
         else {
@@ -171,6 +260,76 @@ const User = ({ userId, handleUserLogout }) => {
         }
     }
 
+    const handleVerificationSubmit = async (e) => {
+        e.preventDefault()
+        console.log(verificationCode)
+        if (parseInt(verificationEnter) === verificationCode) {
+            if (editUser === true && editEmail === false) {
+                const userEmailConfig = {
+                    method: 'patch',
+                    url: 'http://localhost:3002/api/userEmail',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        'lnguserid': userId,
+                        'stremail': email
+                    }
+                }
+                await axios(userEmailConfig).then(response => {
+                    if (response.status === 200) {
+                        setEditEmail(response.data.blnSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+            else {
+                const userUsernameConfig = {
+                    method: 'patch',
+                    url: 'http://localhost:3002/api/username',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: {
+                            'lnguserid': userId,
+                            'struser': username
+                        }
+                }
+                const userEmailConfig = {
+                    method: 'patch',
+                    url: 'http://localhost:3002/api/userEmail',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        'lnguserid': userId,
+                        'stremail': email
+                    }
+                }
+                await axios(userUsernameConfig).then(response => {
+                    if (response.status === 200) {
+                        setEditUser(response.data.blnSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                await axios(userEmailConfig).then(response => {
+                    if (response.status === 200) {
+                        setEditEmail(response.data.blnSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+        setVerificationEnter('')
+        handleClose()
+        } 
+    }
+
     useEffect(() => {
         getUsernameEmail(userId)
     }, [userId])
@@ -179,7 +338,7 @@ return (
     <div className='userContainer'>
         <Navbar handleUserLogout={handleUserLogout}/>
         <div className='buttonWrap'>
-                <Button onClick={() => setOptions('USEREMAIL')} variant={Options === 'USEREMAIL' ? 'contained' : 'outlined'}>Username/Email</Button>
+                <Button onClick={() => setOptions('USEREMAIL')} variant={Options === 'USEREMAIL' ? 'contained' : 'outlined'}>USER DETAILS</Button>
                 <Button onClick={() => setOptions('PASS')} variant={Options === 'PASS' ? 'contained' : 'outlined'}>Password</Button>
             </div>
         <div>
@@ -198,7 +357,7 @@ return (
                                 <AccountBoxIcon/>
                             </Avatar>
                             <Typography component='h1' variant='h5'>
-                                Update account details
+                                Update user details
                             </Typography>
                             <Box component='form' 
                             onSubmit={handleSubmit}
@@ -230,13 +389,13 @@ return (
                             <div className='textWrap'>
                                 <TextField 
                                     margin='normal'
-                                    id='pass'
+                                    id='email'
                                     label='Email'
                                     disabled={editEmail}
                                     onChange={(e) => setEmail(e.target.value)}
                                     value={email}
-                                    name='pass'
-                                    autoComplete='pass'
+                                    name='email'
+                                    autoComplete='email'
                                     sx={{bgcolor: 'white', width: '75%'}}
                                     autoFocus/>
                                     <IconButton
@@ -263,7 +422,9 @@ return (
                         </Box>
                     </Box>
                 </Container>
-            </div>
+                
+                <VerificationDialog open={open} verificationEnter={verificationEnter} handleChange={handleChange} handleClickOpen={handleClickOpen} handleVerificationSubmit={handleVerificationSubmit} handleClose={handleClose} />
+                </div>
         : <></>
         }
         {Options === 'PASS' ?

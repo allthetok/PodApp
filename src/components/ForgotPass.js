@@ -110,7 +110,6 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                 console.log(err)
             })
         }
-
     }
 
     const updatePassword = async (pass1, pass2, id) => {
