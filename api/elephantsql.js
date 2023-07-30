@@ -412,6 +412,8 @@ app.patch('/api/userEmail', async (request, response) => {
     const body = request.body
     const lnguserid = body.lnguserid
     const stremail = body.stremail
+    let values, queryResults, queryText
+
 
     if (!lnguserid || !stremail) {
         return response.status(400).json({
@@ -445,6 +447,37 @@ app.patch('/api/userEmail', async (request, response) => {
             {
                 "blnSuccess": true            
             })
+    }
+})
+
+app.post('/api/useremail', async (request, response) => {
+    const body = request.body
+    const lnguserid = body.lnguserid
+    let values, queryResults, queryText
+
+    if (!lnguserid) {
+        return response.status(400).json({
+            error: 'Userid missing'
+        })
+    }
+
+    values = [lnguserid]
+
+    queryText = 'SELECT * FROM tblUser WHERE lnguserid = $1;'
+    queryResults = await client.query(queryText, values)
+
+    if (queryResults.rowCount === 0) {
+        return response.status(400).json({
+            error: `User ${lnguserid} does not exist`
+        })
+    }
+
+    else if (queryResults.rowCount !== 0) {
+        return response.status(200).json({
+            "lnguserid": queryResults.rows[0].lnguserid,
+            "struser": queryResults.rows[0].struser,
+            "stremail": queryResults.rows[0].stremail
+        })
     }
 })
 
