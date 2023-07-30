@@ -20,28 +20,84 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import './User.css';
 
 const User = ({ userId, handleUserLogout }) => {
+
+    // const getUsernameEmail = async (userId) => {
+    //     let userDetails = {
+    //         'struser': '',
+    //         'stremail': ''
+    //     }    
+    //     const userConfig = {
+    //         method: 'post',
+    //         url: 'http://localhost:3002/api/userEmail',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         data: {
+    //             'lnguserid': userId
+    //         }
+    //     }
+    //     await axios(userConfig).then(response => {
+    //         userDetails = {
+    //             'struser': response.data.struser,
+    //             'stremail': response.data.stremail
+    //         }
+    //     }).catch(err => {
+    //         console.log(err)
+    //     })
+    //     return userDetails
+    // }
+
     const [finalSearch, setFinalSearch] = useState('')
     const [formSubmitted, setFormSubmitted] = useState(false)
     const [editUser, setEditUser] = useState(true)
     const [editEmail, setEditEmail] = useState(true)
     const [editPass, setEditPass] = useState(true)
+    const [Options, setOptions] = useState('USEREMAIL')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [pass1, setPass1] = useState('')
+    const [pass2, setPass2] = useState('')
 
-    const textInput = useRef()
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(textInput)
-        setFinalSearch(textInput.current.value)
-        setFormSubmitted(true)
+    const getUsernameEmail = async (userId) => {   
+        const userConfig = {
+            method: 'post',
+            url: 'http://localhost:3002/api/userEmail',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                'lnguserid': userId
+            }
+        }
+        await axios(userConfig).then(response => {
+            setUsername(response.data.struser)
+            setEmail(response.data.stremail)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault()
+    //     console.log(textInput)
+    //     setFinalSearch(textInput.current.value)
+    //     setFormSubmitted(true)
+    // }
 
+    useEffect(() => {
+        getUsernameEmail(userId)
+    }, [userId])
 
 return (
     <div className='userContainer'>
-        <Navbar handleSubmit={handleSubmit} textInput={textInput} handleUserLogout={handleUserLogout}/>
+        <Navbar handleUserLogout={handleUserLogout}/>
+        <div className='buttonWrap'>
+                <Button onClick={() => setOptions('USEREMAIL')} variant={Options === 'USEREMAIL' ? 'contained' : 'outlined'}>Username/Email</Button>
+                <Button onClick={() => setOptions('PASS')} variant={Options === 'PASS' ? 'contained' : 'outlined'}>Password</Button>
+            </div>
         <div>
-            <div>
+            {Options === 'USEREMAIL' ?
+                <div>
                 <Container component='main' maxWidth='m' sx={{color: 'white', fontWeight: '400', fontSize: '1rem', lineHeight: '1.5', letterSpacing: '0.00938em'}}>
                     <Box 
                         sx={{
@@ -51,14 +107,14 @@ return (
                             alignItems: 'center',
                             bgcolor: '#0b1528'
                         }}>
-                            <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <Avatar sx={{m: 1, bgcolor: '#1976d2'}}>
                                 <AccountBoxIcon/>
                             </Avatar>
                             <Typography component='h1' variant='h5'>
                                 Update account details
                             </Typography>
                             <Box component='form' 
-                            onSubmit={handleSubmit} 
+                            onSubmit 
                             sx={{ mt: 1 }}
                             noValidate>
                             <div className='textWrap'>
@@ -67,6 +123,8 @@ return (
                                     id='user'
                                     label='Username'
                                     disabled={editUser}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    value={username}
                                     name='user'
                                     autoComplete='user'
                                     sx={{bgcolor: 'white', width: '75%'}}
@@ -88,6 +146,8 @@ return (
                                     id='pass'
                                     label='Email'
                                     disabled={editEmail}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
                                     name='pass'
                                     autoComplete='pass'
                                     sx={{bgcolor: 'white', width: '75%'}}
@@ -104,12 +164,51 @@ return (
                                     </IconButton>
                             </div>
                             <div className='textWrap'>
+                                <Button
+                                    type='submit'
+                                    fullWidth
+                                    variant='contained'
+                                    sx={{ mt: 3, mb: 2, width: '75%'}}>
+                                        Save Changes
+                                </Button>
+                            </div>
+                        </Box>
+                    </Box>
+                </Container>
+            </div>
+        : <></>
+        }
+        {Options === 'PASS' ?
+                <div>
+                <Container component='main' maxWidth='m' sx={{color: 'white', fontWeight: '400', fontSize: '1rem', lineHeight: '1.5', letterSpacing: '0.00938em'}}>
+                    <Box 
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            bgcolor: '#0b1528'
+                        }}>
+                            <Avatar sx={{m: 1, bgcolor: '#1976d2'}}>
+                                <AccountBoxIcon/>
+                            </Avatar>
+                            <Typography component='h1' variant='h5'>
+                                Update password
+                            </Typography>
+                            <Box component='form' 
+                            onSubmit 
+                            sx={{ mt: 1 }}
+                            noValidate>
+                            <div className='textWrap'>
                                 <TextField 
                                     margin='normal'
                                     id='pass'
                                     label='Password'
                                     disabled={editPass}
+                                    value={pass1}
+                                    onChange={(e) => setPass1(e.target.value)}
                                     name='pass'
+                                    type='password'
                                     autoComplete='pass'
                                     sx={{bgcolor: 'white', width: '75%'}}
                                     autoFocus/>
@@ -123,6 +222,20 @@ return (
                                     >
                                         <CreateIcon />
                                     </IconButton>
+                            </div>
+                            <div className='textWrap'>
+                                <TextField 
+                                    margin='normal'
+                                    id='pass'
+                                    label='Confirm Password'
+                                    disabled={editPass}
+                                    value={pass2}
+                                    onChange={(e) => setPass2(e.target.value)}
+                                    name='pass'
+                                    type='password'
+                                    autoComplete='pass'
+                                    sx={{bgcolor: 'white', width: '75%'}}
+                                    autoFocus/>
                             </div>
                             <div className='textWrap'>
                                 <Button
@@ -149,6 +262,9 @@ return (
                     </Box>
                 </Container>
             </div>
+        : <></>
+        }
+            
         </div>
     </div>
 )

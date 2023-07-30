@@ -248,7 +248,7 @@ const ForgotPass = ({ handleIdChange, userId}) => {
                                 value={pass2}
                                 id='pass2'
                                 type='password'
-                                label='Verify Password'
+                                label='Confirm Password'
                                 name='pass2'
                                 />
                             <FormControlLabel

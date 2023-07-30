@@ -19,3 +19,9 @@
     padding-left: 120px;
 }
 
+.buttonWrap {
+    padding-top: 20px;
+    padding-bottom: 0px;
+    text-align: center;
+    background: #0b1528;
+}
