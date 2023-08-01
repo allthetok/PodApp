@@ -95,7 +95,7 @@ app.post('/api/user', async (request: Request, response: Response) => {
     }
 })
 
-// app.post('/api/likes', async (request, response) => {
+// app.post('/api/likes', async (request: Request, response: Response) => {
 //     const queryResults = await client.query('CREATE TABLE tblLikes(lngLikeId serial PRIMARY KEY, strpodchaserId VARCHAR (50) NOT NULL, strtitle VARCHAR (50) NOT NULL, strname VARCHAR (50) NOT NULL, strweburl VARCHAR (50) NOT NULL, strimageurl VARCHAR (50) NOT NULL, dtmLiked TIMESTAMP NOT NULL, strlatestEpisodeDate VARCHAR (50), lngUserId serial NOT NULL,FOREIGN KEY (lngUserId) REFERENCES tblUser(lngUserId));')
 //     if (queryResults) {
 //         console.log(queryResults)
@@ -112,7 +112,7 @@ app.post('/api/likePod', async (request: Request, response: Response) => {
     const strimageurl:string = body.strimageurl
     const strlatestepisodedate:string = body.strlatestepisodedate
     const lnguserid:number = body.lnguserid
-    const values: any = [strpodchaserid, strtitle, strname, strweburl, strimageurl, strlatestepisodedate, lnguserid]
+    const values: any[] = [strpodchaserid, strtitle, strname, strweburl, strimageurl, strlatestepisodedate, lnguserid]
     const queryText: string = 'INSERT INTO tblLikes(strpodchaserId, strtitle, strname, strweburl, strimageurl, dtmLiked, strlatestEpisodeDate, lngUserId) VALUES($1, $2, $3, $4, $5, NOW(), $6, $7) RETURNING *'
     let queryResults: QueryResult
 
@@ -134,20 +134,20 @@ app.post('/api/likePod', async (request: Request, response: Response) => {
     }
 })
 
-app.post('/api/likeEp', async (request, response) => {
+app.post('/api/likeEp', async (request: Request, response: Response) => {
     const body = request.body
-    const strpodchaserid = body.strpodchaserid
-    const strepisodeid = body.strepisodeid
-    const strpodtitle = body.strpodTitle
-    const strtitle = body.strtitle
-    const strweburl = body.strweburl
-    const strimageurl = body.strimageurl
-    const intlength = body.intlength
-    const strairdate = body.strairdate
-    const lnguserid = body.lnguserid
-    const values = [strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, lnguserid]
-    const queryText = 'INSERT INTO tblLikesEpisode(strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, dtmLiked, lnguserid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9) RETURNING *'
-    let queryResults
+    const strpodchaserid: string = body.strpodchaserid
+    const strepisodeid: string = body.strepisodeid
+    const strpodtitle: string = body.strpodTitle
+    const strtitle: string = body.strtitle
+    const strweburl: string = body.strweburl
+    const strimageurl: string = body.strimageurl
+    const intlength: number = body.intlength
+    const strairdate: string = body.strairdate
+    const lnguserid: number = body.lnguserid
+    const values: any[] = [strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, lnguserid]
+    const queryText: string = 'INSERT INTO tblLikesEpisode(strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, dtmLiked, lnguserid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9) RETURNING *'
+    let queryResults: QueryResult
 
     if (!strpodchaserid || !strepisodeid || !strpodtitle || !strtitle || !strweburl || !strairdate || !lnguserid) {
         return response.status(400).json({
@@ -169,12 +169,12 @@ app.post('/api/likeEp', async (request, response) => {
     }
 })
 
-app.post('/api/like', async (request, response) => {
+app.post('/api/like', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    const strpodchaserid = body.strpodchaserid
-    const values = [lnguserid, strpodchaserid]
-    let queryText, queryResults
+    const lnguserid: number = body.lnguserid
+    const strpodchaserid: number = body.strpodchaserid
+    const values: any[] = [lnguserid, strpodchaserid]
+    let queryText: string, queryResults: QueryResult
 
     if (!lnguserid || !strpodchaserid) {
         return response.status(400).json({
@@ -198,12 +198,12 @@ app.post('/api/like', async (request, response) => {
 
 })
 
-app.post('/api/likes', async (request, response) => {
+app.post('/api/likes', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    const strspecified = body.strspecified
-    const values = [lnguserid]
-    let queryText, queryResults
+    const lnguserid: number = body.lnguserid
+    const strspecified: string = body.strspecified
+    const values: number[] = [lnguserid]
+    let queryText: string, queryResults: QueryResult
 
     if (!lnguserid) {
         return response.status(400).json({
@@ -248,13 +248,13 @@ app.post('/api/likes', async (request, response) => {
 
 })
 
-app.delete('/api/like', async (request, response) => {
+app.delete('/api/like', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    const strpodchaserid = body.strpodchaserid
-    const strepisodeid = body.strepisodeid
-    let values
-    let queryText, queryResults
+    const lnguserid: number = body.lnguserid
+    const strpodchaserid: string = body.strpodchaserid
+    const strepisodeid: string = body.strepisodeid
+    let values: any[]
+    let queryText: string, queryResults: QueryResult
 
     if (!lnguserid ) {
         return response.status(400).json({
@@ -300,12 +300,12 @@ app.delete('/api/like', async (request, response) => {
 
 })
 
-app.post('/api/verifyUser', async (request, response) => {
+app.post('/api/verifyUser', async (request: Request, response: Response) => {
     const body = request.body
-    const struser = body.struser
-    const stremail = body.stremail
-    let values
-    let queryText, queryResults
+    const struser: string = body.struser
+    const stremail: string = body.stremail
+    let values: string[]
+    let queryText: string, queryResults: QueryResult
 
     if (!struser || !stremail) {
         return response.status(400).json({
@@ -333,11 +333,11 @@ app.post('/api/verifyUser', async (request, response) => {
     }
 })
 
-app.patch('/api/userPass', async (request, response) => {
+app.patch('/api/userPass', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    const strpass = body.strpass
-    let values, queryResults, queryText
+    const lnguserid: number = body.lnguserid
+    const strpass: string = body.strpass
+    let values: any[], queryResults: QueryResult, queryText: string
 
     if (!lnguserid || !strpass) {
         return response.status(400).json({
@@ -368,11 +368,11 @@ app.patch('/api/userPass', async (request, response) => {
     }
 })
 
-app.patch('/api/username', async (request, response) => {
+app.patch('/api/username', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    const struser = body.struser
-    let values, queryResults, queryText
+    const lnguserid: number = body.lnguserid
+    const struser: string = body.struser
+    let values: any[], queryResults: QueryResult, queryText: string
 
     if (!lnguserid || !struser) {
         return response.status(400).json({
@@ -411,11 +411,11 @@ app.patch('/api/username', async (request, response) => {
     }
 })
 
-app.patch('/api/userEmail', async (request, response) => {
+app.patch('/api/userEmail', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    const stremail = body.stremail
-    let values, queryResults, queryText
+    const lnguserid: number = body.lnguserid
+    const stremail: string = body.stremail
+    let values: any[], queryResults: QueryResult, queryText: string
 
 
     if (!lnguserid || !stremail) {
@@ -456,10 +456,10 @@ app.patch('/api/userEmail', async (request, response) => {
     }
 })
 
-app.post('/api/useremail', async (request, response) => {
+app.post('/api/useremail', async (request: Request, response: Response) => {
     const body = request.body
-    const lnguserid = body.lnguserid
-    let values, queryResults, queryText
+    const lnguserid: number = body.lnguserid
+    let values: number[], queryResults: QueryResult, queryText: string
 
     if (!lnguserid) {
         return response.status(400).json({
@@ -487,7 +487,7 @@ app.post('/api/useremail', async (request, response) => {
     }
 })
 
-const PORT = process.env.PORT || 3002
+const PORT = process.env.DB_PORT || 3002
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`)

@@ -75,7 +75,7 @@ app.post('/api/verification', async (request, response) => {
     })
 })
 
-const PORT = 3003
+const PORT = process.env.MAIL_PORT || 3003
 app.listen(PORT, () => {
     console.log(`Mail server running on port: ${PORT}`)
 })
