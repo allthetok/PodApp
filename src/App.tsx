@@ -3,24 +3,24 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import Likes from './components/Likes'
-import Home from './components/Home'
-import Discover from './components/Discover'
-import ForgotPass from './components/ForgotPass'
-import User from './components/User'
+import { Login } from './tscomponents/Login'
+import { Signup } from './tscomponents/Signup'
+import { Likes } from './tscomponents/Likes'
+import { Home } from './tscomponents/Home'
+import { Discover } from './tscomponents/Discover'
+import { ForgotPass } from './tscomponents/ForgotPass'
+import { User } from './tscomponents/User'
 
 const App = () => {
 	const [userId, setUserId] = useState(() => {
 		const savedUserId = localStorage.getItem('userid')
 		localStorage.removeItem('selectedLikePod')
-		const initialVal = JSON.parse(savedUserId)
+		const initialVal = JSON.parse(savedUserId!)
 		return initialVal || null
 	})
 
 
-	const handleUserIdChange = (resUserId, remember) => {
+	const handleUserIdChange = (resUserId: string, remember: boolean) => {
 		setUserId(resUserId)
 		if (remember === true) {
 			localStorage.setItem('userid', resUserId)

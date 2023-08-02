@@ -336,4 +336,4 @@ const ForgotPass = ({ handleIdChange, userId }) => {
 	)
 }
 
-export default ForgotPass
+export { ForgotPass }

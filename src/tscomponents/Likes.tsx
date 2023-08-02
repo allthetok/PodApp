@@ -39,4 +39,4 @@ const Likes = ({ userId, handleUserLogout }) => {
 	)
 }
 
-export default Likes
+export { Likes }

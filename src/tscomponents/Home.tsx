@@ -40,4 +40,4 @@ const Home = ({ userId, handleUserLogout }) => {
 	)
 }
 
-export default Home
+export { Home }

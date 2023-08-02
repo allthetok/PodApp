@@ -141,4 +141,4 @@ const Signup = ({ handleIdChange, userId }) => {
 	)
 }
 
-export default Signup
+export { Signup }

@@ -10,13 +10,23 @@ import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, SxProps, ThemeProvider } from '@mui/material/styles'
 
-const Copyright = ( props ) => {
+type CopyrightProps = {
+	sx: SxProps
+}
+
+type LoginProps = {
+	handleIdChange: (uid: number, check: boolean) => void,
+	userId: number
+}
+
+const Copyright = ( props: CopyrightProps ) => {
 	return <Typography variant='body2' color='text.secondary' align='center' {...props}>
 		{'Copyright © '}
 		<Link color='inherit' href='https://github.com/allthetok'>
@@ -29,18 +39,14 @@ const Copyright = ( props ) => {
 
 const defaultTheme = createTheme()
 
-const Signup = ({ handleIdChange, userId }) => {
-	//const [userId, setUserId] = useState(null)
+const Login = ({ handleIdChange, userId }: LoginProps) => {
 	const [checked, setChecked] = useState(false)
-
-	localStorage.removeItem('userid')
 
 	const navigate = useNavigate()
 
-	const getUserId = async (dataTarget) => {
+	const getUserId = async (dataTarget: FormData): Promise<void> => {
 		const user = dataTarget.get('user')
 		const pass = dataTarget.get('password')
-		const email = dataTarget.get('email')
 
 		const userConfig = {
 			method: 'post',
@@ -51,8 +57,7 @@ const Signup = ({ handleIdChange, userId }) => {
 			data: {
 				'struser': user,
 				'strpass': pass,
-				'stremail': email,
-				'newUser': true,
+				'newUser': false
 			}
 		}
 
@@ -63,16 +68,15 @@ const Signup = ({ handleIdChange, userId }) => {
 		})
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		const data = new FormData(e.currentTarget)
 		getUserId(data)
-		console.log(userId)
 	}
+
 	useEffect(() => {
 		if (userId) {
 			navigate('/home')
-			//localStorage.setItem('userid', userId)
 		}
 	}, [userId])
 
@@ -91,7 +95,7 @@ const Signup = ({ handleIdChange, userId }) => {
 						<LockOutlinedIcon/>
 					</Avatar>
 					<Typography component='h1' variant='h5'>
-                            Sign Up
+                            Sign in
 					</Typography>
 					<Box component='form'
 						onSubmit={handleSubmit}
@@ -100,20 +104,11 @@ const Signup = ({ handleIdChange, userId }) => {
 							margin='normal'
 							required
 							fullWidth
-							id='email'
-							label='Email'
-							name='email'
-							autoComplete='email'
-							autoFocus/>
-						<TextField
-							margin='normal'
-							required
-							fullWidth
 							id='user'
-							label='Username'
+							label='Username/Email'
 							name='user'
 							autoComplete='user'
-						/>
+							autoFocus/>
 						<TextField
 							margin='normal'
 							required
@@ -131,8 +126,20 @@ const Signup = ({ handleIdChange, userId }) => {
 							fullWidth
 							variant='contained'
 							sx={{ mt: 3, mb: 2 }}>
-                                    Sign Up
+                                    Sign In
 						</Button>
+						<Grid container>
+							<Grid item xs>
+								<Link onClick={() => navigate('/forgot')} href="/forgot" variant="body2">
+                                        Forgot password?
+								</Link>
+							</Grid>
+							<Grid item>
+								<Link onClick={() => navigate('/signup')} href="/signup" variant="body2">
+									{'Don\'t have an account? Sign Up'}
+								</Link>
+							</Grid>
+						</Grid>
 					</Box>
 				</Box>
 				<Copyright sx={{ mt: 8, mb: 4 }} />
@@ -141,4 +148,4 @@ const Signup = ({ handleIdChange, userId }) => {
 	)
 }
 
-export default Signup
+export { Login }

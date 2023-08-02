@@ -45,4 +45,4 @@ const Discover = ({ userId, handleUserLogout }) => {
 	)
 }
 
-export default Discover
+export { Discover }

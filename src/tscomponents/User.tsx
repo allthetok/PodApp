@@ -524,4 +524,4 @@ const User = ({ userId, handleUserLogout }) => {
 	)
 }
 
-export default User
+export { User }
