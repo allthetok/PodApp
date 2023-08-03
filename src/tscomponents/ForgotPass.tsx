@@ -15,9 +15,18 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, SxProps, ThemeProvider } from '@mui/material/styles'
 
-const Copyright = ( props ) => {
+type CopyrightProps = {
+	sx: SxProps
+}
+
+type ForgotProps = {
+	handleIdChange: (uid: number, check: boolean) => void,
+	userId: number
+}
+
+const Copyright = ( props: CopyrightProps ) => {
 	return <Typography variant='body2' color='text.secondary' align='center' {...props}>
 		{'Copyright © '}
 		<Link color='inherit' href='https://github.com/allthetok'>
@@ -30,7 +39,7 @@ const Copyright = ( props ) => {
 
 const defaultTheme = createTheme()
 
-const ForgotPass = ({ handleIdChange, userId }) => {
+const ForgotPass = ({ handleIdChange, userId }: ForgotProps) => {
 	//const [userId, setUserId] = useState(null)
 
 	const [verificationCode, setVerificationCode] = useState(null)
@@ -68,7 +77,7 @@ const ForgotPass = ({ handleIdChange, userId }) => {
 	//     })
 	// }
 
-	const sendUserVerificationCode = async (dataTarget) => {
+	const sendUserVerificationCode = async (dataTarget: FormData): Promise<void> => {
 		const email = dataTarget.get('email')
 		const user = dataTarget.get('user')
 		let blnExists = false
@@ -104,7 +113,7 @@ const ForgotPass = ({ handleIdChange, userId }) => {
 				console.log(err)
 			})
 
-		if (blnExists === true) {
+		if (blnExists) {
 			await axios(sendEmailConfig).then(response => {
 				setVerificationCode(response.data.verificationCode)
 			})
@@ -114,7 +123,7 @@ const ForgotPass = ({ handleIdChange, userId }) => {
 		}
 	}
 
-	const updatePassword = async (pass1, pass2, id) => {
+	const updatePassword = async (pass1: string, pass2: string, id: number): Promise<void> => {
 		const updatePassConfig = {
 			method: 'patch',
 			url: 'http://localhost:3002/api/userPass',
@@ -137,13 +146,13 @@ const ForgotPass = ({ handleIdChange, userId }) => {
 		}
 	}
 
-	const handleSendSubmit = (e) => {
+	const handleSendSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		const data = new FormData(e.currentTarget)
 		sendUserVerificationCode(data)
 	}
 
-	const handleVerificationSubmit = (e) => {
+	const handleVerificationSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		if (parseInt(verificationEnter) === verificationCode) {
 			setBlnMatch(true)
@@ -151,9 +160,9 @@ const ForgotPass = ({ handleIdChange, userId }) => {
 		}
 	}
 
-	const handlePassSubmit = (e) => {
+	const handlePassSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
-		updatePassword(pass1, pass2, id)
+		updatePassword(pass1, pass2, id!)
 	}
 
 	useEffect(() => {

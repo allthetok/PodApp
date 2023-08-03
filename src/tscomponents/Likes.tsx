@@ -7,18 +7,22 @@ import PodcastLikeList from './PodcastLikeList'
 import EpisodeLikeList from './EpisodeLikeList'
 import './Filter.css'
 
+type LikesProps = {
+	userId: number,
+	handleUserLogout: (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => void
+}
 
-const Likes = ({ userId, handleUserLogout }) => {
-	const [finalSearch, setFinalSearch] = useState('')
+const Likes = ({ userId, handleUserLogout }: LikesProps) => {
+	const [finalSearch, setFinalSearch] =  useState<string | null | undefined>('')
 	const [formSubmitted, setFormSubmitted] = useState(false)
 	const [sortOptions, setSortOptions] = useState('PODCAST')
 
-	const textInput = useRef()
+	const textInput = useRef<HTMLInputElement>(null)
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		console.log(textInput)
-		setFinalSearch(textInput.current.value)
+		setFinalSearch(textInput.current?.nodeValue)
 		setFormSubmitted(true)
 	}
 

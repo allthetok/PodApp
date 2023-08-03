@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, SyntheticEvent } from 'react'
 import { Button, Autocomplete, TextField } from '@mui/material'
 import Navbar from './Navbar'
 import PodcastDiscoverList from './PodcastDiscoverList'
 
+type DiscoverProps = {
+	userId: number,
+	handleUserLogout: (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => void
+}
 
-const Discover = ({ userId, handleUserLogout }) => {
+const Discover = ({ userId, handleUserLogout }: DiscoverProps) => {
 
-	const [finalSearch, setFinalSearch] = useState('')
+	const [finalSearch, setFinalSearch] =  useState<string | null | undefined>('')
 	const [formSubmitted, setFormSubmitted] = useState(false)
 	const [sortOptions, setSortOptions] = useState('FOLLOWER_COUNT')
 	const [options, setOptions] = useState('10')
@@ -16,19 +20,24 @@ const Discover = ({ userId, handleUserLogout }) => {
 	const numOptions = ['5', '10', '20']
 
 
-	const textInput = useRef()
+	const textInput = useRef<HTMLInputElement>(null)
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		console.log(textInput)
-		setFinalSearch(textInput.current.value)
+		setFinalSearch(textInput.current?.nodeValue)
 		setFormSubmitted(true)
 	}
 
 
-	const onTextChange = (event, values) => {
-		event.preventDefault()
-		setOptions(values)
+	// const onTextChange = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }, values) => {
+	// 	e.preventDefault()
+	// 	setOptions(values)
+	// }
+
+	const onTextChange = (e: SyntheticEvent<Element, Event>, value: string | null): void => {
+		e.preventDefault()
+		setOptions(value!)
 	}
 
 	return (

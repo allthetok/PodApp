@@ -22,7 +22,12 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import VerificationDialog from './VerificationDialog'
 import './User.css'
 
-const User = ({ userId, handleUserLogout }) => {
+type UserProps = {
+	userId: number,
+	handleUserLogout: (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => void
+}
+
+const User = ({ userId, handleUserLogout }: UserProps) => {
 
 	// const getUsernameEmail = async (userId) => {
 	//     let userDetails = {
@@ -74,11 +79,11 @@ const User = ({ userId, handleUserLogout }) => {
 		setOpen(false)
 	}
 
-	const handleChange = (e) => {
-		setVerificationEnter(e.target.value)
+	const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+		setVerificationEnter(e.currentTarget.value)
 	}
 
-	const sendUserVerificationCode = async (stremail) => {
+	const sendUserVerificationCode = async (stremail: string): Promise<void> => {
 		const sendEmailConfig = {
 			method: 'post',
 			url: 'http://localhost:3003/api/verification',
@@ -98,7 +103,7 @@ const User = ({ userId, handleUserLogout }) => {
 	}
 
 
-	const getUsernameEmail = async (userId) => {
+	const getUsernameEmail = async (userId: number): Promise<void> => {
 		const userConfig = {
 			method: 'post',
 			url: 'http://localhost:3002/api/userEmail',
@@ -211,7 +216,7 @@ const User = ({ userId, handleUserLogout }) => {
 	//     }
 	// }
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }): Promise<void> => {
 		e.preventDefault()
 		if (Options === 'USEREMAIL') {
 			const userUsernameConfig = {
@@ -262,7 +267,7 @@ const User = ({ userId, handleUserLogout }) => {
 		}
 	}
 
-	const handleVerificationSubmit = async (e) => {
+	const handleVerificationSubmit = async (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }): Promise<void> => {
 		e.preventDefault()
 		console.log(verificationCode)
 		if (parseInt(verificationEnter) === verificationCode) {
@@ -338,7 +343,7 @@ const User = ({ userId, handleUserLogout }) => {
 
 	return (
 		<div className='userContainer'>
-			<Navbar handleUserLogout={handleUserLogout}/>
+			<Navbar handleUserLogout={handleUserLogout} handleSubmit={undefined} textInput={undefined}/>
 			<div className='buttonWrap'>
 				<Button onClick={() => setOptions('USEREMAIL')} variant={Options === 'USEREMAIL' ? 'contained' : 'outlined'}>USER DETAILS</Button>
 				<Button onClick={() => setOptions('PASS')} variant={Options === 'PASS' ? 'contained' : 'outlined'}>Password</Button>
@@ -346,7 +351,7 @@ const User = ({ userId, handleUserLogout }) => {
 			<div>
 				{Options === 'USEREMAIL' ?
 					<div>
-						<Container component='main' maxWidth='m' sx={{ color: 'white', fontWeight: '400', fontSize: '1rem', lineHeight: '1.5', letterSpacing: '0.00938em' }}>
+						<Container component='main' maxWidth='md' sx={{ color: 'white', fontWeight: '400', fontSize: '1rem', lineHeight: '1.5', letterSpacing: '0.00938em' }}>
 							<Box
 								sx={{
 									marginTop: 8,
@@ -431,7 +436,7 @@ const User = ({ userId, handleUserLogout }) => {
 				}
 				{Options === 'PASS' ?
 					<div>
-						<Container component='main' maxWidth='m' sx={{ color: 'white', fontWeight: '400', fontSize: '1rem', lineHeight: '1.5', letterSpacing: '0.00938em' }}>
+						<Container component='main' maxWidth='md' sx={{ color: 'white', fontWeight: '400', fontSize: '1rem', lineHeight: '1.5', letterSpacing: '0.00938em' }}>
 							<Box
 								sx={{
 									marginTop: 8,
@@ -495,7 +500,8 @@ const User = ({ userId, handleUserLogout }) => {
 											type='submit'
 											fullWidth
 											variant='contained'
-											disabled={Options === 'USEREMAIL' ? editUser && editEmail : editPass}
+											// disabled={Options === 'USEREMAIL' ? editUser && editEmail : editPass}
+											disabled={editPass}
 											sx={{ mt: 3, mb: 2, width: '75%' }}>
                                         Save Changes
 										</Button>

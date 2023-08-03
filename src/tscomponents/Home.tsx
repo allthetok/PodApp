@@ -5,26 +5,29 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import PodcastDetail from './PodcastDetail'
 
-const Home = ({ userId, handleUserLogout }) => {
-	const [finalSearch, setFinalSearch] = useState(() => {
+type HomeProps = {
+	userId: number,
+	handleUserLogout: (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => void
+}
+
+const Home = ({ userId, handleUserLogout }: HomeProps) => {
+
+	const [finalSearch, setFinalSearch] = useState<string | null | undefined>(() => {
 		const selectedLikePod = localStorage.getItem('selectedLikePod')
 		return selectedLikePod || ''
 	})
 
-	//const [finalSearch, setFinalSearch] = useState('')
-	//const [formSubmitted, setFormSubmitted] = useState(false)
 	const [formSubmitted, setFormSubmitted] = useState(() => {
 		const selectedLikePod = localStorage.getItem('selectedLikePod')
 		return selectedLikePod ? true : false
 	})
 
-	const textInput = useRef()
+	const textInput = useRef<HTMLInputElement>(null)
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		localStorage.removeItem('selectedLikePod')
-		console.log(textInput)
-		setFinalSearch(textInput.current.value)
+		setFinalSearch(textInput.current?.nodeValue)
 		setFormSubmitted(true)
 	}
 

@@ -14,9 +14,18 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, SxProps, ThemeProvider } from '@mui/material/styles'
 
-const Copyright = ( props ) => {
+type CopyrightProps = {
+	sx: SxProps
+}
+
+type SignupProps = {
+	handleIdChange: (uid: number, check: boolean) => void,
+	userId: number
+}
+
+const Copyright = ( props: CopyrightProps ) => {
 	return <Typography variant='body2' color='text.secondary' align='center' {...props}>
 		{'Copyright © '}
 		<Link color='inherit' href='https://github.com/allthetok'>
@@ -29,7 +38,7 @@ const Copyright = ( props ) => {
 
 const defaultTheme = createTheme()
 
-const Signup = ({ handleIdChange, userId }) => {
+const Signup = ({ handleIdChange, userId }: SignupProps) => {
 	//const [userId, setUserId] = useState(null)
 	const [checked, setChecked] = useState(false)
 
@@ -37,7 +46,7 @@ const Signup = ({ handleIdChange, userId }) => {
 
 	const navigate = useNavigate()
 
-	const getUserId = async (dataTarget) => {
+	const getUserId = async (dataTarget: FormData): Promise<void> => {
 		const user = dataTarget.get('user')
 		const pass = dataTarget.get('password')
 		const email = dataTarget.get('email')
@@ -63,7 +72,7 @@ const Signup = ({ handleIdChange, userId }) => {
 		})
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		const data = new FormData(e.currentTarget)
 		getUserId(data)

@@ -20,14 +20,14 @@ const App = () => {
 	})
 
 
-	const handleUserIdChange = (resUserId: string, remember: boolean) => {
+	const handleUserIdChange = (resUserId: number, remember: boolean) => {
 		setUserId(resUserId)
 		if (remember === true) {
-			localStorage.setItem('userid', resUserId)
+			localStorage.setItem('userid', resUserId.toString())
 		}
 	}
 
-	const handleUserLogout = (e) => {
+	const handleUserLogout = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		localStorage.removeItem('userid')
 		setUserId(null)
 	}
