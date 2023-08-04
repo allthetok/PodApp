@@ -5,8 +5,27 @@ import axios from 'axios'
 import EpisodeLike from './EpisodeLike'
 import './EpisodeList.css'
 
-const EpisodeLikeList = ({ userId, sortOptions }) => {
-	const [epLikeDataFetch, setEpLikeDataFetch] = useState(null)
+type EpisodeLikeListProps = {
+	userId: number,
+	sortOptions: string
+}
+
+type Episode = {
+	key: number,
+	strpodchaserid: string,
+	strepisodeid: string,
+	strpodtitle: string,
+	strtitle: string,
+	strweburl: string,
+	strimageurl: string,
+	intlength: number,
+	strairdate: string
+}
+
+const EpisodeLikeList = ({ userId, sortOptions }: EpisodeLikeListProps) => {
+	// const [epLikeDataFetch, setEpLikeDataFetch] = useState<Episode[] | unknown[]>([])
+	const [epLikeDataFetch, setEpLikeDataFetch] = useState<unknown>([])
+
 
 	const getUserLikes = async () => {
 		const userLikesConfig = {
@@ -23,14 +42,15 @@ const EpisodeLikeList = ({ userId, sortOptions }) => {
 
 		await axios(userLikesConfig)
 			.then(response => {
-				setEpLikeDataFetch(uniqueFilter(response.data))
+				const epFetch = uniqueFilter(response.data)
+				setEpLikeDataFetch(epFetch)
 				console.log(uniqueFilter(response.data))
 			}).catch(err => {
 				console.log(err)
 			})
 	}
 
-	const deleteUserLike = async (userId, strepisodeid) => {
+	const deleteUserLike = async (userId: number, strepisodeid: string): Promise<void> => {
 		const likeDeleteConfig = {
 			method: 'delete',
 			url: 'http://localhost:3002/api/like',
@@ -53,16 +73,33 @@ const EpisodeLikeList = ({ userId, sortOptions }) => {
 		getUserLikes()
 	}, [userId])
 
-	const uniqueFilter = (data) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const uniqueFilter = (data: { map: (arg0: (pos: any) => any[]) => Iterable<readonly [unknown, unknown]> | null | undefined }) => {
 		const map = new Map(data.map(pos => [pos.strtitle, pos]))
 		const uniques = [...map.values()]
 		return uniques
 	}
 
+	const uniqueTitle = (EpArray: Episode[]) => {
+		const unique: Episode[] = EpArray.map((Ep) => Ep.strtitle)
+			.filter((value, index, self) => self.indexOf(value) === index)
+		return unique
+	}
+
+	// const uniqueArray = (array: Episode[], key: string) => {
+	// 	const arrayUniqueByKey = [...new Map(array.map(item =>
+	// 		[item[key], item])).values()]
+	// 	return arrayUniqueByKey
+	// }
+
+	// const uniqueArray = (myArray: Episode[]) => {
+	// 	return Array.from(new Set(myArray.map((item: Episode) => item.strtitle)))
+	// }
+
 	return (
 		<>
 			<div className='episodeContainer'>
-				{epLikeDataFetch === null
+				{epLikeDataFetch.length === 0
 					?
 					<div>{userId}</div>
 					:

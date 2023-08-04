@@ -5,18 +5,31 @@ import { useNavigate } from 'react-router-dom'
 import './PodcastPreview.css'
 import { MoreVert, Clear } from '@mui/icons-material'
 
-const EpisodeLike = ({ strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, userId, handleDelete }) => {
+type EpisodeLikeProps = {
+	strpodchaserid: string,
+	strepisodeid: string,
+	strpodtitle: string,
+	strtitle: string,
+	strweburl: string,
+	strimageurl: string,
+	intlength: number,
+	strairdate: string,
+	userId: number,
+	handleDelete: (userId: number, strepisodeid: string) => void
+}
+
+const EpisodeLike = ({ strpodchaserid, strepisodeid, strpodtitle, strtitle, strweburl, strimageurl, intlength, strairdate, userId, handleDelete }: EpisodeLikeProps) => {
 
 	const navigate = useNavigate()
 
-	const handleClick = (e) => {
+	const handleClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/')
 		localStorage.removeItem('selectedLikePod')
 		localStorage.setItem('selectedLikePod', strpodtitle)
 	}
 
-	const formattedTime = (seconds) => {
+	const formattedTime = (seconds: number) => {
 		const hours = Math.floor(seconds/3600)
 		const mins = Math.floor(seconds % 3600 / 60)
 		const hoursDisplay = hours > 0 ? `${hours}h` : ''
@@ -36,7 +49,7 @@ const EpisodeLike = ({ strpodchaserid, strepisodeid, strpodtitle, strtitle, strw
 
 	}
 
-	const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
+	const formattedDateLong = (inpDate: string) => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
 	return (
 		<li>
 			<div className='videoCard ptop'>

@@ -7,9 +7,22 @@ import { MoreVert, Favorite } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
-const Episode = ({ podchaserId, podTitle, key, episodeId, imageUrl, url, length, title, airDate, userId }) => {
+type EpisodeProps = {
+	podchaserId: string,
+	podTitle: string,
+	key: number,
+	episodeId: string,
+	imageUrl: string,
+	url: string,
+	length: number,
+	title: string,
+	airDate: string,
+	userId: number
+}
 
-	const formattedTime = (seconds) => {
+const Episode = ({ podchaserId, podTitle, key, episodeId, imageUrl, url, length, title, airDate, userId }: EpisodeProps) => {
+
+	const formattedTime = (seconds: number) => {
 		const hours = Math.floor(seconds/3600)
 		const mins = Math.floor(seconds % 3600 / 60)
 		const hoursDisplay = hours > 0 ? `${hours}h` : ''
@@ -29,9 +42,9 @@ const Episode = ({ podchaserId, podTitle, key, episodeId, imageUrl, url, length,
 
 	}
 
-	const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
+	const formattedDateLong = (inpDate: string) => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
 
-	const likeEp = async (podchaserId, podTitle, episodeId, imageUrl, url, length, title, airDate, userId) => {
+	const likeEp = async (podchaserId: string, podTitle: string, episodeId: string, imageUrl: string, url: string, length: number, title: string, airDate: string, userId: number) => {
 		const likeConfig = {
 			method: 'post',
 			url: 'http://localhost:3002/api/likeEp',
@@ -52,14 +65,14 @@ const Episode = ({ podchaserId, podTitle, key, episodeId, imageUrl, url, length,
 		}
 		const newLikeResults = await axios(likeConfig)
 		if (newLikeResults.status === 400) {
-			axios.console.error()
+			console.error()
 		}
 		else {
 			console.log(newLikeResults)
 		}
 	}
 
-	const handleLike = (e) => {
+	const handleLike = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		likeEp(podchaserId, episodeId, podTitle, imageUrl, url, length, title, airDate, userId)
 	}
