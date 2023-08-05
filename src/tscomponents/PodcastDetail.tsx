@@ -6,6 +6,7 @@ import useSearch from '../hooks/useSearch'
 import './PodcastDetail.css'
 import LikeBtn from './LikeBtn'
 
+
 const PodcastDetail = ({ userId, finalSearch }) => {
 
 	const [dataFetch, like] = useSearch(userId, finalSearch)

@@ -11,6 +11,11 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
+// type VerificationDialogProps = {
+// 	open: boolean,
+	
+// }
+
 const VerificationDialog = ({ open, verificationEnter, handleChange, handleClickOpen, handleVerificationSubmit, handleClose }) => {
 
 	return (

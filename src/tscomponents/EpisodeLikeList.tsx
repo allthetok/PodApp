@@ -19,12 +19,14 @@ type Episode = {
 	strweburl: string,
 	strimageurl: string,
 	intlength: number,
-	strairdate: string
+	strairdate: string,
+	lnglikeid: number
 }
 
 const EpisodeLikeList = ({ userId, sortOptions }: EpisodeLikeListProps) => {
 	// const [epLikeDataFetch, setEpLikeDataFetch] = useState<Episode[] | unknown[]>([])
-	const [epLikeDataFetch, setEpLikeDataFetch] = useState<unknown>([])
+	// const [epLikeDataFetch, setEpLikeDataFetch] = useState<unknown>([])
+	const [epLikeDataFetch, setEpLikeDataFetch] = useState<Episode[]>([])
 
 
 	const getUserLikes = async () => {
@@ -74,17 +76,24 @@ const EpisodeLikeList = ({ userId, sortOptions }: EpisodeLikeListProps) => {
 	}, [userId])
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const uniqueFilter = (data: { map: (arg0: (pos: any) => any[]) => Iterable<readonly [unknown, unknown]> | null | undefined }) => {
+	// const uniqueFilter = (data: { map: (arg0: (pos: any) => any[]) => Iterable<readonly [unknown, unknown]> | null | undefined }) => {
+	// 	const map = new Map(data.map(pos => [pos.strtitle, pos]))
+	// 	const uniques = [...map.values()]
+	// 	return uniques
+	// }
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const uniqueFilter = (data: { map: (arg0: (pos: any) => any[]) => Iterable<readonly [Episode, Episode]> | null | undefined} ) => {
 		const map = new Map(data.map(pos => [pos.strtitle, pos]))
 		const uniques = [...map.values()]
 		return uniques
 	}
 
-	const uniqueTitle = (EpArray: Episode[]) => {
-		const unique: Episode[] = EpArray.map((Ep) => Ep.strtitle)
-			.filter((value, index, self) => self.indexOf(value) === index)
-		return unique
-	}
+	// const uniqueTitle = (EpArray: Episode[]) => {
+	// 	const unique: Episode[] = EpArray.map((Ep) => Ep.strtitle)
+	// 		.filter((value, index, self) => self.indexOf(value) === index)
+	// 	return unique
+	// }
 
 	// const uniqueArray = (array: Episode[], key: string) => {
 	// 	const arrayUniqueByKey = [...new Map(array.map(item =>

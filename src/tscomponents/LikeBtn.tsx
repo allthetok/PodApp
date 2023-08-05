@@ -6,10 +6,41 @@ import { Button } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import './PodcastDetail.css'
 
-const LikeBtn = ({ liked, dataFetch, userId }) => {
+type LikeBtnProps = {
+	liked: boolean,
+	dataFetch: DataFetch,
+	userId: number
+}
+
+type DataFetch = {
+	id: string,
+	title: string,
+	description: string,
+	webUrl: string,
+	language: string,
+	numberOfEpisodes: number,
+	avgEpisodeLength: number,
+	latestEpisodeDate: string,
+	ratingCount: number,
+	ratingAverage: number,
+	author: {
+		name: string
+	},
+	startDate: string,
+	reviewCount: number,
+	imageUrl: string,
+	socialLinks: {
+		twitter: string | null,
+		facebook: string | null,
+		instagram: string | null
+	}
+}
+
+
+const LikeBtn = ({ liked, dataFetch, userId }: LikeBtnProps) => {
 	const [like, setLike] = useState(liked !== true ? 'show' : 'noshow')
 
-	const likePod = async (dataFetch) => {
+	const likePod = async (dataFetch: DataFetch) => {
 		const likeConfig = {
 			method: 'post',
 			url: 'http://localhost:3002/api/likePod',

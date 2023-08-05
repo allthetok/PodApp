@@ -1,18 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { Button, Autocomplete, TextField } from '@mui/material'
 import './Filter.css'
 import EpisodeList from './EpisodeList'
 
-const Filter = ({ podchaserId, userId, podTitle }) => {
+type FilterProps = {
+	podchaserId: string,
+	userId: number,
+	podTitle: string
+}
+
+const Filter = ({ podchaserId, userId, podTitle }: FilterProps) => {
 	const [options, setOptions] = useState('10')
 	const [sortOptions, setSortOptions] = useState('AIR_DATE')
 	const numOptions = ['5', '10', '20']
 
-	const onTextChange = (event, values) => {
-		event.preventDefault()
-		setOptions(values)
+
+	const onTextChange = (e: SyntheticEvent<Element, Event>, value: string | null): void => {
+		e.preventDefault()
+		setOptions(value!)
 	}
 
 	return (

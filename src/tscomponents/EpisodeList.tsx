@@ -6,9 +6,32 @@ import axios from 'axios'
 import Episode from './Episode.js'
 import './EpisodeList.css'
 
-const EpisodeList = ({ podchaserId, podTitle, options, sortOptions, userId }) => {
+type EpisodeListProps = {
+	podchaserId: string,
+	podTitle: string,
+	options: string,
+	sortOptions: string,
+	userId: number
+}
 
-	const [episodeDataFetch, setEpisodeDataFetch] = useState('')
+type Episode = {
+	podchaserId: string,
+	podTitle: string,
+	id: string,
+	key: number,
+	imageUrl: string,
+	url: string,
+	length: number,
+	title: string,
+	airDate: string,
+	userId: number
+}
+
+const EpisodeList = ({ podchaserId, podTitle, options, sortOptions, userId }: EpisodeListProps) => {
+
+	//const [episodeDataFetch, setEpisodeDataFetch] = useState('')
+
+	const [episodeDataFetch, setEpisodeDataFetch] = useState<Episode[]>([])
 
 	const data = JSON.stringify({
 		query: `query {
@@ -76,17 +99,19 @@ const EpisodeList = ({ podchaserId, podTitle, options, sortOptions, userId }) =>
 		axios(config)
 			.then(response => {
 				const responseObj = response.data
-				if (podchaserId === '') {
-					setEpisodeDataFetch({
-						'data': {
-							'podcast': {
-								'episodes': {
-									'data': []
-								}
-							}
-						}
-					})
-				}
+				// if (podchaserId === '') {
+				// setEpisodeDataFetch({
+				// 	'data': {
+				// 		'podcast': {
+				// 			'episodes': {
+				// 				'data': []
+				// 			}
+				// 		}
+				// 	}
+				// })
+				// setEpisodeDataFetch({
+				// 	})
+				// }
 				console.log(response.data)
 				setEpisodeDataFetch(responseObj.data.podcast.episodes.data)
 			})
@@ -95,11 +120,11 @@ const EpisodeList = ({ podchaserId, podTitle, options, sortOptions, userId }) =>
 	return (
 		<>
 			<div className='episodeContainer'>
-				{episodeDataFetch === '' ?
+				{episodeDataFetch.length === 0 ?
 					<div></div> :
 					<ul className='episodeList regular'>
 						{episodeDataFetch.slice(0,parseInt(options)).map((episode) =>
-							<Episode podchaserId={podchaserId} podTitle={podTitle} episodeId={episode.id} key={episode.id} imageUrl={episode.imageUrl} url={episode.url} length={episode.length} title={episode.title} airDate={episode.airDate} userId={userId}/>
+							<Episode podchaserId={podchaserId} podTitle={podTitle} episodeId={episode.id} key={parseInt(episode.id)} imageUrl={episode.imageUrl} url={episode.url} length={episode.length} title={episode.title} airDate={episode.airDate} userId={userId}/>
 						)}
 					</ul>}
 			</div>

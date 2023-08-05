@@ -11,7 +11,12 @@ import DoneIcon from '@mui/icons-material/Done'
 import CancelIcon from '@mui/icons-material/Cancel'
 import DialogTitle from '@mui/material/DialogTitle'
 
-const LogoutDialog = ({ handleUserLogout }) => {
+type LogoutDialogProps = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	handleUserLogout: (e: any) => void
+}
+
+const LogoutDialog = ({ handleUserLogout }: LogoutDialogProps) => {
 	const [open, setOpen] = useState(false)
 
 	const navigate = useNavigate()
