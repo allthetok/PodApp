@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
@@ -5,8 +6,23 @@ import axios from 'axios'
 import PodcastLike from './PodcastLike.js'
 import './EpisodeList.css'
 
-const PodcastLikeList = ({ userId, sortOptions }) => {
-	const [podLikeDataFetch, setPodLikeDataFetch] = useState(null)
+type PodcastLikeListProps = {
+	userId: number,
+	sortOptions: string
+}
+
+type Podcast = {
+	strpodchaserid: string,
+	strtitle: string,
+	strweburl: string,
+	strimageurl: string,
+	strlatestepisodedate: string,
+	userId: number,
+	lnglikeid: number
+}
+
+const PodcastLikeList = ({ userId, sortOptions }: PodcastLikeListProps) => {
+	const [podLikeDataFetch, setPodLikeDataFetch] = useState<Podcast[]>([])
 
 	const getUserLikes = async () => {
 		const userLikesConfig = {
@@ -29,7 +45,7 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
 			})
 	}
 
-	const deleteUserLike = async (userId, strpodchaserid) => {
+	const deleteUserLike = async (userId: number, strpodchaserid: string) => {
 		const likeDeleteConfig = {
 			method: 'delete',
 			url: 'http://localhost:3002/api/like',
@@ -52,7 +68,13 @@ const PodcastLikeList = ({ userId, sortOptions }) => {
 		getUserLikes()
 	}, [userId])
 
-	const uniqueFilter = (data) => {
+	// const uniqueFilter = (data) => {
+	// 	const map = new Map(data.map(pos => [pos.strpodchaserid, pos]))
+	// 	const uniques = [...map.values()]
+	// 	return uniques
+	// }
+
+	const uniqueFilter = (data: { map: (arg0: (pos: any) => any[]) => Iterable<readonly [Podcast, Podcast]> | null | undefined} ) => {
 		const map = new Map(data.map(pos => [pos.strpodchaserid, pos]))
 		const uniques = [...map.values()]
 		return uniques

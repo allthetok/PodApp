@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react'
 import Navbar from './Navbar'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -65,7 +65,7 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 	const [pass2, setPass2] = useState('')
 	const [open, setOpen] = useState(false)
 	const [verificationEnter, setVerificationEnter] = useState('')
-	const [verificationCode, setVerificationCode] = useState(null)
+	const [verificationCode, setVerificationCode] = useState<number | null>(null)
 
 	const handleClickOpen = () => {
 		setOpen(true)
@@ -79,8 +79,12 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 		setOpen(false)
 	}
 
-	const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-		setVerificationEnter(e.currentTarget.value)
+	// const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+	// 	setVerificationEnter(e.currentTarget.value)
+	// }
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const node = e.currentTarget
+		setVerificationEnter(node?.value)
 	}
 
 	const sendUserVerificationCode = async (stremail: string): Promise<void> => {
@@ -430,7 +434,7 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 							</Box>
 						</Container>
 
-						<VerificationDialog open={open} verificationEnter={verificationEnter} handleChange={handleChange} handleClickOpen={handleClickOpen} handleVerificationSubmit={handleVerificationSubmit} handleClose={handleClose} />
+						<VerificationDialog open={open} verificationEnter={verificationEnter} handleChange={handleChange} handleVerificationSubmit={handleVerificationSubmit} handleClose={handleClose} />
 					</div>
 					: <></>
 				}

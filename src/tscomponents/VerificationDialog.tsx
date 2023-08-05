@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { ChangeEvent, ChangeEventHandler, useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import LogoutIcon from '@mui/icons-material/Logout'
 import Dialog from '@mui/material/Dialog'
@@ -11,12 +12,15 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
-// type VerificationDialogProps = {
-// 	open: boolean,
-	
-// }
+type VerificationDialogProps = {
+	open: boolean,
+	verificationEnter: string,
+	handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
+	handleVerificationSubmit: any,
+	handleClose: () => void
+}
 
-const VerificationDialog = ({ open, verificationEnter, handleChange, handleClickOpen, handleVerificationSubmit, handleClose }) => {
+const VerificationDialog = ({ open, verificationEnter, handleChange, handleVerificationSubmit, handleClose }: VerificationDialogProps) => {
 
 	return (
 		<div>

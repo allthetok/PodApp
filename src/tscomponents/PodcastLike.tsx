@@ -5,18 +5,28 @@ import { useNavigate } from 'react-router-dom'
 import './PodcastPreview.css'
 import { MoreVert, Clear } from '@mui/icons-material'
 
-const PodcastLike = ({ strpodchaserid, strtitle, strweburl, strimageurl, strlatestepisodedate, userId, handleDelete }) => {
+type PodcastLikeProps = {
+	strpodchaserid: string,
+	strtitle: string,
+	strweburl: string,
+	strimageurl: string,
+	strlatestepisodedate: string,
+	userId: number,
+	handleDelete: (userId: number, strpodchaserid: string) => void
+}
+
+const PodcastLike = ({ strpodchaserid, strtitle, strweburl, strimageurl, strlatestepisodedate, userId, handleDelete }: PodcastLikeProps) => {
 
 	const navigate = useNavigate()
 
-	const handleClick = (e) => {
+	const handleClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/')
 		localStorage.removeItem('selectedLikePod')
 		localStorage.setItem('selectedLikePod', strtitle)
 	}
 
-	const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
+	const formattedDateLong = (inpDate: string) => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
 	return (
 		<li>
 			<div className='videoCard ptop'>

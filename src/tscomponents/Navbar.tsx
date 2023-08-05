@@ -17,7 +17,7 @@ import './SearchPod.css'
 import LogoutDialog from './LogoutDialog'
 
 type NavbarProps = {
-	handleSubmit: FormEventHandler<HTMLFormElement>,
+	handleSubmit: FormEventHandler<HTMLFormElement> | undefined,
 	textInput: LegacyRef<HTMLInputElement> | undefined,
 	handleUserLogout: (e: any) => void
 }
