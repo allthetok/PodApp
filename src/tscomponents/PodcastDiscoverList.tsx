@@ -7,9 +7,26 @@ import axios from 'axios'
 import PodcastDiscover from './PodcastDiscover.js'
 import './EpisodeList.css'
 
-const PodcastDiscoverList = ({ options, sortOptions, userId }) => {
+type PodcastDiscoverListProps = {
+	options: string,
+	sortOptions: string,
+	userId: number
+}
 
-	const [podDataFetch, setPodDataFetch] = useState('')
+type PodDataFetch = {
+	id: string,
+	title: string,
+	url: string,
+	imageUrl: string,
+	latestEpisodeDate: string,
+	author: {
+		name: string
+	}
+}
+
+const PodcastDiscoverList = ({ options, sortOptions, userId }: PodcastDiscoverListProps) => {
+
+	const [podDataFetch, setPodDataFetch] = useState<PodDataFetch[]>([])
 
 	const data = JSON.stringify({
 		query: `query {
@@ -45,14 +62,15 @@ const PodcastDiscoverList = ({ options, sortOptions, userId }) => {
 		axios(config)
 			.then(response => {
 				const responseObj = response.data
-				if (userId === '') {
-					setPodDataFetch({
-						'data': {
-							'podcasts': {
-								'data': []
-							}
-						}
-					})
+				if (userId) {
+					// setPodDataFetch({
+					// 	'data': {
+					// 		'podcasts': {
+					// 			'data': []
+					// 		}
+					// 	}
+					// })
+					setPodDataFetch([])
 				}
 				console.log(response.data)
 				setPodDataFetch(responseObj.data.podcasts.data)
@@ -62,7 +80,7 @@ const PodcastDiscoverList = ({ options, sortOptions, userId }) => {
 	return (
 		<>
 			<div className='episodeContainer'>
-				{podDataFetch === '' ?
+				{podDataFetch.length === 0 ?
 					<div></div> :
 					<ul className='episodeList regular'>
 						{podDataFetch.slice(0,parseInt(options)).map((podcast) =>

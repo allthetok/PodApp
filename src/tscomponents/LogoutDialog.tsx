@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
@@ -12,7 +13,6 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import DialogTitle from '@mui/material/DialogTitle'
 
 type LogoutDialogProps = {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	handleUserLogout: (e: any) => void
 }
 
@@ -29,7 +29,7 @@ const LogoutDialog = ({ handleUserLogout }: LogoutDialogProps) => {
 		setOpen(false)
 	}
 
-	const handleCloseLogout = (e) => {
+	const handleCloseLogout = (e: { preventDefault: () => void }) => {
 		handleUserLogout(e)
 		navigate('/')
 		setOpen(false)

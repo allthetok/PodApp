@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
@@ -6,7 +7,7 @@ import axios from 'axios'
 
 type UseSearchProps = {
 	userId: number,
-	finalSearch: string
+	finalSearch: string | null | undefined
 }
 
 type DataFetch = {
@@ -35,7 +36,7 @@ type DataFetch = {
 
 const useSearch = ({ userId, finalSearch }: UseSearchProps) => {
 	const [dataFetch, setDataFetch] = useState<DataFetch>()
-	const [like, setLike] = useState<undefined>()
+	const [like, setLike] = useState<any>()
 
 
 	const finalSearchData = JSON.stringify({

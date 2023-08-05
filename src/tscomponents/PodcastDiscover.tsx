@@ -8,20 +8,30 @@ import { IconButton } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { MoreVert } from '@mui/icons-material'
 
-const PodcastDiscover = ({ strpodchaserid, strtitle, strweburl, strimageurl, strlatestepisodedate, strname, userId }) => {
+type PodcastDiscoverProps = {
+	strpodchaserid: string,
+	strtitle: string,
+	strweburl: string,
+	strimageurl: string,
+	strlatestepisodedate: string,
+	strname: string,
+	userId: number
+}
+
+const PodcastDiscover = ({ strpodchaserid, strtitle, strweburl, strimageurl, strlatestepisodedate, strname, userId }: PodcastDiscoverProps) => {
 
 	const navigate = useNavigate()
 
-	const handleClick = (e) => {
+	const handleClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/')
 		localStorage.removeItem('selectedLikePod')
 		localStorage.setItem('selectedLikePod', strtitle)
 	}
 
-	const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
+	const formattedDateLong = (inpDate: string) => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
 
-	const likePod = async (podchaserId, title, name, url, imageUrl, latestEpisodeDate, userId) => {
+	const likePod = async (podchaserId: string, title: string, name: string, url: string, imageUrl: string, latestEpisodeDate: string, userId: number) => {
 		const likeConfig = {
 			method: 'post',
 			url: 'http://localhost:3002/api/likePod',
@@ -40,14 +50,14 @@ const PodcastDiscover = ({ strpodchaserid, strtitle, strweburl, strimageurl, str
 		}
 		const newLikeResults = await axios(likeConfig)
 		if (newLikeResults.status === 400) {
-			axios.console.error()
+			console.error()
 		}
 		else {
 			console.log(newLikeResults)
 		}
 	}
 
-	const handleLike = (e) => {
+	const handleLike = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		likePod(strpodchaserid, strtitle, strname, strweburl, strimageurl, strlatestepisodedate, userId)
 	}

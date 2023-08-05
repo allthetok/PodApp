@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { FormEventHandler, LegacyRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -15,29 +16,35 @@ import PersonIcon from '@mui/icons-material/Person'
 import './SearchPod.css'
 import LogoutDialog from './LogoutDialog'
 
+type NavbarProps = {
+	handleSubmit: FormEventHandler<HTMLFormElement>,
+	textInput: LegacyRef<HTMLInputElement> | undefined,
+	handleUserLogout: (e: any) => void
+}
 
-const Navbar = ({ handleSubmit, textInput, handleUserLogout }) => {
+const Navbar = ({ handleSubmit, textInput, handleUserLogout }: NavbarProps) => {
 
 	const navigate = useNavigate()
 
-	const handleHomeClick = (e) => {
+	const handleHomeClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/')
 	}
 
-	const handleLikeClick = (e) => {
+	const handleLikeClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/likes')
 		localStorage.removeItem('selectedLikePod')
 	}
 
-	const handleDiscoverClick = (e) => {
+	const handleDiscoverClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/discover')
 		localStorage.removeItem('selectedLikePod')
 	}
 
-	const handleProfileClick = (e) => {
+
+	const handleProfileClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		navigate('/profile')
 	}

@@ -7,7 +7,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import './PodcastDetail.css'
 
 type LikeBtnProps = {
-	liked: boolean,
+	liked: boolean | undefined,
 	dataFetch: DataFetch,
 	userId: number
 }

@@ -2,16 +2,20 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import Filter from './Filter'
-import useSearch from '../hooks/useSearch'
+import useSearch from '../tshooks/useSearch'
 import './PodcastDetail.css'
 import LikeBtn from './LikeBtn'
 
+type PodcastDetailProps = {
+	userId: number,
+	finalSearch: string | null | undefined
+}
 
-const PodcastDetail = ({ userId, finalSearch }) => {
+const PodcastDetail = ({ userId, finalSearch }: PodcastDetailProps) => {
 
-	const [dataFetch, like] = useSearch(userId, finalSearch)
+	const [dataFetch, like] = useSearch({ userId, finalSearch })
 
-	const formattedTime = (seconds) => {
+	const formattedTime = (seconds: number) => {
 		const hours = Math.floor(seconds/3600)
 		const mins = Math.floor(seconds % 3600 / 60)
 		const hoursDisplay = hours > 0 ? `${hours}h` : ''
@@ -19,8 +23,8 @@ const PodcastDetail = ({ userId, finalSearch }) => {
 		return `${hoursDisplay}:${minsDisplay}`
 	}
 
-	const formattedDateShort = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', month: 'long' })
-	const formattedDateLong = inpDate => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
+	const formattedDateShort = (inpDate: string) => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', month: 'long' })
+	const formattedDateLong = (inpDate: string) => new Date(inpDate).toLocaleDateString('en-us', { year: 'numeric', 'month': 'long', 'day': 'numeric' })
 
 	return (
 		<>
@@ -65,7 +69,7 @@ const PodcastDetail = ({ userId, finalSearch }) => {
 													<th className='infoHeader p4'>Rating</th>
 													<td colSpan={2}>
 														<span className='avgRating regular'>
-															{parseFloat(dataFetch.ratingAverage).toFixed(2)}&nbsp;
+															{(dataFetch.ratingAverage).toFixed(2)}&nbsp;
 														</span>
 														<span className='maxRating regular'>
                                                         /&nbsp;
@@ -116,9 +120,9 @@ const PodcastDetail = ({ userId, finalSearch }) => {
 
 					</div>
 					<div className='mediaContainer'>
-						<a className='mediaTwitter' title='Twitter' target ='_blank' rel='noopener noreferrer' href={`https://twitter.com/${dataFetch === '' ? '' : dataFetch.socialLinks.twitter}`}> </a>
-						<a className='mediaFacebook' title='Facebook' target='_blank'rel='noopener noreferrer' href={`https://facebook.com/${dataFetch === '' ? '' : dataFetch.socialLinks.facebook}`}> </a>
-						<a className='mediaInstagram' title='Instagram' target='_blank' rel='noopener noreferrer' href={`https://instagram.com/${dataFetch === '' ? '' : dataFetch.socialLinks.instagram}`}> </a>
+						<a className='mediaTwitter' title='Twitter' target ='_blank' rel='noopener noreferrer' href={`https://twitter.com/${dataFetch === undefined ? '' : dataFetch.socialLinks.twitter}`}> </a>
+						<a className='mediaFacebook' title='Facebook' target='_blank'rel='noopener noreferrer' href={`https://facebook.com/${dataFetch === undefined ? '' : dataFetch.socialLinks.facebook}`}> </a>
+						<a className='mediaInstagram' title='Instagram' target='_blank' rel='noopener noreferrer' href={`https://instagram.com/${dataFetch === undefined ? '' : dataFetch.socialLinks.instagram}`}> </a>
 					</div>
 					<LikeBtn liked={like} dataFetch={dataFetch} userId={userId}/>
 					<Filter podchaserId={dataFetch.id} podTitle={dataFetch.title} userId={userId} />
