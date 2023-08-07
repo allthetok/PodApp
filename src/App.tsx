@@ -3,13 +3,13 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Login } from './tscomponents/Login'
-import { Signup } from './tscomponents/Signup'
-import { Likes } from './tscomponents/Likes'
-import { Home } from './tscomponents/Home'
-import { Discover } from './tscomponents/Discover'
-import { ForgotPass } from './tscomponents/ForgotPass'
-import { User } from './tscomponents/User'
+import { Login } from './components/Login'
+import { Signup } from './components/Signup'
+import { Likes } from './components/Likes'
+import { Home } from './components/Home'
+import { Discover } from './components/Discover'
+import { ForgotPass } from './components/ForgotPass'
+import { User } from './components/User'
 
 const App = () => {
 	const [userId, setUserId] = useState(() => {

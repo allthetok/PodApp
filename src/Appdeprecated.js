@@ -3,13 +3,13 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import Likes from './components/Likes'
-import Home from './components/Home'
-import Discover from './components/Discover'
-import ForgotPass from './components/ForgotPass'
-import User from './components/User'
+import Login from './jscomponents/Login'
+import Signup from './jscomponents/Signup'
+import Likes from './jscomponents/Likes'
+import Home from './jscomponents/Home'
+import Discover from './jscomponents/Discover'
+import ForgotPass from './jscomponents/ForgotPass'
+import User from './jscomponents/User'
 
 const App = () => {
 	const [userId, setUserId] = useState(() => {
