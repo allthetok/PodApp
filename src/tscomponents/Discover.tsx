@@ -2,8 +2,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, SyntheticEvent } from 'react'
 import { Button, Autocomplete, TextField } from '@mui/material'
-import Navbar from './Navbar'
-import PodcastDiscoverList from './PodcastDiscoverList'
+import { Navbar } from './Navbar'
+import { useNavigate } from 'react-router-dom'
+import { PodcastDiscoverList } from './PodcastDiscoverList'
 
 type DiscoverProps = {
 	userId: number,
@@ -22,11 +23,13 @@ const Discover = ({ userId, handleUserLogout }: DiscoverProps) => {
 
 	const textInput = useRef<HTMLInputElement>(null)
 
+	const navigate = useNavigate()
+
 	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
-		console.log(textInput)
-		setFinalSearch(textInput.current?.nodeValue)
-		setFormSubmitted(true)
+		localStorage.removeItem('selectedLikePod')
+		navigate('/')
+		localStorage.setItem('selectedLikePod', textInput.current!.value)
 	}
 
 

@@ -2,10 +2,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react'
 import { Button } from '@mui/material'
-import Navbar from './Navbar'
-import PodcastLikeList from './PodcastLikeList'
-import EpisodeLikeList from './EpisodeLikeList'
+import { Navbar } from './Navbar'
+import { PodcastLikeList } from './PodcastLikeList'
+import { EpisodeLikeList } from './EpisodeLikeList'
 import './Filter.css'
+import { useNavigate } from 'react-router-dom'
 
 type LikesProps = {
 	userId: number,
@@ -18,12 +19,13 @@ const Likes = ({ userId, handleUserLogout }: LikesProps) => {
 	const [sortOptions, setSortOptions] = useState('PODCAST')
 
 	const textInput = useRef<HTMLInputElement>(null)
+	const navigate = useNavigate()
 
 	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
-		console.log(textInput)
-		setFinalSearch(textInput.current?.nodeValue)
-		setFormSubmitted(true)
+		localStorage.removeItem('selectedLikePod')
+		navigate('/')
+		localStorage.setItem('selectedLikePod', textInput.current!.value)
 	}
 
 	return (

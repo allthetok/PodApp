@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react'
-import Navbar from './Navbar'
+import { Navbar } from './Navbar'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar'
@@ -19,7 +19,7 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import CreateIcon from '@mui/icons-material/Create'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
-import VerificationDialog from './VerificationDialog'
+import { VerificationDialog } from './VerificationDialog'
 import './User.css'
 
 type UserProps = {
@@ -82,12 +82,27 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 	// const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
 	// 	setVerificationEnter(e.currentTarget.value)
 	// }
+	// const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+	// 	const node = e.currentTarget
+	// 	setVerificationEnter(node?.value)
+	// }
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const node = e.currentTarget
-		setVerificationEnter(node?.value)
+		setVerificationEnter(node.value)
 	}
 
-	const sendUserVerificationCode = async (stremail: string): Promise<void> => {
+	const textInput = useRef<HTMLInputElement>(null)
+
+	const navigate = useNavigate()
+
+	const handleSearchSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
+		e.preventDefault()
+		localStorage.removeItem('selectedLikePod')
+		navigate('/')
+		localStorage.setItem('selectedLikePod', textInput.current!.value)
+	}
+
+	const sendUserVerificationCode = async (stremail: string) => {
 		const sendEmailConfig = {
 			method: 'post',
 			url: 'http://localhost:3003/api/verification',
@@ -107,7 +122,7 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 	}
 
 
-	const getUsernameEmail = async (userId: number): Promise<void> => {
+	const getUsernameEmail = async (userId: number) => {
 		const userConfig = {
 			method: 'post',
 			url: 'http://localhost:3002/api/userEmail',
@@ -119,7 +134,7 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 			}
 		}
 		await axios(userConfig).then(response => {
-			console.log('fired')
+			//console.log('fired')
 			setUsername(response.data.struser)
 			setEmail(response.data.stremail)
 		}).catch(err => {
@@ -347,7 +362,7 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 
 	return (
 		<div className='userContainer'>
-			<Navbar handleUserLogout={handleUserLogout} handleSubmit={undefined} textInput={undefined}/>
+			<Navbar handleUserLogout={handleUserLogout} handleSubmit={handleSearchSubmit} textInput={textInput}/>
 			<div className='buttonWrap'>
 				<Button onClick={() => setOptions('USEREMAIL')} variant={Options === 'USEREMAIL' ? 'contained' : 'outlined'}>USER DETAILS</Button>
 				<Button onClick={() => setOptions('PASS')} variant={Options === 'PASS' ? 'contained' : 'outlined'}>Password</Button>
@@ -487,7 +502,7 @@ const User = ({ userId, handleUserLogout }: UserProps) => {
 									<div className='textWrap'>
 										<TextField
 											margin='normal'
-											id='pass'
+											id='passauth'
 											label='Confirm Password'
 											disabled={editPass}
 											value={pass2}
