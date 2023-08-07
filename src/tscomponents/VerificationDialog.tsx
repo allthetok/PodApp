@@ -70,4 +70,4 @@ const VerificationDialog = ({ open, verificationEnter, handleChange, handleVerif
 	)
 }
 
-export default VerificationDialog
+export { VerificationDialog }

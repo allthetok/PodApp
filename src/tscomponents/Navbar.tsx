@@ -14,7 +14,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt'
 import PersonIcon from '@mui/icons-material/Person'
 import './SearchPod.css'
-import LogoutDialog from './LogoutDialog'
+import { LogoutDialog } from './LogoutDialog'
 
 type NavbarProps = {
 	handleSubmit: FormEventHandler<HTMLFormElement> | undefined,
@@ -28,6 +28,7 @@ const Navbar = ({ handleSubmit, textInput, handleUserLogout }: NavbarProps) => {
 
 	const handleHomeClick = (e: { preventDefault: () => void }) => {
 		e.preventDefault()
+		localStorage.removeItem('selectedLikePod')
 		navigate('/')
 	}
 
@@ -123,4 +124,4 @@ const Navbar = ({ handleSubmit, textInput, handleUserLogout }: NavbarProps) => {
 	)
 }
 
-export default Navbar
+export { Navbar }

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import Filter from './Filter'
+import { Filter } from './Filter'
 import useSearch from '../tshooks/useSearch'
 import './PodcastDetail.css'
-import LikeBtn from './LikeBtn'
+import { LikeBtn } from './LikeBtn'
 
 type PodcastDetailProps = {
 	userId: number,
@@ -132,4 +132,4 @@ const PodcastDetail = ({ userId, finalSearch }: PodcastDetailProps) => {
 	)
 }
 
-export default PodcastDetail
+export { PodcastDetail }

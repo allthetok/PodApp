@@ -91,4 +91,4 @@ const LikeBtn = ({ liked, dataFetch, userId }: LikeBtnProps) => {
 	)
 }
 
-export default LikeBtn
+export { LikeBtn }

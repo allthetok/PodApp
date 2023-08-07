@@ -26,7 +26,7 @@ const EpisodeLike = ({ strpodchaserid, strepisodeid, strpodtitle, strtitle, strw
 		e.preventDefault()
 		navigate('/')
 		localStorage.removeItem('selectedLikePod')
-		localStorage.setItem('selectedLikePod', strpodtitle)
+		localStorage.setItem('selectedLikePod', strepisodeid)
 	}
 
 	const formattedTime = (seconds: number) => {
@@ -75,4 +75,4 @@ const EpisodeLike = ({ strpodchaserid, strepisodeid, strpodtitle, strtitle, strw
 	)
 }
 
-export default EpisodeLike
+export { EpisodeLike }

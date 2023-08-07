@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import EpisodeLike from './EpisodeLike'
+import { EpisodeLike } from './EpisodeLike'
 import './EpisodeList.css'
 
 type EpisodeLikeListProps = {
@@ -45,7 +45,8 @@ const EpisodeLikeList = ({ userId, sortOptions }: EpisodeLikeListProps) => {
 		await axios(userLikesConfig)
 			.then(response => {
 				const epFetch = uniqueFilter(response.data)
-				setEpLikeDataFetch(epFetch)
+				//setEpLikeDataFetch(epFetch)
+				setEpLikeDataFetch(uniqueFilter(response.data))
 				console.log(uniqueFilter(response.data))
 			}).catch(err => {
 				console.log(err)
@@ -134,4 +135,4 @@ const EpisodeLikeList = ({ userId, sortOptions }: EpisodeLikeListProps) => {
 	)
 }
 
-export default EpisodeLikeList
+export { EpisodeLikeList }

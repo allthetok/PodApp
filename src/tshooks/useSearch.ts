@@ -99,7 +99,9 @@ const useSearch = ({ userId, finalSearch }: UseSearchProps) => {
 
 	const getData = useCallback(async () => {
 		const dataResults = await axios(searchConfig)
+		console.log(finalSearch)
 		setDataFetch(dataResults.data.data.podcasts.data[0])
+		console.log(dataResults.data.data.podcasts.data[0])
 		likeBtnConfig.data.strpodchaserid = dataResults.data.data.podcasts.data[0].id
 		const likeResults = await axios(likeBtnConfig)
 		setLike(likeResults.data.blnLiked)

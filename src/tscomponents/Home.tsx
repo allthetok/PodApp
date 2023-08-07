@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Navbar from './Navbar'
-import PodcastDetail from './PodcastDetail'
+import { Navbar } from './Navbar'
+import { PodcastDetail } from './PodcastDetail'
 
 type HomeProps = {
 	userId: number,
@@ -24,10 +24,17 @@ const Home = ({ userId, handleUserLogout }: HomeProps) => {
 
 	const textInput = useRef<HTMLInputElement>(null)
 
+	// const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
+	// 	e.preventDefault()
+	// 	localStorage.removeItem('selectedLikePod')
+	// 	setFinalSearch(textInput.current?.nodeValue)
+	// 	setFormSubmitted(true)
+	// }
+
 	const handleSubmit = (e: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined }) => {
 		e.preventDefault()
 		localStorage.removeItem('selectedLikePod')
-		setFinalSearch(textInput.current?.nodeValue)
+		setFinalSearch(textInput.current!.value)
 		setFormSubmitted(true)
 	}
 

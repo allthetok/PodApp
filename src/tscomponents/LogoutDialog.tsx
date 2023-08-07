@@ -83,4 +83,4 @@ const LogoutDialog = ({ handleUserLogout }: LogoutDialogProps) => {
 	)
 }
 
-export default LogoutDialog
+export { LogoutDialog }

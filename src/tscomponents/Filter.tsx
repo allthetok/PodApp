@@ -3,7 +3,7 @@
 import React, { SyntheticEvent, useState } from 'react'
 import { Button, Autocomplete, TextField } from '@mui/material'
 import './Filter.css'
-import EpisodeList from './EpisodeList'
+import { EpisodeList } from './EpisodeList'
 
 type FilterProps = {
 	podchaserId: string,
@@ -37,4 +37,4 @@ const Filter = ({ podchaserId, userId, podTitle }: FilterProps) => {
 	)
 }
 
-export default Filter
+export { Filter }

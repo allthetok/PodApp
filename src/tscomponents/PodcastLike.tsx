@@ -50,4 +50,4 @@ const PodcastLike = ({ strpodchaserid, strtitle, strweburl, strimageurl, strlate
 	)
 }
 
-export default PodcastLike
+export { PodcastLike }

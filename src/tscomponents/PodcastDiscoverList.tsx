@@ -4,11 +4,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import PodcastDiscover from './PodcastDiscover.js'
+import { PodcastDiscover } from './PodcastDiscover'
 import './EpisodeList.css'
 
 type PodcastDiscoverListProps = {
-	options: string,
+	options: string | null,
 	sortOptions: string,
 	userId: number
 }
@@ -80,10 +80,10 @@ const PodcastDiscoverList = ({ options, sortOptions, userId }: PodcastDiscoverLi
 	return (
 		<>
 			<div className='episodeContainer'>
-				{podDataFetch.length === 0 ?
+				{podDataFetch.length === 0 && options ?
 					<div></div> :
 					<ul className='episodeList regular'>
-						{podDataFetch.slice(0,parseInt(options)).map((podcast) =>
+						{podDataFetch.slice(0,parseInt(options ? options : '10')).map((podcast) =>
 							<PodcastDiscover strpodchaserid={podcast.id} strtitle={podcast.title} strweburl={podcast.url} strimageurl={podcast.imageUrl} strlatestepisodedate={podcast.latestEpisodeDate} strname={podcast.author.name} userId={userId}/>
 						)}
 					</ul>}
@@ -93,4 +93,4 @@ const PodcastDiscoverList = ({ options, sortOptions, userId }: PodcastDiscoverLi
 	)
 }
 
-export default PodcastDiscoverList
+export { PodcastDiscoverList }

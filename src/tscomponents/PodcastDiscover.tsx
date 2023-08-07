@@ -95,4 +95,4 @@ const PodcastDiscover = ({ strpodchaserid, strtitle, strweburl, strimageurl, str
 	)
 }
 
-export default PodcastDiscover
+export { PodcastDiscover }

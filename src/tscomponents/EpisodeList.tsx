@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Episode from './Episode.js'
+import { Episode } from './Episode'
 import './EpisodeList.css'
 
 type EpisodeListProps = {
@@ -133,4 +133,4 @@ const EpisodeList = ({ podchaserId, podTitle, options, sortOptions, userId }: Ep
 	)
 }
 
-export default EpisodeList
+export { EpisodeList }

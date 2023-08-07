@@ -116,4 +116,4 @@ const Episode = ({ podchaserId, podTitle, key, episodeId, imageUrl, url, length,
 	)
 }
 
-export default Episode
+export { Episode }

@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import PodcastLike from './PodcastLike.js'
+import { PodcastLike } from './PodcastLike'
 import './EpisodeList.css'
 
 type PodcastLikeListProps = {
@@ -106,4 +106,4 @@ const PodcastLikeList = ({ userId, sortOptions }: PodcastLikeListProps) => {
 	)
 }
 
-export default PodcastLikeList
+export { PodcastLikeList }
