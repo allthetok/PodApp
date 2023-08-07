@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(requestLogger)
 app.use(cors(corsOptions))
 
-const client = new pg.Client(process.env.BACKEND_DB_STRING)
+const client = new pg.Client(process.env.DATABASE_URL)
 
 client.connect((err: Error | null) => {
 	if (err) {
