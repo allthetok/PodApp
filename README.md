@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+This app was created and bootstrapped by ReactJS using ReactJSv18.2.0 and React Routerv6.14.1. Please refer to /api to see the ExpressJS/Postgres REST API to server API calls made here.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frameworks and Libraries Used (/src):
+- ReactJS v18.2.0 with ES6 Arrow Function Client Components (see /Components), Custom Hooks (see /tshooks) and Standard React Hooks (useState, useEffect, useCallback, useMemo, useContext). As well as Custom Context Providers for Stripe Cart Items, and Authentication from NextAuth.
+- ReactRouter v6.4.1 for distinct routing, see the BrowserRouter configuration defined in /src/App.tsx
+- TypeScript (Interfaces/Types/Unions) for props, response from REST API and in use for function signatures, Component props.  
+- MaterialUI V5 with sx prop styling.
+- Axios
+- CSS Component Stylesheets (Flexbox and Grid).
+- Icons8 for Static Assets
 
-## Available Scripts
+For the REST API (/api) refer to /src for the individual routers: such as elephantsql.ts to server any user-related (auth/likes) as well as podcast-processing endpoints, and smtp.ts for any automated email endpoints for 2FA. Refer to the package.json file in this folder to see how to run the individual Express app routers.
 
-In the project directory, you can run:
+Frameworks and Libraries Used on API:
+- NodeJS
+- ExpressJS
+- PostgreSQL (ElephantSQL)
+- Typescript
+- Axios
+- BCrypt
+- Cors
+- NodeMailer/SMTP Server
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Here are some screenshots from the web app:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![ss1](images/PF1.JPG)
 
-### `npm test`
+![ss2](images/PF2.JPG)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![ss3](images/PF3.JPG)
 
-### `npm run build`
+![ss4](images/PF4.JPG)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![ss5](images/PF5.JPG)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![ss6](images/PF6.JPG)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![ss7](images/PF7.JPG)
 
-### `npm run eject`
+![ss8](images/PF8.JPG)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![ss9](images/PF9.JPG)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![ss10](images/PF10.JPG)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![ss11](images/PF11.JPG)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![ss12](images/PF12.JPG)
 
-## Learn More
+![ss13](images/PF13.JPG)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
