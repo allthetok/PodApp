@@ -1,7 +1,7 @@
 This app was created and bootstrapped by ReactJS using ReactJSv18.2.0 and React Routerv6.14.1. Please refer to /api to see the ExpressJS/Postgres REST API to server API calls made here.
 
 Frameworks and Libraries Used (/src):
-- ReactJS v18.2.0 with ES6 Arrow Function Client Components (see /Components), Custom Hooks (see /tshooks) and Standard React Hooks (useState, useEffect, useCallback, useMemo, useContext). As well as Custom Context Providers for Stripe Cart Items, and Authentication from NextAuth.
+- ReactJS v18.2.0 with ES6 Arrow Function Client Components (see /Components), Custom Hooks (see /tshooks) and Standard React Hooks (useState, useEffect, useCallback, useMemo, useContext). As well as Custom Context Providers.
 - ReactRouter v6.4.1 for distinct routing, see the BrowserRouter configuration defined in /src/App.tsx
 - TypeScript (Interfaces/Types/Unions) for props, response from REST API and in use for function signatures, Component props.  
 - MaterialUI V5 with sx prop styling.
